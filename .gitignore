@@ -48,5 +48,8 @@ compile_commands.json
 CTestTestfile.cmake
 _deps
 
-# Executables
+# Testing
 test
+test.cpp
+DartConfiguration.tcl
+tests/test_state
