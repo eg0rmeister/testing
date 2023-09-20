@@ -3,17 +3,24 @@
 
 #include <string>
 
+enum{
+  IDENT,
+  LPARENT,
+  RPARENT,
+  COMMON
+};
+
 class State {
  public:
-  State(const std::string& label, bool is_final, const std::string& type = "common");
-  bool IsFinal();
-  std::string Label();
-  std::string Type();
+  State(const std::string& label, bool is_final,
+        const uint8_t type = COMMON);
+  bool IsFinal() const;
+  std::string Label() const;
+  uint8_t Type() const;
 
  private:
   std::string _label;
-  std::string
-      _type;  // 'common' - for non-final, other - for different final states
+  uint8_t _type;  // 'common' - for non-final, other - for final states
   bool _is_final;
 };
 
