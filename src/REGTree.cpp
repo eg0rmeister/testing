@@ -123,6 +123,43 @@ REGTree::REGTree(std::string regexp_string) {
   std::queue<Token> regexp = ShuntingYard(Tokenize(regexp_string));
 
   std::stack<Node*> nodes;
+  while (!regexp.empty()) {
+    Token token = regexp.front();
+    regexp.pop();
+    if (token.type == Letter) {
+      nodes.push(new Node(token.letter, nullptr));
+    }
+    if (token.type == Iterate) {
+      Node* child = nodes.top();
+      nodes.pop();
+      nodes.push(new Node(Iteration, nullptr));
+      nodes.top()->children.push_back(child);
+      child->parent = nodes.top();
+    }
+    if (token.type == Concatenate) {
+      Node* right_child = nodes.top();
+      nodes.pop();
+      Node* left_child = nodes.top();
+      nodes.pop();
+      nodes.push(new Node(Concatenation, nullptr));
+      left_child->parent = nodes.top();
+      right_child->parent = nodes.top();
+      nodes.top()->children.push_back(left_child);
+      nodes.top()->children.push_back(right_child);
+    }
+    if (token.type == Add) {
+      Node* right_child = nodes.top();
+      nodes.pop();
+      Node* left_child = nodes.top();
+      nodes.pop();
+      nodes.push(new Node(Addition, nullptr));
+      left_child->parent = nodes.top();
+      right_child->parent = nodes.top();
+      nodes.top()->children.push_back(left_child);
+      nodes.top()->children.push_back(right_child);
+    }
+  }
+  root = nodes.top();
 }
 
 #endif
