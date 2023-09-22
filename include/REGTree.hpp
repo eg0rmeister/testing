@@ -1,7 +1,8 @@
 #ifndef GRAPH_HPP
 #define GRAPH_HPP
-#include "string"
-#include "vector"
+#include <string>
+#include <vector>
+#include <queue>
 
 class REGTree {
   enum OperationType {
@@ -17,10 +18,10 @@ class REGTree {
   enum TokenType {
     LeftParenthesis,
     RightParenthesis,
+    Letter,
+    Iterate,
     Concatenate,
     Add,
-    Iterate,
-    Letter
   };
 
   struct Token {
