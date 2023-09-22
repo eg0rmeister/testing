@@ -1,11 +1,11 @@
 #include <Transition.h>
 
-Transition::Transition(std::string input, State target)
+Transition::Transition(std::string input, state_ptr target)
     : UniqueObject(), _input(input), _target(target) {}
 
 std::string Transition::Input() const { return _input; }
 
-State Transition::Target() const { return _target; }
+const State* Transition::Target() const { return _target; }
 
 bool operator==(const Transition& lhs, const Transition& rhs) {
   return lhs.ID() == rhs.ID();
