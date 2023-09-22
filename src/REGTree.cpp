@@ -32,7 +32,11 @@ REGTree::BaseNode::BaseNode(const BaseNode& other)
   }
 }
 
-typename REGTree::BaseNode& REGTree::BaseNode::operator=(const BaseNode& other) {
+typename REGTree::BaseNode& REGTree::BaseNode::operator=(
+    const BaseNode& other) {
+  if (this == &other) {
+    return *this;
+  }
   BaseNode copied_node(other);
   std::swap(*this, copied_node);
   return *this;
@@ -182,7 +186,20 @@ REGTree::REGTree(std::string regexp_string) {
   }
   root = nodes.top();
 }
+
+REGTree::REGTree(const REGTree& other) { root = new BaseNode(*other.root); }
+
+REGTree& REGTree::operator=(const REGTree& other) {
+  if (this == &other) {
+    return *this;
+  }
+  REGTree copy(other);
+  std::swap(*this, copy);
+  return *this;
+}
+
 REGTree::Node::Node(BaseNode* base) : base(base) {}
+
 REGTree::Node::Node(const REGTree& tree) : base(tree.root) {}
 
 typename REGTree::Node REGTree::Node::GetLeftChild() { return GetChild(); }

@@ -65,6 +65,8 @@ class REGTree {
     char GetSymbol();
   };
   REGTree(std::string);
+  REGTree(const REGTree&);
+  REGTree& operator=(const REGTree&);
   ~REGTree();
 };
 
