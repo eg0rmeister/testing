@@ -11,17 +11,20 @@
 
 class FSA {
  public:
+  using states_set = std::unordered_set<State>;
   using transitions_set = std::unordered_set<Transition>;
   using transitions_map = std::unordered_map<State, transitions_set>;
-  FSA(const transitions_map& transitions, const State& start_state);
+  FSA(const State& start_state, const states_set& states,
+      const transitions_map& transitions);
 
   void Reset();
-  void AddTransition(const State& fromState, Transition transition);
+  void AddTransition(const State& fromState, const Transition& transition);
 
  private:
   State _start_state;
   State _current_state;
-  std::unordered_map<State, std::unordered_set<Transition>> _transitions;
+  states_set _states;
+  transitions_map _transitions;
 };
 
 #endif
