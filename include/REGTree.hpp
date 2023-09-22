@@ -43,10 +43,8 @@ class REGTree {
 
   Node* root = nullptr;
 
-  std::vector<Token> Tokenize(const std::string&);
-  std::vector<Token> Parenthesize(const std::vector<Token>&);
-  std::pair<size_t, size_t> GetIterationParenthesisPositions(
-      const std::vector<Token>&, size_t, size_t);
+  std::vector<Token> Tokenize(const std::string& REGexpr);
+  std::vector<Token> ShuntingYard(const std::vector<Token>& tokens);
 
  public:
   REGTree(std::string);
