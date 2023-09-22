@@ -44,7 +44,7 @@ class REGTree {
   Node* root = nullptr;
 
   std::vector<Token> Tokenize(const std::string& REGexpr);
-  std::vector<Token> ShuntingYard(const std::vector<Token>& tokens);
+  std::queue<Token> ShuntingYard(const std::vector<Token>& tokens);
 
  public:
   REGTree(std::string);

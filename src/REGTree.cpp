@@ -62,19 +62,19 @@ std::vector<typename REGTree::Token> REGTree::Tokenize(const std::string& str) {
   return ret;
 }
 
-std::vector<typename REGTree::Token> REGTree::ShuntingYard(
+std::queue<typename REGTree::Token> REGTree::ShuntingYard(
     const std::vector<Token>& tokens) {
-  std::vector<Token> ret;
+  std::queue<Token> ret;
   std::stack<Token> operators;
   size_t i;
   for (i = 0; i < tokens.size(); ++i) {
     if (tokens[i].type == Letter) {
-      ret.push_back(tokens[i]);
+      ret.push(tokens[i]);
       continue;
     }
     if (tokens[i].type == Iterate) {
       while (!operators.empty() && operators.top().type == Iterate) {
-        ret.push_back(operators.top());
+        ret.push(operators.top());
         operators.pop();
       }
       operators.push(tokens[i]);
@@ -83,7 +83,7 @@ std::vector<typename REGTree::Token> REGTree::ShuntingYard(
     if (tokens[i].type == Concatenate) {
       while (!operators.empty() && (operators.top().type == Iterate ||
                                     operators.top().type == Concatenate)) {
-        ret.push_back(operators.top());
+        ret.push(operators.top());
         operators.pop();
       }
       operators.push(tokens[i]);
@@ -93,7 +93,7 @@ std::vector<typename REGTree::Token> REGTree::ShuntingYard(
       while (!operators.empty() && (operators.top().type == Iterate ||
                                     operators.top().type == Concatenate ||
                                     operators.top().type == Add)) {
-        ret.push_back(operators.top());
+        ret.push(operators.top());
         operators.pop();
       }
       operators.push(tokens[i]);
@@ -105,7 +105,7 @@ std::vector<typename REGTree::Token> REGTree::ShuntingYard(
     }
     if (tokens[i].type == RightParenthesis) {
       while (operators.top().type != LeftParenthesis) {
-        ret.push_back(operators.top());
+        ret.push(operators.top());
         operators.pop();
       }
       operators.pop();
@@ -113,14 +113,16 @@ std::vector<typename REGTree::Token> REGTree::ShuntingYard(
     }
   }
   while (!operators.empty()) {
-    ret.push_back(operators.top());
+    ret.push(operators.top());
     operators.pop();
   }
   return ret;
 }
 
 REGTree::REGTree(std::string regexp_string) {
-  std::vector<Token> regexp = ShuntingYard(Tokenize(regexp_string));
+  std::queue<Token> regexp = ShuntingYard(Tokenize(regexp_string));
+
+  std::stack<Node*> nodes;
 }
 
 #endif
