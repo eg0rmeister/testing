@@ -7,17 +7,19 @@
 #include <queue>
 #include <stack>
 
+#include "REGTree.hpp"
+
 REGTree::Token::Token(TokenType type, char letter = 0)
     : type(type), letter(letter){};
 
-REGTree::Node::Node(char letter, Node* parent)
+REGTree::BaseNode::BaseNode(char letter, BaseNode* parent)
     : operation_type(LetterConstant), letter(letter) {}
 
-REGTree::Node::Node(typename REGTree::OperationType operation_type,
-                    Node* parent)
+REGTree::BaseNode::BaseNode(typename REGTree::OperationType operation_type,
+                            BaseNode* parent)
     : operation_type(operation_type) {}
 
-REGTree::Node::~Node() {
+REGTree::BaseNode::~BaseNode() {
   for (auto node : children) {
     delete node;
   }
@@ -122,37 +124,37 @@ std::queue<typename REGTree::Token> REGTree::ShuntingYard(
 REGTree::REGTree(std::string regexp_string) {
   std::queue<Token> regexp = ShuntingYard(Tokenize(regexp_string));
 
-  std::stack<Node*> nodes;
+  std::stack<BaseNode*> nodes;
   while (!regexp.empty()) {
     Token token = regexp.front();
     regexp.pop();
     if (token.type == Letter) {
-      nodes.push(new Node(token.letter, nullptr));
+      nodes.push(new BaseNode(token.letter, nullptr));
     }
     if (token.type == Iterate) {
-      Node* child = nodes.top();
+      BaseNode* child = nodes.top();
       nodes.pop();
-      nodes.push(new Node(Iteration, nullptr));
+      nodes.push(new BaseNode(Iteration, nullptr));
       nodes.top()->children.push_back(child);
       child->parent = nodes.top();
     }
     if (token.type == Concatenate) {
-      Node* right_child = nodes.top();
+      BaseNode* right_child = nodes.top();
       nodes.pop();
-      Node* left_child = nodes.top();
+      BaseNode* left_child = nodes.top();
       nodes.pop();
-      nodes.push(new Node(Concatenation, nullptr));
+      nodes.push(new BaseNode(Concatenation, nullptr));
       left_child->parent = nodes.top();
       right_child->parent = nodes.top();
       nodes.top()->children.push_back(left_child);
       nodes.top()->children.push_back(right_child);
     }
     if (token.type == Add) {
-      Node* right_child = nodes.top();
+      BaseNode* right_child = nodes.top();
       nodes.pop();
-      Node* left_child = nodes.top();
+      BaseNode* left_child = nodes.top();
       nodes.pop();
-      nodes.push(new Node(Addition, nullptr));
+      nodes.push(new BaseNode(Addition, nullptr));
       left_child->parent = nodes.top();
       right_child->parent = nodes.top();
       nodes.top()->children.push_back(left_child);
@@ -161,5 +163,23 @@ REGTree::REGTree(std::string regexp_string) {
   }
   root = nodes.top();
 }
+REGTree::Node::Node(BaseNode* base) : base(base) {}
+REGTree::Node::Node(const REGTree& tree) : base(tree.root) {}
+
+typename REGTree::Node REGTree::Node::GetLeftChild() { return GetChild(); }
+
+typename REGTree::Node REGTree::Node::GetRightChild() {
+  return Node(base->children[1]);
+}
+
+typename REGTree::Node REGTree::Node::GetChild() {
+  return Node(base->children[0]);
+}
+
+typename REGTree::OperationType REGTree::Node::GetType() {
+  return base->operation_type;
+}
+
+char REGTree::Node::GetSymbol() { return base->letter; }
 
 #endif
