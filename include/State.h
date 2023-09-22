@@ -5,7 +5,7 @@
 
 #include <string>
 
-enum { IDENT, LPARENT, RPARENT, COMMON };
+enum { IDENT, TRASH, LPARENT, RPARENT, COMMON };
 
 class State : public UniqueObject {
  public:
