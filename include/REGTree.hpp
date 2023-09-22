@@ -1,10 +1,11 @@
 #ifndef GRAPH_HPP
 #define GRAPH_HPP
+#include <queue>
 #include <string>
 #include <vector>
-#include <queue>
 
 class REGTree {
+ public:
   enum OperationType {
     Concatenation,
     Addition,
@@ -15,6 +16,7 @@ class REGTree {
     Empty
   };
 
+ private:
   enum TokenType {
     LeftParenthesis,
     RightParenthesis,
@@ -30,24 +32,36 @@ class REGTree {
     Token(TokenType, char);
   };
 
-  struct Node {
+  struct BaseNode {
     OperationType operation_type;
     char letter;
-    std::vector<Node*> children;
-    Node* parent = nullptr;
-    ~Node();
-    Node(char, Node*);
-    Node(OperationType, Node*);
+    std::vector<BaseNode*> children;
+    BaseNode* parent = nullptr;
+    ~BaseNode();
+    BaseNode(char, BaseNode*);
+    BaseNode(OperationType, BaseNode*);
   };
 
   bool IsLetter(char);
 
-  Node* root = nullptr;
+  BaseNode* root = nullptr;
 
   std::vector<Token> Tokenize(const std::string& REGexpr);
   std::queue<Token> ShuntingYard(const std::vector<Token>& tokens);
 
  public:
+  class Node {
+    BaseNode* base = nullptr;
+    Node(BaseNode*);
+
+   public:
+    Node(const REGTree&);
+    Node GetLeftChild();
+    Node GetRightChild();
+    Node GetChild();
+    OperationType GetType();
+    char GetSymbol();
+  };
   REGTree(std::string);
   ~REGTree();
 };
