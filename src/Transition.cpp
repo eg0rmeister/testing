@@ -1,10 +1,6 @@
 #include <Transition.h>
 
-uint32_t Transition::_global_id = 0;
-
-Transition::Transition() : _id(++_global_id) {}
-
-uint32_t Transition::ID() const { return this->_id; }
+Transition::Transition() : UniqueObject() {}
 
 bool operator==(const Transition& lhs, const Transition& rhs) {
   return lhs.ID() == rhs.ID();

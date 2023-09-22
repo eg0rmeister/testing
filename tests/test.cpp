@@ -1,4 +1,5 @@
 #include <State.h>
+#include <Transition.h>
 
 #include <iostream>
 #include <string>
@@ -17,8 +18,8 @@ int main() {
     assert((state2.Label() == label2));
     assert((state1.Type() == type1));
     assert((state2.Type() == type2));
-    assert((state1.ID() == 1));
-    assert((state2.ID() == 2));
+    assert((state1.ID() == 0));
+    assert((state2.ID() == 1));
     std::unordered_set<State> states;
     states.insert(state1);
     std::cout << "OK" << '\n';
