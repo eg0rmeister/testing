@@ -58,11 +58,11 @@ class REGTree {
 
    public:
     Node(const REGTree&);
-    Node GetLeftChild();
-    Node GetRightChild();
-    Node GetChild();
-    OperationType GetType();
-    char GetSymbol();
+    Node GetLeftChild() const;
+    Node GetRightChild() const;
+    Node GetChild() const;
+    OperationType GetType() const;
+    char GetSymbol() const;
   };
   REGTree(std::string);
   REGTree(const REGTree&);

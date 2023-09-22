@@ -202,20 +202,22 @@ REGTree::Node::Node(BaseNode* base) : base(base) {}
 
 REGTree::Node::Node(const REGTree& tree) : base(tree.root) {}
 
-typename REGTree::Node REGTree::Node::GetLeftChild() { return GetChild(); }
+typename REGTree::Node REGTree::Node::GetLeftChild() const {
+  return GetChild();
+}
 
-typename REGTree::Node REGTree::Node::GetRightChild() {
+typename REGTree::Node REGTree::Node::GetRightChild() const {
   return Node(base->children[1]);
 }
 
-typename REGTree::Node REGTree::Node::GetChild() {
+typename REGTree::Node REGTree::Node::GetChild() const {
   return Node(base->children[0]);
 }
 
-typename REGTree::OperationType REGTree::Node::GetType() {
+typename REGTree::OperationType REGTree::Node::GetType() const {
   return base->operation_type;
 }
 
-char REGTree::Node::GetSymbol() { return base->letter; }
+char REGTree::Node::GetSymbol() const { return base->letter; }
 
 #endif
