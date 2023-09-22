@@ -24,7 +24,7 @@ class FSA {
   void Reset();
   void AddTransition(uint32_t from_id, const Transition& transition);
   state_ptr GetState(uint32_t state_id);
-  std::vector<State> GetFinalStates();
+  std::vector<State> GetFinalStates() const;
   void SetFinal(uint32_t state_id, bool is_final = true);
 
  private:

@@ -21,10 +21,11 @@ FSA::state_ptr FSA::GetState(uint32_t state_id) {
   return _state_by_id[state_id];
 }
 
-std::vector<State> FSA::GetFinalStates() {
+std::vector<State> FSA::GetFinalStates() const {
   std::vector<State> final_states;
   for (auto state : _states) {
-    if (_is_final_state[state->ID()]) {
+    if (_is_final_state.contains(state->ID()) &&
+        _is_final_state.at(state->ID())) {
       final_states.emplace_back(*state);
     }
   }
