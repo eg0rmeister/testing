@@ -1,6 +1,5 @@
 #include <State.h>
 #include <Transition.h>
-//#include <NFA.h>
 
 #include <cassert>
 #include <iostream>
