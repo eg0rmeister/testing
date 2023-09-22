@@ -1,15 +1,20 @@
 #ifndef COMPILER_TRANSITION_H
 #define COMPILER_TRANSITION_H
 
+#include <State.h>
 #include <UniqueObject.h>
 
 #include <string>
 
 class Transition : public UniqueObject {
  public:
-  Transition();
+  Transition(std::string input, State target);
+  std::string Input() const;
+  State Target() const;
 
  private:
+  std::string _input;
+  State _target;
 };
 
 bool operator==(const Transition& lhs, const Transition& rhs);
