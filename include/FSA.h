@@ -5,14 +5,18 @@
 
 #include <State.h>
 #include <Transition.h>
+
 #include <unordered_map>
 #include <unordered_set>
 
 class FSA {
-  // Base class for NFA and DFA
  public:
+  using transitions_set = std::unordered_set<Transition>;
+  using transitions_map = std::unordered_map<State, transitions_set>;
+  FSA(const transitions_map& transitions, const State& start_state);
+
   void Reset();
-  void AddTransition(const State &fromState, Transition transition);
+  void AddTransition(const State& fromState, Transition transition);
 
  private:
   State _start_state;
