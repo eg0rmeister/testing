@@ -1,7 +1,7 @@
 #ifndef REGTREE_CPP
 #define REGTREE_CPP
 
-#include "../include/REGTree.hpp"
+#include "REGTree.hpp"
 
 #include <iostream>
 #include <queue>
