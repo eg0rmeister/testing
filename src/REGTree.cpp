@@ -19,8 +19,27 @@ REGTree::BaseNode::BaseNode(typename REGTree::OperationType operation_type,
                             BaseNode* parent)
     : operation_type(operation_type) {}
 
+REGTree::BaseNode::BaseNode(const BaseNode& other)
+    : operation_type(other.operation_type), letter(other.letter) {
+  children.reserve(other.children.size());
+  for (const BaseNode* node : other.children) {
+    children.push_back(new BaseNode(*node));
+  }
+  if (other.parent == nullptr) {
+    parent = nullptr;
+  } else {
+    parent = new BaseNode(*other.parent);
+  }
+}
+
+typename REGTree::BaseNode& REGTree::BaseNode::operator=(const BaseNode& other) {
+  BaseNode copied_node(other);
+  std::swap(*this, copied_node);
+  return *this;
+}
+
 REGTree::BaseNode::~BaseNode() {
-  for (auto node : children) {
+  for (BaseNode* node : children) {
     delete node;
   }
 }

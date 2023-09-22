@@ -37,6 +37,8 @@ class REGTree {
     char letter;
     std::vector<BaseNode*> children;
     BaseNode* parent = nullptr;
+    BaseNode(const BaseNode&);
+    BaseNode& operator=(const BaseNode&);
     ~BaseNode();
     BaseNode(char, BaseNode*);
     BaseNode(OperationType, BaseNode*);
