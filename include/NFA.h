@@ -8,12 +8,7 @@
 
 class NFA : public FSA {
  public:
-  NFA(const State& start_state, const states_vec& states,
-      const transitions_map& transitions);
-
-  // void SetStartState(const State& new_start_state);
-
-  State& GetState(const State& state);
+  NFA(const State& start_state, const states_vec& states);
 
  private:
 };
