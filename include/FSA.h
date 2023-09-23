@@ -19,12 +19,34 @@ class FSA {
   using final_states_map = std::unordered_map<uint32_t, bool>;
   using transitions_set = std::vector<Transition>;
   using transitions_map = std::unordered_map<uint32_t, transitions_set>;
+
+  /// @brief FSA constructor. States in automaton will have same IDs as provided ones
+  /// @param start_state Start state of automaton
+  /// @param states Vector of all states of automaton including start_state
   FSA(const State& start_state, const states_vec& states);
 
   void Reset();
+
+  /// @brief Add new transition to automaton
+  /// @param from_id ID of source state
+  /// @param transition 
   void AddTransition(uint32_t from_id, const Transition& transition);
+
+
+  /// @brief Get pointer to state by ID
+  /// @param state_id ID of requested state
+  /// @return Pointer to requested state - State*
   state_ptr GetState(uint32_t state_id);
+
+
+  /// @brief Get all states marked as final in the automaton
+  /// @return Vector of all final states
   std::vector<State> GetFinalStates() const;
+
+
+  /// @brief Mark state as final or non-final
+  /// @param state_id ID of the state
+  /// @param is_final True if state should be final
   void SetFinal(uint32_t state_id, bool is_final = true);
 
  private:
