@@ -7,8 +7,6 @@
 #include <queue>
 #include <stack>
 
-#include "REGTree.hpp"
-
 REGTree::Token::Token(TokenType type, char letter = 0)
     : type(type), letter(letter){};
 
@@ -149,6 +147,10 @@ std::queue<typename REGTree::Token> REGTree::ShuntingYard(
 REGTree::REGTree() = default;
 
 REGTree::REGTree(std::string regexp_string) {
+  if (regexp_string.empty()) {
+    root = nullptr;
+    return;
+  }
   std::queue<Token> regexp = ShuntingYard(Tokenize(regexp_string));
 
   std::stack<BaseNode*> nodes;
@@ -191,7 +193,12 @@ REGTree::REGTree(std::string regexp_string) {
   root = nodes.top();
 }
 
-REGTree::REGTree(const REGTree& other) { root = new BaseNode(*other.root); }
+REGTree::REGTree(const REGTree& other) { 
+  if (other.root == nullptr) {
+    // root = nullptr;
+    return;
+  }
+  root = new BaseNode(*other.root); }
 
 REGTree& REGTree::operator=(const REGTree& other) {
   if (this == &other) {
