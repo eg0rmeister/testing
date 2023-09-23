@@ -11,6 +11,15 @@ FSA::FSA(const State& start_state, const states_vec& states)
   }
 }
 
+FSA::~FSA() {
+  for (auto state_ptr : _states) {
+    delete state_ptr;
+  }
+  delete _start_state;
+  delete _current_state;
+  delete _trash;
+}
+
 void FSA::Reset() { _current_state = _start_state; }
 
 void FSA::AddTransition(uint32_t from_id, const Transition& transition) {

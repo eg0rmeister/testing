@@ -24,7 +24,8 @@ class FSA {
   /// @param start_state Start state of automaton
   /// @param states Vector of all states of automaton including start_state
   FSA(const State& start_state, const states_vec& states);
-
+  ~FSA();
+  
   void Reset();
 
   /// @brief Add new transition to automaton
