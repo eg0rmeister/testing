@@ -1,20 +1,27 @@
 #ifndef COMPILER_TRANSITION_H
 #define COMPILER_TRANSITION_H
 
+#include <State.h>
+#include <UniqueObject.h>
+
 #include <string>
 
-class Transition {
+class Transition : public UniqueObject {
  public:
-  Transition();
-  uint32_t ID() const;
+  using state_ptr = State*;
+  Transition(std::string input, state_ptr target);
+  std::string Input() const;
+  const State* Target() const;
+
  private:
-  uint32_t _id;
-  static uint32_t _global_id;
+  std::string _input;
+  state_ptr _target;
 };
 
 bool operator==(const Transition& lhs, const Transition& rhs);
 
-// Instantiate Hash for Transition to store Transition objects in unordered sets and maps
+// Instantiate Hash for Transition to store Transition objects in unordered sets
+// and maps
 template <>
 struct std::hash<Transition> {
   std::size_t operator()(const Transition& transition) const;

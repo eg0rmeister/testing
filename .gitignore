@@ -50,6 +50,8 @@ _deps
 
 # Testing
 test
-test.cpp
 DartConfiguration.tcl
 tests/test_state
+
+# Exclude executables
+exec

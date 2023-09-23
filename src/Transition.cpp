@@ -1,10 +1,11 @@
 #include <Transition.h>
 
-uint32_t Transition::_global_id = 0;
+Transition::Transition(std::string input, state_ptr target)
+    : UniqueObject(), _input(input), _target(target) {}
 
-Transition::Transition() : _id(++_global_id) {}
+std::string Transition::Input() const { return _input; }
 
-uint32_t Transition::ID() const { return this->_id; }
+const State* Transition::Target() const { return _target; }
 
 bool operator==(const Transition& lhs, const Transition& rhs) {
   return lhs.ID() == rhs.ID();
@@ -12,7 +13,8 @@ bool operator==(const Transition& lhs, const Transition& rhs) {
 
 // Instantiate Hash for State to store State objects in unordered sets and maps
 
-std::size_t std::hash<Transition>::operator()(const Transition& transition) const {
+std::size_t std::hash<Transition>::operator()(
+    const Transition& transition) const {
   // Use unique transition ID
   return transition.ID();
 }
