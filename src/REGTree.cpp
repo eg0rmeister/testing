@@ -55,6 +55,8 @@ bool REGTree::IsLetter(char letter) {
          (letter >= 'A' && letter <= 'Z');
 }
 
+typename REGTree::Node REGTree::GetRootNode() { return Node(*this); }
+
 std::vector<typename REGTree::Token> REGTree::Tokenize(const std::string& str) {
   std::vector<Token> ret = std::vector<Token>();
   ret.reserve(str.length());
@@ -143,6 +145,8 @@ std::queue<typename REGTree::Token> REGTree::ShuntingYard(
   }
   return ret;
 }
+
+REGTree::REGTree() = default;
 
 REGTree::REGTree(std::string regexp_string) {
   std::queue<Token> regexp = ShuntingYard(Tokenize(regexp_string));

@@ -8,12 +8,11 @@ class REGTree {
  public:
   enum OperationType {
     Concatenation,
-    Addition,
     LetterConstant,
     Iteration,
+    Addition,
     Backslash,
     Parenthesis,
-    Empty
   };
 
  private:
@@ -64,10 +63,12 @@ class REGTree {
     OperationType GetType() const;
     char GetSymbol() const;
   };
+  REGTree();
   REGTree(std::string);
   REGTree(const REGTree&);
   REGTree& operator=(const REGTree&);
   ~REGTree();
+  Node GetRootNode();
 };
 
 #endif
