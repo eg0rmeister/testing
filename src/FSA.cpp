@@ -1,5 +1,7 @@
 #include "FSA.h"
 
+#include <iostream>
+
 FSA::FSA(const State& start_state, const states_vec& states)
     : _start_state(new State(start_state)),
       _current_state(new State(start_state)),
@@ -44,5 +46,25 @@ std::vector<State> FSA::GetFinalStates() const {
 void FSA::SetFinal(uint32_t state_id, bool is_final) {
   if (_is_final_state.contains(state_id)) {
     _is_final_state[state_id] = is_final;
+  }
+}
+
+void FSA::Visualize() {
+  std::cout << "States: " << std::endl;
+  for (auto state : _states) {
+    std::cout << "[" << state->ID() << "] " << state->Label() << std::endl;
+  }
+
+  std::cout << "Transitions: " << std::endl;
+  for (auto state : _states) {
+    if (_transitions.contains(state->ID())) {
+      auto& current_transitions = _transitions.at(state->ID());
+
+      for (const Transition& current_transition : current_transitions) {
+        std::cout << state->Label() << " - " << current_transition.Input()
+                  << " -> " << current_transition.Target()->Label()
+                  << std::endl;
+      }
+    }
   }
 }

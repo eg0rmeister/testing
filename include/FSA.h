@@ -25,7 +25,7 @@ class FSA {
   /// @param states Vector of all states of automaton including start_state
   FSA(const State& start_state, const states_vec& states);
   ~FSA();
-  
+
   void Reset();
 
   /// @brief Add new transition to automaton
@@ -49,6 +49,8 @@ class FSA {
   /// @param state_id ID of the state
   /// @param is_final True if state should be final
   void SetFinal(uint32_t state_id, bool is_final = true);
+
+  void Visualize();
 
  private:
   state_ptr _start_state;
