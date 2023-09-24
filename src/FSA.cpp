@@ -28,6 +28,8 @@ void FSA::AddTransition(uint32_t from_id, const Transition& transition) {
   _transitions[from_id].push_back(transition);
 }
 
+FSA::transitions_map FSA::GetAllTransitions() const { return _transitions; }
+
 void FSA::AddState(const State& state, bool is_final) {
   if (_state_by_id.contains(state.ID())) {
     _is_final_state[state.ID()] = is_final;

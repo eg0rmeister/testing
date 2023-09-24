@@ -47,6 +47,12 @@ int main() {
     State start_state = fsa.GetStartState();
     assert((start_state.ID() == state1.ID()));
 
+    // GetAllTransitions test
+    FSA::transitions_map transitions = fsa.GetAllTransitions();
+    assert((transitions.size() == 1));
+    assert((transitions[state1.ID()].size() == 1));
+    assert((transitions[state1.ID()][0].Target()->ID() == state2.ID()));
+
     return 0;
   } catch (const std::exception& e) {
     std::cout << "FAILED with error " << ' ' << e.what() << '\n';

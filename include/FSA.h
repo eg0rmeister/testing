@@ -32,6 +32,10 @@ class FSA {
   /// @param transition 
   void AddTransition(uint32_t from_id, const Transition& transition);
 
+  /// @brief Get all the transitions of the automaton
+  /// @return unordered map of transitions (State ID -> transitions_set)
+  transitions_map GetAllTransitions() const;
+
   /// @brief Add new state to automaton
   /// @param state State to be added
   /// @param is_final True if added state is supposed to be final
