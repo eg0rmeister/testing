@@ -43,7 +43,7 @@ FSA::state_ptr FSA::GetState(uint32_t state_id) {
   return _state_by_id[state_id];
 }
 
-FSA::states_vec FSA::GetStates() {
+FSA::states_vec FSA::GetStates() const {
   states_vec ret;
   ret.reserve(_states.size());
   for (auto state_pointer : _states) {

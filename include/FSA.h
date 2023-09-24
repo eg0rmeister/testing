@@ -44,7 +44,7 @@ class FSA {
 
   /// @brief Get all states a FSA has
   /// @return vector of copies of states
-  states_vec GetStates();
+  states_vec GetStates() const;
 
 
   /// @brief Get all states marked as final in the automaton
