@@ -32,6 +32,9 @@ class FSA {
   /// @param transition 
   void AddTransition(uint32_t from_id, const Transition& transition);
 
+  /// @brief Add new state to automaton
+  /// @param state State to be added
+  void AddState(const State& state);
 
   /// @brief Get pointer to state by ID
   /// @param state_id ID of requested state
