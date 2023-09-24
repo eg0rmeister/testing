@@ -44,7 +44,7 @@ class FSA {
 
   /// @brief Get start state
   /// @return Start state copy
-  State GetStartState();
+  State GetStartState() const;
 
   /// @brief Get all states a FSA has
   /// @return vector of copies of states
