@@ -11,6 +11,7 @@
 int main() {
   std::string label1 = "awesome_label";
   std::string label2 = "another";
+  std::string label3 = "label_to_add";
   auto type1 = COMMON;
   auto type2 = IDENT;
   try {
@@ -29,7 +30,12 @@ int main() {
     assert((fsa.GetFinalStates().size() == 1));
     assert((fsa.GetFinalStates()[0] == state2));
 
+    State state3(label3, true);
+    fsa.AddState(state3, true);
+    assert((fsa.GetFinalStates().size() == 2));
+    return 0;
   } catch (const std::exception& e) {
     std::cout << "FAILED with error " << ' ' << e.what() << '\n';
+    return 1;
   }
 }
