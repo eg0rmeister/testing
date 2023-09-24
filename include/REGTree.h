@@ -1,5 +1,5 @@
-#ifndef GRAPH_HPP
-#define GRAPH_HPP
+#pragma once
+
 #include <queue>
 #include <string>
 #include <vector>
@@ -12,7 +12,7 @@ class REGTree {
     Iteration,
     Addition,
     Backslash,
-    Parenthesis,
+    Empty,
   };
 
  private:
@@ -49,6 +49,7 @@ class REGTree {
 
   std::vector<Token> Tokenize(const std::string& REGexpr);
   std::queue<Token> ShuntingYard(const std::vector<Token>& tokens);
+  static void swap(REGTree& left, REGTree& right);
 
  public:
   class Node {
@@ -70,5 +71,3 @@ class REGTree {
   ~REGTree();
   Node GetRootNode();
 };
-
-#endif

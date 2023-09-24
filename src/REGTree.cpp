@@ -1,14 +1,11 @@
-#ifndef REGTREE_CPP
-#define REGTREE_CPP
+#include "REGTree.h"
 
-#include "REGTree.hpp"
-
-#include <iostream>
 #include <queue>
 #include <stack>
 
+
 REGTree::Token::Token(TokenType type, char letter = 0)
-    : type(type), letter(letter){};
+    : type(type), letter(letter) {}
 
 REGTree::BaseNode::BaseNode(char letter, BaseNode* parent)
     : operation_type(LetterConstant), letter(letter) {}
@@ -22,11 +19,7 @@ REGTree::BaseNode::BaseNode(const BaseNode& other)
   children.reserve(other.children.size());
   for (const BaseNode* node : other.children) {
     children.push_back(new BaseNode(*node));
-  }
-  if (other.parent == nullptr) {
-    parent = nullptr;
-  } else {
-    parent = new BaseNode(*other.parent);
+    children.back()->parent = this;
   }
 }
 
@@ -144,6 +137,10 @@ std::queue<typename REGTree::Token> REGTree::ShuntingYard(
   return ret;
 }
 
+void REGTree::swap(REGTree& left, REGTree& right) {
+  std::swap(left.root, right.root);
+}
+
 REGTree::REGTree() = default;
 
 REGTree::REGTree(std::string regexp_string) {
@@ -193,19 +190,20 @@ REGTree::REGTree(std::string regexp_string) {
   root = nodes.top();
 }
 
-REGTree::REGTree(const REGTree& other) { 
+REGTree::REGTree(const REGTree& other) {
   if (other.root == nullptr) {
-    // root = nullptr;
+    root = nullptr;
     return;
   }
-  root = new BaseNode(*other.root); }
+  root = new BaseNode(*other.root);
+}
 
 REGTree& REGTree::operator=(const REGTree& other) {
   if (this == &other) {
     return *this;
   }
   REGTree copy(other);
-  std::swap(*this, copy);
+  swap(*this, copy);
   return *this;
 }
 
@@ -214,7 +212,7 @@ REGTree::Node::Node(BaseNode* base) : base(base) {}
 REGTree::Node::Node(const REGTree& tree) : base(tree.root) {}
 
 typename REGTree::Node REGTree::Node::GetLeftChild() const {
-  return GetChild();
+  return Node(base->children[0]);
 }
 
 typename REGTree::Node REGTree::Node::GetRightChild() const {
@@ -226,9 +224,10 @@ typename REGTree::Node REGTree::Node::GetChild() const {
 }
 
 typename REGTree::OperationType REGTree::Node::GetType() const {
+  if (base == nullptr) {
+    return Empty;
+  }
   return base->operation_type;
 }
 
 char REGTree::Node::GetSymbol() const { return base->letter; }
-
-#endif
