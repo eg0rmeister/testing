@@ -30,9 +30,16 @@ int main() {
     assert((fsa.GetFinalStates().size() == 1));
     assert((fsa.GetFinalStates()[0] == state2));
 
+    // Addittion test
     State state3(label3, true);
     fsa.AddState(state3, true);
     assert((fsa.GetFinalStates().size() == 2));
+
+    // Duplication protection test
+    fsa.AddState(state3, true);
+    assert((fsa.GetFinalStates().size() == 2));
+
+
     return 0;
   } catch (const std::exception& e) {
     std::cout << "FAILED with error " << ' ' << e.what() << '\n';
