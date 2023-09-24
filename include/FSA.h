@@ -34,7 +34,8 @@ class FSA {
 
   /// @brief Add new state to automaton
   /// @param state State to be added
-  void AddState(const State& state);
+  /// @param is_final True if added state is supposed to be final
+  void AddState(const State& state, bool is_final = false);
 
   /// @brief Get pointer to state by ID
   /// @param state_id ID of requested state
