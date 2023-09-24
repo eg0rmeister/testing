@@ -43,6 +43,15 @@ FSA::state_ptr FSA::GetState(uint32_t state_id) {
   return _state_by_id[state_id];
 }
 
+FSA::states_vec FSA::GetStates() {
+  states_vec ret;
+  ret.reserve(_states.size());
+  for (auto state_pointer : _states) {
+    ret.push_back(*state_pointer);
+  }
+  return ret;
+}
+
 std::vector<State> FSA::GetFinalStates() const {
   std::vector<State> final_states;
   for (auto state : _states) {

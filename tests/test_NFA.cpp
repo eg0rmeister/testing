@@ -39,6 +39,9 @@ int main() {
     fsa.AddState(state3, true);
     assert((fsa.GetFinalStates().size() == 2));
 
+    // GetStates size test
+    FSA::states_vec returned_states = fsa.GetStates();
+    assert((returned_states.size() == 3));
 
     return 0;
   } catch (const std::exception& e) {

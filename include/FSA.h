@@ -42,6 +42,10 @@ class FSA {
   /// @return Pointer to requested state - State*
   state_ptr GetState(uint32_t state_id);
 
+  /// @brief Get all states a FSA has
+  /// @return vector of copies of states
+  states_vec GetStates();
+
 
   /// @brief Get all states marked as final in the automaton
   /// @return Vector of all final states
