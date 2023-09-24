@@ -43,6 +43,10 @@ int main() {
     FSA::states_vec returned_states = fsa.GetStates();
     assert((returned_states.size() == 3));
 
+    // GetStartState test
+    State start_state = fsa.GetStartState();
+    assert((start_state.ID() == state1.ID()));
+
     return 0;
   } catch (const std::exception& e) {
     std::cout << "FAILED with error " << ' ' << e.what() << '\n';
