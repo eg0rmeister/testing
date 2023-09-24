@@ -1,5 +1,4 @@
-#ifndef COMPILER_TRANSITION_H
-#define COMPILER_TRANSITION_H
+#pragma once
 
 #include <State.h>
 #include <UniqueObject.h>
@@ -26,5 +25,3 @@ template <>
 struct std::hash<Transition> {
   std::size_t operator()(const Transition& transition) const;
 };
-
-#endif

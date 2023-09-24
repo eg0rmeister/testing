@@ -1,5 +1,4 @@
-#ifndef COMPILER_STATE_H
-#define COMPILER_STATE_H
+#pragma once
 
 #include <UniqueObject.h>
 
@@ -27,5 +26,3 @@ template <>
 struct std::hash<State> {
   std::size_t operator()(const State& state) const;
 };
-
-#endif

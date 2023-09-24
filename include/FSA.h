@@ -1,7 +1,6 @@
 // Finite-State Automaton
 
-#ifndef COMPILER_FSA_H
-#define COMPILER_FSA_H
+#pragma once
 
 #include <State.h>
 #include <Transition.h>
@@ -61,5 +60,3 @@ class FSA {
   final_states_map _is_final_state;
   transitions_map _transitions;
 };
-
-#endif

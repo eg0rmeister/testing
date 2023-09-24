@@ -1,7 +1,6 @@
 // Non-deterministic Finite-state Automaton
 
-#ifndef COMPILER_NFA_H
-#define COMPILER_NFA_H
+#pragma once
 
 #include <FSA.h>
 
@@ -34,5 +33,3 @@ NFA BuildEpsNFA();
 /// @param letter Letter "a" from description
 /// @return NFA that accepts word "a"
 NFA BuildOneLetterNFA(std::string letter);
-
-#endif
