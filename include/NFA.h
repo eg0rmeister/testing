@@ -19,6 +19,17 @@ class NFA : public FSA {
 /// @return Merged NFA
 NFA ConcatenateNFA(const NFA& lhs, const NFA& rhs);
 
+/// @brief Merge two NFAs by connecting them parallel to each other
+/// @param lhs First NFA, should have exactly one final state!
+/// @param rhs Second NFA, should have exactly one final state too!
+/// @return Merged NFA
+NFA AddNFA(const NFA& lhs, const NFA& rhs);
+
+/// @brief Create a new NFA that accepts iterations of words accepted by given NFA
+/// @param nfa NFA, should have exactly one final state!
+/// @return Merged NFA
+NFA IterateNFA(const NFA& nfa);
+
 /// @brief Build NFA for regexp "∅" or language ∅.
 /// @return NFA that accepts ∅ (does not accept anything)
 NFA BuildEmptyNFA();
