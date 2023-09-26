@@ -52,7 +52,7 @@ int main() {
     left_nfa.SetFinal(state2.ID());
     right_nfa.SetFinal(state5.ID());
 
-    NFA merged = MergeNFA(left_nfa, right_nfa);
+    NFA merged = ConcatenateNFA(left_nfa, right_nfa);
 
     // Test transitions amount
     assert(merged.GetAllTransitions().size() == 6);

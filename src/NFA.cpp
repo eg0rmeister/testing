@@ -3,7 +3,7 @@
 NFA::NFA(const State& start_state, const states_vec& states)
     : FSA(start_state, states) {}
 
-NFA MergeNFA(const NFA& lhs, const NFA& rhs) {
+NFA ConcatenateNFA(const NFA& lhs, const NFA& rhs) {
   NFA::states_vec states;
   NFA::states_vec left_states = lhs.GetStates();
   NFA::states_vec right_states = rhs.GetStates();

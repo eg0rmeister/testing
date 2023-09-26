@@ -17,7 +17,7 @@ class NFA : public FSA {
 /// @param lhs First NFA, should have exactly one final state!
 /// @param rhs Second NFA, will be connected to first
 /// @return Merged NFA
-NFA MergeNFA(const NFA& lhs, const NFA& rhs);
+NFA ConcatenateNFA(const NFA& lhs, const NFA& rhs);
 
 /// @brief Build NFA for regexp "∅" or language ∅.
 /// @return NFA that accepts ∅ (does not accept anything)
