@@ -16,19 +16,20 @@ NFA ConcatenateNFA(const NFA& lhs, const NFA& rhs) {
   }
   NFA ret(lhs.GetStartState(), states);
   for (auto transitions_source : lhs.GetAllTransitions()) {
-    for (auto transition : transitions_source.second)
+    for (auto transition : transitions_source.second) {
       ret.AddTransition(transitions_source.first, transition);
+    }
   }
   for (auto transitions_source : rhs.GetAllTransitions()) {
-    for (auto transition : transitions_source.second)
+    for (auto transition : transitions_source.second) {
       ret.AddTransition(transitions_source.first, transition);
+    }
   }
   for (auto final_state : rhs.GetFinalStates()) {
     ret.SetFinal(final_state.ID(), true);
   }
-  ret.AddTransition(
-      lhs.GetFinalStates()[0].ID(),
-      Transition("", ret.GetState(rhs.GetStartState().ID())));
+  ret.AddTransition(lhs.GetFinalStates()[0].ID(),
+                    Transition("", ret.GetState(rhs.GetStartState().ID())));
   return ret;
 }
 NFA BuildEmptyNFA() {
