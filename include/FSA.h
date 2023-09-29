@@ -66,10 +66,17 @@ class FSA {
   std::vector<State> GetFinalStates() const;
 
 
+  /// @brief Gives vector of all transitions from selected state
+  /// @param state State from which to give transitions
+  /// @return std::vector<State> of all transitions from selected state
+  transitions_set GetTransitions(const State& state);
+
+
   /// @brief Mark state as final or non-final
   /// @param state_id ID of the state
   /// @param is_final True if state should be final
   void SetFinal(uint32_t state_id, bool is_final = true);
+
 
   /// @brief Print all states and transitions
   void Visualize();
