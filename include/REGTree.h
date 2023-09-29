@@ -71,5 +71,5 @@ class REGTree {
   ~REGTree();
   /// @brief Gets Node corresponding to root
   /// @return REGTree::Node -- root of the tree
-  Node GetRootNode();
+  Node GetRootNode() const;
 };

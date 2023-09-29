@@ -46,7 +46,7 @@ bool REGTree::IsLetter(char letter) {
          (letter >= 'A' && letter <= 'Z');
 }
 
-typename REGTree::Node REGTree::GetRootNode() { return Node(*this); }
+typename REGTree::Node REGTree::GetRootNode() const { return Node(*this); }
 
 std::vector<typename REGTree::Token> REGTree::Tokenize(const std::string& str) {
   std::vector<Token> ret = std::vector<Token>();
