@@ -13,6 +13,8 @@ class NFA : public FSA {
   /// @param from_id ID of source state
   /// @param to_id ID of destination state
   void AddEpsilonTransition(uint32_t from_id, uint32_t to_id);
+
+  transitions_set GetTransitionsByLetter(const State& state, std::string letter) const;
   
  private:
 };
