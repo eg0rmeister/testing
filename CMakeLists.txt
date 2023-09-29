@@ -11,4 +11,4 @@ include_directories(${PROJECT_SOURCE_DIR}/include)
 include_directories(${PROJECT_SOURCE_DIR}/src)
 
 set (EXECUTABLE_OUTPUT_PATH exec)
-add_executable(main main.cpp src/FSA.cpp include/FSA.h src/NFA.cpp include/NFA.h src/DFA.cpp include/DFA.h src/State.cpp include/State.h src/Transition.cpp include/Transition.h src/UniqueObject.cpp include/UniqueObject.h)
+add_executable(main main.cpp src/FSA.cpp include/FSA.h src/NFA.cpp include/NFA.h src/DFA.cpp include/DFA.h src/State.cpp include/State.h src/Transition.cpp include/Transition.h src/UniqueObject.cpp include/UniqueObject.h src/NFA_to_DFA.cpp include/NFA_to_DFA.h)

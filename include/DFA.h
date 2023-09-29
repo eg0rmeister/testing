@@ -4,4 +4,4 @@
 
 #include <FSA.h>
 
-class DFA : FSA {};
+class DFA : public FSA {};
