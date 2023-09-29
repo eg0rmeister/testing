@@ -1,5 +1,7 @@
 #include <REG_to_NFA.h>
 
+#include <stdexcept>
+
 NFA GetNFAFromNode(const REGTree::Node node) {
   switch (node.GetType()) {
     case REGTree::Concatenation:
