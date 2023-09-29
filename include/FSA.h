@@ -79,6 +79,12 @@ class FSA {
   /// @brief Print all states and transitions
   void Visualize();
 
+
+  /// @brief Returns state label
+  /// @param state State, whose label is to be returned
+  /// @return std::string state label
+  std::string GetLabel(const State& state) const;
+
  private:
   State _start_state;
   State _current_state;

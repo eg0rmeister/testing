@@ -9,18 +9,12 @@
 #include <vector>
 
 int main() {
-  std::string label1 = "left_start";
-  std::string label2 = "left_end";
-  std::string label3 = "right_start";
-  std::string label4 = "right_middle";
-  std::string label5 = "right_end";
-
   try {
-    State state1(label1);
-    State state2(label2);
-    State state3(label3);
-    State state4(label4);
-    State state5(label5);
+    State state1;
+    State state2;
+    State state3;
+    State state4;
+    State state5;
 
     std::vector<State> left_states;
     left_states.push_back(state1);

@@ -1,14 +1,6 @@
 #include "State.h"
 
-State::State()
-    : UniqueObject(), _label(std::to_string(this->ID())) {}
-
-State::State(const std::string& label)
-    : UniqueObject(), _label(label) {}
-
-std::string State::Label() const { return this->_label; }
-
-void State::SetLabel(const std::string& new_label) { _label = new_label; }
+State::State() : UniqueObject() {}
 
 bool operator==(const State& lhs, const State& rhs) {
   return lhs.ID() == rhs.ID();

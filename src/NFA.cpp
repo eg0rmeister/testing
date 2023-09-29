@@ -89,8 +89,8 @@ NFA IterateNFA(const NFA& nfa) {
 }
 
 NFA BuildEmptyNFA() {
-  auto start_state = State("s");
-  auto end_state = State("f");
+  auto start_state = State();
+  auto end_state = State();
   std::vector<State> states({start_state, end_state});
   auto nfa = NFA(start_state, states);
   nfa.SetFinal(end_state.ID());
@@ -98,7 +98,7 @@ NFA BuildEmptyNFA() {
 }
 
 NFA BuildEpsNFA() {
-  auto start_state = State("s");
+  auto start_state = State();
   std::vector<State> states({start_state});
   auto nfa = NFA(start_state, states);
   nfa.SetFinal(start_state.ID());
@@ -106,8 +106,8 @@ NFA BuildEpsNFA() {
 }
 
 NFA BuildOneLetterNFA(std::string letter) {
-  auto start_state = State("s");
-  auto end_state = State("f");
+  auto start_state = State();
+  auto end_state = State();
   std::vector<State> states({start_state, end_state});
   auto nfa = NFA(start_state, states);
   auto transition = Transition(letter, nfa.GetState(end_state.ID()));

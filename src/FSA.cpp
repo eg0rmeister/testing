@@ -5,7 +5,7 @@
 FSA::FSA(const State& start_state, const states_vec& states)
     : _start_state(State(start_state)),
       _current_state(State(start_state)),
-      _trash(State("T")) {
+      _trash(State()) {
   for (auto& state : states) {
     _states.push_back(State(state));
     _state_by_id[state.ID()] = *_states.rbegin();
@@ -75,7 +75,7 @@ void FSA::SetFinal(uint32_t state_id, bool is_final) {
 void FSA::Visualize() {
   std::cout << "States: " << std::endl;
   for (auto state : _states) {
-    std::cout << "[" << state.ID() << "] " << state.Label() << std::endl;
+    std::cout << "[" << state.ID() << "] " << GetLabel(state) << std::endl;
   }
 
   std::cout << "Transitions: " << std::endl;
@@ -84,9 +84,12 @@ void FSA::Visualize() {
       auto& current_transitions = _transitions.at(state.ID());
 
       for (const Transition& current_transition : current_transitions) {
-        std::cout << state.ID() << " - " << current_transition.Input() << " -> "
-                  << current_transition.Target().ID() << std::endl;
+        std::cout << GetLabel(state) << " - " << current_transition.Input()
+                  << " -> " << GetLabel(current_transition.Target())
+                  << std::endl;
       }
     }
   }
 }
+
+std::string FSA::GetLabel(const State& state) const { return std::string(); }
