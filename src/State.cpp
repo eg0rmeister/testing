@@ -1,5 +1,8 @@
 #include "State.h"
 
+State::State(const uint8_t type)
+    : UniqueObject(), _label(std::to_string(this->ID())), _type(type) {}
+
 State::State(const std::string& label, uint8_t type)
     : UniqueObject(), _label(label), _type(type) {}
 

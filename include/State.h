@@ -8,6 +8,7 @@ enum { IDENT, TRASH, LPARENT, RPARENT, COMMON };
 
 class State : public UniqueObject {
  public:
+  State(const uint8_t type = COMMON);
   State(const std::string& label, const uint8_t type = COMMON);
   std::string Label() const;
   uint8_t Type() const;

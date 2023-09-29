@@ -44,8 +44,8 @@ NFA AddNFA(const NFA& lhs, const NFA& rhs) {
   for (auto state : right_states) {
     states.push_back(state);
   }
-  State start_state = State("", false);
-  State end_state = State("", true);
+  State start_state = State(false);
+  State end_state = State(true);
   states.push_back(start_state);
   states.push_back(end_state);
   NFA ret(lhs.GetStartState(), states);
@@ -71,7 +71,7 @@ NFA AddNFA(const NFA& lhs, const NFA& rhs) {
 
 NFA IterateNFA(const NFA& nfa) {
   FSA::states_vec states(nfa.GetStates());
-  states.push_back(State("", true));
+  states.push_back(State(true));
   NFA ret(states.back(), states);
   for (auto transitions_source : nfa.GetAllTransitions()) {
     for (auto transition : transitions_source.second) {
