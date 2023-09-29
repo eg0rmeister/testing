@@ -11,6 +11,11 @@ class State : public UniqueObject {
   State(const uint8_t type = COMMON);
   State(const std::string& label, const uint8_t type = COMMON);
   std::string Label() const;
+
+  /// @brief Change name of state
+  /// @param new_label New name of state
+  void SetLabel(const std::string& new_label);
+  
   uint8_t Type() const;
 
  private:
