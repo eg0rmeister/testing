@@ -14,8 +14,6 @@ int main() {
     REGTree regtree(regexp);
     NFA nfa = GetNFAFromREG(regtree);
     nfa.Visualize();
-    std::cout << nfa.GetStartState().ID() << ' ' << nfa.GetFinalStates().size()
-              << std::endl;
     return 0;
   } catch (const std::exception& e) {
     std::cout << "FAILED with error " << ' ' << e.what() << '\n';
