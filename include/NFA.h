@@ -44,3 +44,9 @@ NFA BuildEpsNFA();
 /// @param letter Letter "a" from description
 /// @return NFA that accepts word "a"
 NFA BuildOneLetterNFA(std::string letter);
+
+
+/// @brief collapses epsilon-paths
+/// @param nfa 
+/// @return 
+NFA GetNFAWithNoEpsilons(const NFA& nfa);
