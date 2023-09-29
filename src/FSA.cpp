@@ -13,7 +13,6 @@ FSA::FSA(const State& start_state, const states_vec& states)
   }
 }
 
-
 void FSA::Reset() { _current_state = _start_state; }
 
 void FSA::AddTransition(uint32_t from_id, const Transition& transition) {
@@ -39,9 +38,7 @@ void FSA::AddState(const State& state, bool is_final) {
   _is_final_state[state.ID()] = is_final;
 }
 
-State FSA::GetState(uint32_t state_id) {
-  return _state_by_id[state_id];
-}
+State FSA::GetState(uint32_t state_id) { return _state_by_id[state_id]; }
 
 State FSA::GetStartState() const { return _start_state; }
 
@@ -87,9 +84,8 @@ void FSA::Visualize() {
       auto& current_transitions = _transitions.at(state.ID());
 
       for (const Transition& current_transition : current_transitions) {
-        std::cout << state.Label() << " - " << current_transition.Input()
-                  << " -> " << current_transition.Target().Label()
-                  << std::endl;
+        std::cout << state.ID() << " - " << current_transition.Input() << " -> "
+                  << current_transition.Target().ID() << std::endl;
       }
     }
   }
