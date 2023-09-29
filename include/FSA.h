@@ -32,6 +32,12 @@ class FSA {
   /// @param transition 
   void AddTransition(uint32_t from_id, const Transition& transition);
 
+  /// @brief Add new transition to automaton
+  /// @param from_id ID of source state
+  /// @param to_id ID of destination state
+  /// @param input letter of the transition
+  void AddTransition(uint32_t from_id, uint32_t to_id, const std::string& input);
+
   /// @brief Get all the transitions of the automaton
   /// @return unordered map of transitions (State ID -> transitions_set)
   transitions_map GetAllTransitions() const;

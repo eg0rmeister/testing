@@ -28,6 +28,12 @@ void FSA::AddTransition(uint32_t from_id, const Transition& transition) {
   _transitions[from_id].push_back(transition);
 }
 
+void FSA::AddTransition(uint32_t from_id, uint32_t to_id,
+                        const std::string& input) {
+  Transition transition = Transition(input, GetState(to_id));
+  _transitions[from_id].push_back(transition);
+}
+
 FSA::transitions_map FSA::GetAllTransitions() const { return _transitions; }
 
 void FSA::AddState(const State& state, bool is_final) {
