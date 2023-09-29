@@ -49,13 +49,13 @@ int main() {
     FSA::transitions_map transitions = fsa.GetAllTransitions();
     assert((transitions.size() == 1));
     assert((transitions[state1.ID()].size() == 1));
-    assert((transitions[state1.ID()][0].Target()->ID() == state2.ID()));
+    assert((transitions[state1.ID()][0].Target().ID() == state2.ID()));
     
     // GetTransitions test
     FSA::transitions_set state_transitions = fsa.GetTransitions(state1);
     assert((transitions.size() == 1));
     assert((state_transitions[0].ID() == transition12.ID()));
-    assert((transitions[state1.ID()][0].Target()->ID() == state2.ID()));
+    assert((transitions[state1.ID()][0].Target().ID() == state2.ID()));
 
     return 0;
   } catch (const std::exception& e) {

@@ -7,15 +7,14 @@
 
 class Transition : public UniqueObject {
  public:
-  using state_ptr = State*;
-  Transition(state_ptr target);
-  Transition(std::string input, state_ptr target);
+  Transition(State target);
+  Transition(std::string input, State target);
   std::string Input() const;
-  const State* Target() const;
+  const State& Target() const;
 
  private:
   std::string _input;
-  state_ptr _target;
+  State _target;
 };
 
 bool operator==(const Transition& lhs, const Transition& rhs);

@@ -1,13 +1,13 @@
 #include <Transition.h>
 
-Transition::Transition(state_ptr target) : Transition("~", target) {}
+Transition::Transition(State target) : Transition("~", target) {}
 
-Transition::Transition(std::string input, state_ptr target)
+Transition::Transition(std::string input, State target)
     : UniqueObject(), _input(input), _target(target) {}
 
 std::string Transition::Input() const { return _input; }
 
-const State* Transition::Target() const { return _target; }
+const State& Transition::Target() const { return _target; }
 
 bool operator==(const Transition& lhs, const Transition& rhs) {
   return lhs.ID() == rhs.ID();
