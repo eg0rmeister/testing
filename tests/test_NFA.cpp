@@ -12,11 +12,9 @@ int main() {
   std::string label1 = "awesome_label";
   std::string label2 = "another";
   std::string label3 = "label_to_add";
-  auto type1 = COMMON;
-  auto type2 = IDENT;
   try {
-    State state1(label1, type1);
-    State state2(label2, type2);
+    State state1(label1);
+    State state2(label2);
 
     std::vector<State> states;
     states.push_back(state1);

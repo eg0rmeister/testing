@@ -16,11 +16,11 @@ int main() {
   std::string label5 = "right_end";
 
   try {
-    State state1(label1, false);
-    State state2(label2, true);
-    State state3(label3, false);
-    State state4(label4, false);
-    State state5(label5, true);
+    State state1(label1);
+    State state2(label2);
+    State state3(label3);
+    State state4(label4);
+    State state5(label5);
 
     std::vector<State> left_states;
     left_states.push_back(state1);

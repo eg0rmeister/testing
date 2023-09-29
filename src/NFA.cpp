@@ -48,8 +48,8 @@ NFA AddNFA(const NFA& lhs, const NFA& rhs) {
   for (auto state : right_states) {
     states.push_back(state);
   }
-  State start_state = State(false);
-  State end_state = State(true);
+  State start_state = State();
+  State end_state = State();
   states.push_back(start_state);
   states.push_back(end_state);
   NFA ret(lhs.GetStartState(), states);
@@ -75,7 +75,7 @@ NFA AddNFA(const NFA& lhs, const NFA& rhs) {
 
 NFA IterateNFA(const NFA& nfa) {
   FSA::states_vec states(nfa.GetStates());
-  states.push_back(State(true));
+  states.push_back(State());
   NFA ret(states.back(), states);
   for (auto transitions_source : nfa.GetAllTransitions()) {
     for (auto transition : transitions_source.second) {
@@ -89,8 +89,8 @@ NFA IterateNFA(const NFA& nfa) {
 }
 
 NFA BuildEmptyNFA() {
-  auto start_state = State("s", false);
-  auto end_state = State("f", true);
+  auto start_state = State("s");
+  auto end_state = State("f");
   std::vector<State> states({start_state, end_state});
   auto nfa = NFA(start_state, states);
   nfa.SetFinal(end_state.ID());
@@ -98,7 +98,7 @@ NFA BuildEmptyNFA() {
 }
 
 NFA BuildEpsNFA() {
-  auto start_state = State("s", false);
+  auto start_state = State("s");
   std::vector<State> states({start_state});
   auto nfa = NFA(start_state, states);
   nfa.SetFinal(start_state.ID());
@@ -106,8 +106,8 @@ NFA BuildEpsNFA() {
 }
 
 NFA BuildOneLetterNFA(std::string letter) {
-  auto start_state = State("s", false);
-  auto end_state = State("f", true);
+  auto start_state = State("s");
+  auto end_state = State("f");
   std::vector<State> states({start_state, end_state});
   auto nfa = NFA(start_state, states);
   auto transition = Transition(letter, nfa.GetState(end_state.ID()));

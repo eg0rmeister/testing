@@ -8,20 +8,15 @@ enum { IDENT, TRASH, LPARENT, RPARENT, COMMON };
 
 class State : public UniqueObject {
  public:
-  State(const uint8_t type = COMMON);
-  State(const std::string& label, const uint8_t type = COMMON);
+  State();
+  State(const std::string& label);
   std::string Label() const;
 
   /// @brief Change name of state
   /// @param new_label New name of state
   void SetLabel(const std::string& new_label);
-  
-  uint8_t Type() const;
-
  private:
   std::string _label;
-  uint8_t _type;  // 'common' - for non-final, other - for final states
-  bool _is_final;
 };
 
 bool operator==(const State& lhs, const State& rhs);

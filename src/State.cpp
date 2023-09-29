@@ -1,16 +1,14 @@
 #include "State.h"
 
-State::State(const uint8_t type)
-    : UniqueObject(), _label(std::to_string(this->ID())), _type(type) {}
+State::State()
+    : UniqueObject(), _label(std::to_string(this->ID())) {}
 
-State::State(const std::string& label, uint8_t type)
-    : UniqueObject(), _label(label), _type(type) {}
+State::State(const std::string& label)
+    : UniqueObject(), _label(label) {}
 
 std::string State::Label() const { return this->_label; }
 
 void State::SetLabel(const std::string& new_label) { _label = new_label; }
-
-uint8_t State::Type() const { return this->_type; }
 
 bool operator==(const State& lhs, const State& rhs) {
   return lhs.ID() == rhs.ID();
