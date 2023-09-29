@@ -74,7 +74,7 @@ std::vector<State> FSA::GetFinalStates() const {
 }
 
 FSA::transitions_set FSA::GetTransitions(const State& state) const {
-  return _transitions[state.ID()];
+  return _transitions.at(state.ID());
 }
 
 void FSA::SetFinal(uint32_t state_id, bool is_final) {
