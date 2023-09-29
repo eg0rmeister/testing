@@ -10,7 +10,7 @@ NFA GetNFAFromNode(const REGTree::Node node) {
       break;
 
     case REGTree::LetterConstant:
-      return BuildOneLetterNFA(std::string(node.GetSymbol(), 1));
+      return BuildOneLetterNFA(std::string(1, node.GetSymbol()));
       break;
 
     case REGTree::Iteration:
