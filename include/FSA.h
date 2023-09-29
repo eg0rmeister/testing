@@ -69,7 +69,7 @@ class FSA {
   /// @brief Gives vector of all transitions from selected state
   /// @param state State from which to give transitions
   /// @return std::vector<State> of all transitions from selected state
-  transitions_set GetTransitions(const State& state);
+  transitions_set GetTransitions(const State& state) const;
 
 
   /// @brief Mark state as final or non-final
