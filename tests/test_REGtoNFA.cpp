@@ -1,6 +1,6 @@
-#include <REG_to_NFA.h>
-#include <REGTree.h>
 #include <NFA.h>
+#include <REGTree.h>
+#include <REG_to_NFA.h>
 
 #include <cassert>
 #include <iostream>
@@ -11,7 +11,6 @@
 int main() {
   std::string regexp = "ab*+c";
   try {
-
     REGTree regtree(regexp);
     NFA nfa = GetNFAFromREG(regtree);
     nfa.Visualize();

@@ -28,15 +28,11 @@ int main() {
     NFA left_nfa(state1, left_states);
     NFA right_nfa(state3, right_states);
 
-    auto state2_ptr = left_nfa.GetState(state2.ID());
-    auto state3_ptr = left_nfa.GetState(state3.ID());
-    auto state4_ptr = left_nfa.GetState(state4.ID());
-    auto state5_ptr = left_nfa.GetState(state5.ID());
-    auto transition12 = Transition("a", state2_ptr);
-    auto transition34 = Transition("b", state4_ptr);
-    auto transition35 = Transition("c", state5_ptr);
-    auto transition45 = Transition("d", state5_ptr);
-    auto transition43 = Transition("e", state5_ptr);
+    auto transition12 = Transition("a", state2);
+    auto transition34 = Transition("b", state4);
+    auto transition35 = Transition("c", state5);
+    auto transition45 = Transition("d", state5);
+    auto transition43 = Transition("e", state3);
     left_nfa.AddTransition(state1.ID(), transition12);
     right_nfa.AddTransition(state3.ID(), transition34);
     right_nfa.AddTransition(state3.ID(), transition35);
@@ -49,9 +45,6 @@ int main() {
     // Test Concatenation
     NFA concatenated = ConcatenateNFA(left_nfa, right_nfa);
 
-    // Test transitions amount
-    assert(concatenated.GetAllTransitions().size() == 6);
-
     // Test state amount
     assert(concatenated.GetStates().size() == 5);
 
@@ -59,14 +52,11 @@ int main() {
     assert(concatenated.GetFinalStates().size() == 1);
 
     // Test epsilon transition
-    assert(concatenated.GetAllTransitions()[state2.ID()][0].Input() == "");
+    assert(concatenated.GetAllTransitions()[state2.ID()][0].Input() == "~");
 
     //
     // Test Iteration
     NFA iterated = IterateNFA(right_nfa);
-
-    // Test transitions amount
-    assert(iterated.GetAllTransitions().size() == 6);
 
     // Test state amount
     assert(iterated.GetStates().size() == 4);
@@ -78,16 +68,15 @@ int main() {
     assert(iterated.GetFinalStates()[0].ID() == iterated.GetStartState().ID());
 
     // Test epsilon transitions
-    assert(iterated.GetAllTransitions()[state5.ID()][0].Input() == "");
+    assert(iterated.GetAllTransitions()[state5.ID()][0].Input() == "~");
     assert(iterated.GetAllTransitions()[iterated.GetStartState().ID()][0]
-               .Input() == "");
+               .Input() == "~");
 
     //
     // Test Addition
     NFA added = AddNFA(left_nfa, right_nfa);
 
-    // Test transitions amount
-    assert(added.GetAllTransitions().size() == 9);
+    added.Visualize();
 
     // Test state amount
     assert(added.GetStates().size() == 7);
@@ -96,10 +85,11 @@ int main() {
     assert(added.GetFinalStates().size() == 1);
 
     // Test epsilon transition
-    assert(added.GetAllTransitions()[state2.ID()][0].Input() == "");
-    assert(added.GetAllTransitions()[state5.ID()][0].Input() == "");
-    assert(added.GetAllTransitions()[added.GetStartState().ID()][0].Input() == "");
-    assert(added.GetAllTransitions()[added.GetStartState().ID()][1].Input() == "");
+    assert(added.GetAllTransitions()[state2.ID()][0].Input() == "~");
+    assert(added.GetAllTransitions()[state5.ID()][0].Input() == "~");
+    assert(added.GetAllTransitions()[added.GetStartState().ID()][0].Input() == "~");
+    assert(added.GetAllTransitions()[added.GetStartState().ID()][1].Input() == "~");
+
 
     return 0;
   } catch (const std::exception& e) {

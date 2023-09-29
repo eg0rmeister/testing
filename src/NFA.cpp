@@ -64,7 +64,7 @@ NFA AddNFA(const NFA& lhs, const NFA& rhs) {
   State end_state = State();
   states.push_back(start_state);
   states.push_back(end_state);
-  NFA ret(lhs.GetStartState(), states);
+  NFA ret(start_state, states);
 
   for (auto transitions_source : lhs.GetAllTransitions()) {
     for (auto transition : transitions_source.second) {
@@ -80,8 +80,9 @@ NFA AddNFA(const NFA& lhs, const NFA& rhs) {
   ret.AddEpsilonTransition(start_state.ID(), lhs.GetStartState().ID());
   ret.AddEpsilonTransition(start_state.ID(), rhs.GetStartState().ID());
 
-  ret.AddEpsilonTransition(lhs.GetStartState().ID(), start_state.ID());
-  ret.AddEpsilonTransition(rhs.GetStartState().ID(), start_state.ID());
+  ret.AddEpsilonTransition(lhs.GetFinalStates()[0].ID(), end_state.ID());
+  ret.AddEpsilonTransition(rhs.GetFinalStates()[0].ID(), end_state.ID());
+  ret.SetFinal(end_state.ID(), true);
   return ret;
 }
 
@@ -94,9 +95,11 @@ NFA IterateNFA(const NFA& nfa) {
       ret.AddTransition(transitions_source.first, transition);
     }
   }
-  ret.SetFinal(nfa.GetFinalStates()[0].ID(), true);
-  ret.AddTransition(ret.GetFinalStates()[0].ID(),
+  ret.SetFinal(states.back().ID(), true);
+  ret.AddTransition(nfa.GetFinalStates()[0].ID(),
                     Transition(ret.GetState(ret.GetStartState().ID())));
+  ret.AddTransition(ret.GetStartState().ID(),
+                    Transition(nfa.GetStartState()));
   return ret;
 }
 
