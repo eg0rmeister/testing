@@ -33,6 +33,42 @@ NFA ConcatenateNFA(const NFA& lhs, const NFA& rhs) {
   return ret;
 }
 
+NFA AddNFA(const NFA& lhs, const NFA& rhs) {
+  NFA::states_vec states;
+  NFA::states_vec left_states = lhs.GetStates();
+  NFA::states_vec right_states = rhs.GetStates();
+  states.reserve(left_states.size() + right_states.size());
+  for (auto state : left_states) {
+    states.push_back(state);
+  }
+  for (auto state : right_states) {
+    states.push_back(state);
+  }
+  State start_state = State("", false);
+  State end_state = State("", true);
+  states.push_back(start_state);
+  states.push_back(end_state);
+  NFA ret(lhs.GetStartState(), states);
+
+  for (auto transitions_source : lhs.GetAllTransitions()) {
+    for (auto transition : transitions_source.second) {
+      ret.AddTransition(transitions_source.first, transition);
+    }
+  }
+  for (auto transitions_source : rhs.GetAllTransitions()) {
+    for (auto transition : transitions_source.second) {
+      ret.AddTransition(transitions_source.first, transition);
+    }
+  }
+  
+  ret.AddTransition(start_state.ID(), lhs.GetStartState().ID(), "");
+  ret.AddTransition(start_state.ID(), rhs.GetStartState().ID(), "");
+  
+  ret.AddTransition(lhs.GetStartState().ID(), start_state.ID(), "");
+  ret.AddTransition(rhs.GetStartState().ID(), start_state.ID(), "");
+  return ret;
+}
+
 NFA IterateNFA(const NFA& nfa) {
   FSA::states_vec states(nfa.GetStates());
   states.push_back(State("", true));

@@ -67,6 +67,7 @@ int main() {
     // Test epsilon transition
     assert(concatenated.GetAllTransitions()[state2.ID()][0].Input() == "");
 
+    //
     // Test Iteration
     NFA iterated = IterateNFA(right_nfa);
 
@@ -86,6 +87,25 @@ int main() {
     assert(iterated.GetAllTransitions()[state5.ID()][0].Input() == "");
     assert(iterated.GetAllTransitions()[iterated.GetStartState().ID()][0]
                .Input() == "");
+
+    //
+    // Test Addition
+    NFA added = AddNFA(left_nfa, right_nfa);
+
+    // Test transitions amount
+    assert(added.GetAllTransitions().size() == 9);
+
+    // Test state amount
+    assert(added.GetStates().size() == 7);
+
+    // Test final states amount
+    assert(added.GetFinalStates().size() == 1);
+
+    // Test epsilon transition
+    assert(added.GetAllTransitions()[state2.ID()][0].Input() == "");
+    assert(added.GetAllTransitions()[state5.ID()][0].Input() == "");
+    assert(added.GetAllTransitions()[added.GetStartState().ID()][0].Input() == "");
+    assert(added.GetAllTransitions()[added.GetStartState().ID()][1].Input() == "");
 
     return 0;
   } catch (const std::exception& e) {
