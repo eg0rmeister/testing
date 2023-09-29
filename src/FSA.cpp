@@ -73,7 +73,7 @@ std::vector<State> FSA::GetFinalStates() const {
   return final_states;
 }
 
-FSA::transitions_set FSA::GetTransitions(const State& state) {
+FSA::transitions_set FSA::GetTransitions(const State& state) const {
   return _transitions[state.ID()];
 }
 
