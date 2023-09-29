@@ -115,3 +115,18 @@ NFA BuildOneLetterNFA(std::string letter) {
   nfa.SetFinal(end_state.ID());
   return nfa;
 }
+
+FSA::transitions_set GetTransitions(const NFA& nfa, const State& state) {
+  FSA::transitions_set ret;
+}
+
+NFA GetNFAWithNoEpsilons(const NFA& nfa) {
+  FSA::states_vec states = nfa.GetStates();
+  State start_state = nfa.GetStartState();
+  FSA::transitions_set transtions;
+  for (auto state : states) {
+    for (auto transition : GetTransitions(nfa, state)) {
+      transtions.push_back(transition);
+    }
+  }
+}
