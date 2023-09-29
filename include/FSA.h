@@ -71,6 +71,7 @@ class FSA {
   /// @param is_final True if state should be final
   void SetFinal(uint32_t state_id, bool is_final = true);
 
+  /// @brief Print all states and transitions
   void Visualize();
 
  private:
