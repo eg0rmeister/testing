@@ -25,7 +25,7 @@ int main() {
     std::vector<State> left_states;
     left_states.push_back(state1);
     left_states.push_back(state2);
-    
+
     std::vector<State> right_states;
     right_states.push_back(state3);
     right_states.push_back(state4);
@@ -33,7 +33,7 @@ int main() {
 
     NFA left_nfa(state1, left_states);
     NFA right_nfa(state3, right_states);
-    
+
     auto state2_ptr = left_nfa.GetState(state2.ID());
     auto state3_ptr = left_nfa.GetState(state3.ID());
     auto state4_ptr = left_nfa.GetState(state4.ID());
@@ -52,19 +52,40 @@ int main() {
     left_nfa.SetFinal(state2.ID());
     right_nfa.SetFinal(state5.ID());
 
-    NFA merged = ConcatenateNFA(left_nfa, right_nfa);
+    // Test Concatenation
+    NFA concatenated = ConcatenateNFA(left_nfa, right_nfa);
 
     // Test transitions amount
-    assert(merged.GetAllTransitions().size() == 6);
+    assert(concatenated.GetAllTransitions().size() == 6);
 
     // Test state amount
-    assert(merged.GetStates().size() == 5);
+    assert(concatenated.GetStates().size() == 5);
 
     // Test final states amount
-    assert(merged.GetFinalStates().size() == 1);
+    assert(concatenated.GetFinalStates().size() == 1);
 
     // Test epsilon transition
-    assert(merged.GetAllTransitions()[state2.ID()][0].Input() == "");
+    assert(concatenated.GetAllTransitions()[state2.ID()][0].Input() == "");
+
+    // Test Iteration
+    NFA iterated = IterateNFA(right_nfa);
+
+    // Test transitions amount
+    assert(iterated.GetAllTransitions().size() == 6);
+
+    // Test state amount
+    assert(iterated.GetStates().size() == 4);
+
+    // Test final states amount
+    assert(iterated.GetFinalStates().size() == 1);
+
+    // Test final state
+    assert(iterated.GetFinalStates()[0].ID() == iterated.GetStartState().ID());
+
+    // Test epsilon transitions
+    assert(iterated.GetAllTransitions()[state5.ID()][0].Input() == "");
+    assert(iterated.GetAllTransitions()[iterated.GetStartState().ID()][0]
+               .Input() == "");
 
     return 0;
   } catch (const std::exception& e) {

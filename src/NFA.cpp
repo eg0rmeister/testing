@@ -32,6 +32,22 @@ NFA ConcatenateNFA(const NFA& lhs, const NFA& rhs) {
                     Transition("", ret.GetState(rhs.GetStartState().ID())));
   return ret;
 }
+
+NFA IterateNFA(const NFA& nfa) {
+  FSA::states_vec states(nfa.GetStates());
+  states.push_back(State("", true));
+  NFA ret(states.back(), states);
+  for (auto transitions_source : nfa.GetAllTransitions()) {
+    for (auto transition : transitions_source.second) {
+      ret.AddTransition(transitions_source.first, transition);
+    }
+  }
+  ret.SetFinal(nfa.GetFinalStates()[0].ID(), true);
+  ret.AddTransition(ret.GetFinalStates()[0].ID(),
+                    Transition("", ret.GetState(ret.GetStartState().ID())));
+  return ret;
+}
+
 NFA BuildEmptyNFA() {
   auto start_state = State("s", false);
   auto end_state = State("f", true);
