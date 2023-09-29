@@ -15,8 +15,8 @@ int main() {
   auto type1 = COMMON;
   auto type2 = IDENT;
   try {
-    State state1(label1, false, type1);
-    State state2(label2, true, type2);
+    State state1(label1, type1);
+    State state2(label2, type2);
 
     std::vector<State> states;
     states.push_back(state1);
@@ -31,7 +31,7 @@ int main() {
     assert((fsa.GetFinalStates()[0] == state2));
 
     // Addittion test
-    State state3(label3, true);
+    State state3(label3);
     fsa.AddState(state3, true);
     assert((fsa.GetFinalStates().size() == 2));
 

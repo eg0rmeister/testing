@@ -5,7 +5,7 @@
 FSA::FSA(const State& start_state, const states_vec& states)
     : _start_state(new State(start_state)),
       _current_state(new State(start_state)),
-      _trash(new State("T", true, TRASH)) {
+      _trash(new State("T", TRASH)) {
   for (auto& state : states) {
     _states.push_back(new State(state));
     _state_by_id[state.ID()] = *_states.rbegin();

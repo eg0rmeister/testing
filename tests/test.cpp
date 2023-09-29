@@ -12,8 +12,8 @@ int main() {
   auto type1 = COMMON;
   auto type2 = IDENT;
   try {
-    State state1(label1, false, type1);
-    State state2(label2, true, type2);
+    State state1(label1, type1);
+    State state2(label2, type2);
     assert((state1.Label() == label1));
     assert((state2.Label() == label2));
     assert((state1.Type() == type1));
