@@ -9,14 +9,6 @@ enum { IDENT, TRASH, LPARENT, RPARENT, COMMON };
 class State : public UniqueObject {
  public:
   State();
-  State(const std::string& label);
-  std::string Label() const;
-
-  /// @brief Change name of state
-  /// @param new_label New name of state
-  void SetLabel(const std::string& new_label);
- private:
-  std::string _label;
 };
 
 bool operator==(const State& lhs, const State& rhs);

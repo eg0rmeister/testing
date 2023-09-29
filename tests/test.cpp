@@ -7,13 +7,9 @@
 #include <unordered_set>
 
 int main() {
-  std::string label1 = "awesome_label";
-  std::string label2 = "another";
   try {
-    State state1(label1);
-    State state2(label2);
-    assert((state1.Label() == label1));
-    assert((state2.Label() == label2));
+    State state1;
+    State state2;
     assert((state1.ID() == 0));
     assert((state2.ID() == 1));
     std::unordered_set<State> states;

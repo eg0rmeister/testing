@@ -9,12 +9,9 @@
 #include <vector>
 
 int main() {
-  std::string label1 = "awesome_label";
-  std::string label2 = "another";
-  std::string label3 = "label_to_add";
   try {
-    State state1(label1);
-    State state2(label2);
+    State state1;
+    State state2;
 
     std::vector<State> states;
     states.push_back(state1);
@@ -29,7 +26,7 @@ int main() {
     assert((fsa.GetFinalStates()[0] == state2));
 
     // Addittion test
-    State state3(label3);
+    State state3;
     fsa.AddState(state3, true);
     assert((fsa.GetFinalStates().size() == 2));
 
