@@ -1,5 +1,7 @@
 #include <Transition.h>
 
+Transition::Transition(state_ptr target) : Transition("~", target) {}
+
 Transition::Transition(std::string input, state_ptr target)
     : UniqueObject(), _input(input), _target(target) {}
 

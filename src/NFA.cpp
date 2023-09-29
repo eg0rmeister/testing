@@ -3,6 +3,10 @@
 NFA::NFA(const State& start_state, const states_vec& states)
     : FSA(start_state, states) {}
 
+void NFA::AddEpsilonTransition(uint32_t from_id, uint32_t to_id) {
+  AddTransition(from_id, to_id, "~");
+}
+
 NFA ConcatenateNFA(const NFA& lhs, const NFA& rhs) {
   NFA::states_vec states;
   NFA::states_vec left_states = lhs.GetStates();
@@ -29,7 +33,7 @@ NFA ConcatenateNFA(const NFA& lhs, const NFA& rhs) {
     ret.SetFinal(final_state.ID(), true);
   }
   ret.AddTransition(lhs.GetFinalStates()[0].ID(),
-                    Transition("", ret.GetState(rhs.GetStartState().ID())));
+                    Transition(ret.GetState(rhs.GetStartState().ID())));
   return ret;
 }
 
@@ -60,12 +64,12 @@ NFA AddNFA(const NFA& lhs, const NFA& rhs) {
       ret.AddTransition(transitions_source.first, transition);
     }
   }
-  
-  ret.AddTransition(start_state.ID(), lhs.GetStartState().ID(), "");
-  ret.AddTransition(start_state.ID(), rhs.GetStartState().ID(), "");
-  
-  ret.AddTransition(lhs.GetStartState().ID(), start_state.ID(), "");
-  ret.AddTransition(rhs.GetStartState().ID(), start_state.ID(), "");
+
+  ret.AddEpsilonTransition(start_state.ID(), lhs.GetStartState().ID());
+  ret.AddEpsilonTransition(start_state.ID(), rhs.GetStartState().ID());
+
+  ret.AddEpsilonTransition(lhs.GetStartState().ID(), start_state.ID());
+  ret.AddEpsilonTransition(rhs.GetStartState().ID(), start_state.ID());
   return ret;
 }
 
@@ -80,7 +84,7 @@ NFA IterateNFA(const NFA& nfa) {
   }
   ret.SetFinal(nfa.GetFinalStates()[0].ID(), true);
   ret.AddTransition(ret.GetFinalStates()[0].ID(),
-                    Transition("", ret.GetState(ret.GetStartState().ID())));
+                    Transition(ret.GetState(ret.GetStartState().ID())));
   return ret;
 }
 

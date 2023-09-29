@@ -8,6 +8,7 @@
 class Transition : public UniqueObject {
  public:
   using state_ptr = State*;
+  Transition(state_ptr target);
   Transition(std::string input, state_ptr target);
   std::string Input() const;
   const State* Target() const;

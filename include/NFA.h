@@ -9,6 +9,11 @@ class NFA : public FSA {
  public:
   NFA(const State& start_state, const states_vec& states);
 
+  /// @brief Add new epsilon-transition to automaton (by default it will be marked with ~)
+  /// @param from_id ID of source state
+  /// @param to_id ID of destination state
+  void AddEpsilonTransition(uint32_t from_id, uint32_t to_id);
+  
  private:
 };
 
