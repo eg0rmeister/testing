@@ -84,9 +84,8 @@ void FSA::Visualize() {
       auto& current_transitions = _transitions.at(state.ID());
 
       for (const Transition& current_transition : current_transitions) {
-        std::cout << GetLabel(state) << " - " << current_transition.Input()
-                  << " -> " << GetLabel(current_transition.Target())
-                  << std::endl;
+        std::cout << state.ID() << " - " << current_transition.Input() << " -> "
+                  << current_transition.Target().ID() << std::endl;
       }
     }
   }
