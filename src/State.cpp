@@ -8,6 +8,8 @@ State::State(const std::string& label, uint8_t type)
 
 std::string State::Label() const { return this->_label; }
 
+void State::SetLabel(const std::string& new_label) { _label = new_label; }
+
 uint8_t State::Type() const { return this->_type; }
 
 bool operator==(const State& lhs, const State& rhs) {
