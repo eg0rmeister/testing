@@ -20,4 +20,6 @@ class DFA : public FSA {
 
   /// @brief Returns automaton to starting state
   void ResetState();
+private:
+  State _current_state;
 };
