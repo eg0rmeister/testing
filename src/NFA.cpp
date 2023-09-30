@@ -7,6 +7,18 @@ void NFA::AddEpsilonTransition(uint32_t from_id, uint32_t to_id) {
   AddTransition(from_id, to_id, "~");
 }
 
+FSA::transitions_set NFA::GetTransitionsByLetter(const State& state,
+                                         std::string letter) const {
+  auto transitions = GetTransitions(state);
+  FSA::transitions_set filtered_transitions;
+  for (const auto& transition : transitions) {
+    if (transition.Input() == letter) {
+      filtered_transitions.push_back(transition);
+    }
+  }
+  return filtered_transitions;
+}
+
 NFA ConcatenateNFA(const NFA& lhs, const NFA& rhs) {
   NFA::states_vec states;
   NFA::states_vec left_states = lhs.GetStates();

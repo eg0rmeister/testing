@@ -72,6 +72,11 @@ void FSA::SetFinal(uint32_t state_id, bool is_final) {
   }
 }
 
+bool FSA::IsFinal(uint32_t state_id)
+{
+  return _is_final_state[state_id];
+}
+
 void FSA::Visualize() {
   std::cout << "States: " << std::endl;
   for (auto state : _states) {
