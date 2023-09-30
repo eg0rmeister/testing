@@ -6,10 +6,7 @@
 
 enum { IDENT, TRASH, LPARENT, RPARENT, COMMON };
 
-class State : public UniqueObject {
- public:
-  State();
-};
+class State : public UniqueObject {};
 
 bool operator==(const State& lhs, const State& rhs);
 

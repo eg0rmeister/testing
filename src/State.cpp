@@ -1,7 +1,5 @@
 #include "State.h"
 
-State::State() : UniqueObject() {}
-
 bool operator==(const State& lhs, const State& rhs) {
   return lhs.ID() == rhs.ID();
 }
