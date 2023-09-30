@@ -31,14 +31,17 @@ DFA ConvertNFAtoDFA(NFA nfa) {
   std::queue<std::pair<bitmask, State>> queue;
   queue.push({current_set, start_state});
   dfa_states.push_back(start_state);
-  // current_set[id_mapper[nfa.GetStartState().ID()]] = true;
+
+  std::unordered_map<std::vector<bool>, State> mask_to_state;
+  mask_to_state[current_set] = start_state;
+
   while (!queue.empty()) {
     current_set = queue.front().first;
     State src_state_dfa = queue.front().second;
     queue.pop();
     for (auto c : alphabet) {
       bitmask new_set(nfa_states_count, false);
-      State dest_state_dfa;
+      
       bool is_empty = true;
       for (size_t i = 0; i < nfa_states_count; ++i) {
         if (current_set[i]) {
@@ -50,6 +53,7 @@ DFA ConvertNFAtoDFA(NFA nfa) {
           }
         }
       }
+      State dest_state_dfa = mask_to_state[new_set];
       if (!is_empty) {
         dfa_transitions.push_back(
             {src_state_dfa, Transition(std::string(1, c), dest_state_dfa)});

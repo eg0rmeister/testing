@@ -19,7 +19,7 @@ int main() {
     // NFA to DFA conversion test
     DFA dfa = ConvertNFAtoDFA(nfa);
     assert(!dfa.IsFinal());
-
+    dfa.Visualize();
 
     // a, ab, abb, abbb are accepted by DFA
     assert(dfa.Input("a"));
