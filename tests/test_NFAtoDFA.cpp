@@ -18,11 +18,11 @@ int main() {
     //
     // NFA to DFA conversion test
     DFA dfa = ConvertNFAtoDFA(nfa);
-
     assert(!dfa.IsFinal());
-    assert(!dfa.Input("a"));
 
-    // ab, abb, abbb are accepted by DFA
+
+    // a, ab, abb, abbb are accepted by DFA
+    assert(dfa.Input("a"));
     assert(dfa.Input("b"));
     assert(dfa.Input("b"));
     assert(dfa.Input("b"));
