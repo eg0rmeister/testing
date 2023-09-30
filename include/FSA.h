@@ -91,7 +91,6 @@ class FSA {
 
  private:
   State _start_state;
-  State _current_state;
   State _trash;
   states_set _states;
   states_map _state_by_id;
