@@ -63,6 +63,9 @@ std::vector<State> FSA::GetFinalStates() const {
 }
 
 FSA::transitions_set FSA::GetTransitions(const State& state) const {
+  if (!_transitions.contains(state.ID())) {
+    return FSA::transitions_set();
+  }
   return _transitions.at(state.ID());
 }
 

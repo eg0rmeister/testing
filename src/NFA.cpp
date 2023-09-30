@@ -1,5 +1,8 @@
 #include <NFA.h>
 
+#include <queue>
+#include <iostream>
+
 NFA::NFA(const State& start_state, const states_vec& states)
     : FSA(start_state, states) {}
 
@@ -8,7 +11,7 @@ void NFA::AddEpsilonTransition(uint32_t from_id, uint32_t to_id) {
 }
 
 FSA::transitions_set NFA::GetTransitionsByLetter(const State& state,
-                                         std::string letter) const {
+                                                 std::string letter) const {
   auto transitions = GetTransitions(state);
   FSA::transitions_set filtered_transitions;
   for (const auto& transition : transitions) {
@@ -98,8 +101,7 @@ NFA IterateNFA(const NFA& nfa) {
   ret.SetFinal(states.back().ID(), true);
   ret.AddTransition(nfa.GetFinalStates()[0].ID(),
                     Transition(ret.GetState(ret.GetStartState().ID())));
-  ret.AddTransition(ret.GetStartState().ID(),
-                    Transition(nfa.GetStartState()));
+  ret.AddTransition(ret.GetStartState().ID(), Transition(nfa.GetStartState()));
   return ret;
 }
 
@@ -131,17 +133,74 @@ NFA BuildOneLetterNFA(std::string letter) {
   return nfa;
 }
 
-FSA::transitions_set GetTransitions(const NFA& nfa, const State& state) {
-  FSA::transitions_set ret;
+bool GetTransitions(
+    const NFA& nfa, const State& state,
+    std::unordered_map<State, std::vector<Transition>>& dp_transitions,
+    std::unordered_map<State, bool>& dp_final) {
+  if (dp_transitions.contains(state)) {
+    return dp_final.at(state);
+  }
+  dp_transitions[state] = std::vector<Transition>();
+  if (!dp_final.contains(state)) {
+    dp_final[state] = false;
+  }
+  for (auto transition : nfa.GetTransitions(state)) {
+    if (transition.Input() != "~") {
+      dp_transitions[state].push_back(
+          Transition(transition.Input(), transition.Target()));
+      continue;
+    }
+    dp_final[state] =
+        GetTransitions(nfa, transition.Target(), dp_transitions, dp_final) ||
+        dp_final.at(state);
+    for (auto epath : dp_transitions[transition.Target()]) {
+      dp_transitions[state].push_back(
+          Transition(epath.Input(), epath.Target()));
+    }
+  }
+  return dp_final.at(state);
 }
 
 NFA GetNFAWithNoEpsilons(const NFA& nfa) {
   FSA::states_vec states = nfa.GetStates();
   State start_state = nfa.GetStartState();
   FSA::transitions_set transtions;
+  std::unordered_map<State, std::vector<Transition>> dp_transitions;
+  std::unordered_map<State, bool> dp_final;
+  for (auto state : nfa.GetFinalStates()) {
+    dp_final[state] = true;
+  }
   for (auto state : states) {
-    for (auto transition : GetTransitions(nfa, state)) {
-      transtions.push_back(transition);
+    GetTransitions(nfa, state, dp_transitions, dp_final);
+  }
+  std::queue<State> to_visit;
+  std::unordered_set<State> visited;
+  to_visit.push(start_state);
+  while (!to_visit.empty()) {
+    State current = to_visit.front();
+    to_visit.pop();
+    if (visited.contains(current)) {
+      continue;
+    }
+    visited.insert(current);
+    for (auto transition : dp_transitions.at(current)) {
+      to_visit.push(transition.Target());
     }
   }
+  states.clear();
+  for (auto state : visited) {
+    states.push_back(state);
+  }
+  NFA ret(start_state, states);
+  for (auto transitions : dp_transitions) {
+    if (visited.contains(transitions.first)) {
+      for (auto transition : transitions.second) {
+        ret.AddTransition(transitions.first.ID(), transition);
+      }
+    }
+  }
+  for (auto state : states) {
+    ret.SetFinal(state.ID(), dp_final[state]);
+  }
+  return ret;
 }

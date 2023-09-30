@@ -16,6 +16,7 @@ int main() {
     NFA nfa = GetNFAFromREG(regtree);
     nfa.Visualize();
     nfa = GetNFAWithNoEpsilons(nfa);
+    nfa.Visualize();
     auto dfa = ConvertNFAtoDFA(nfa);
     dfa.Visualize();
     return 0;
