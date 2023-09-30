@@ -28,7 +28,7 @@ int main() {
     assert(dfa.Input("b"));
     assert(dfa.IsFinal());
 
-    dfa.Reset();
+    dfa.ResetState();
     // c is accepted by DFA
     assert(dfa.Input("c"));
 
