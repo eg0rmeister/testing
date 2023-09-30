@@ -61,8 +61,8 @@ DFA ConvertNFAtoDFA(NFA nfa) {
         if (!dfa_states_masks.contains(new_set)) {
           dfa_states_masks.insert(new_set);
           bool is_final = false;
-          for (const auto& state_idx : new_set) {
-            if (state_idx == true && nfa.IsFinal(nfa_states[state_idx].ID())) {
+          for (size_t i = 0; i < nfa_states_count; ++i) {
+            if (new_set[i] && nfa.IsFinal(nfa_states[i].ID())) {
               is_final = true;
               break;
             }

@@ -10,10 +10,11 @@
 #include <vector>
 
 int main() {
-  std::string regexp = "ab*+c";
+  std::string regexp = "ab*c";
   REGTree regtree(regexp);
   NFA nfa = GetNFAFromREG(regtree);
   nfa = GetNFAWithNoEpsilons(nfa);
+  nfa.Visualize();
   try {
     //
     // NFA to DFA conversion test
@@ -30,7 +31,7 @@ int main() {
 
     dfa.ResetState();
     // c is accepted by DFA
-    assert(dfa.Input("c"));
+    assert(!dfa.Input("c"));
 
     // cb is not accepted by DFA
     assert(!dfa.Input("b"));
