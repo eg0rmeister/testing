@@ -114,3 +114,5 @@ void FSA::Visualize() {
 std::string FSA::GetLabel(const State& state) const { return std::string(); }
 
 bool FSA::IsTrash(const State& state) const { return state == _trash; }
+
+State FSA::GetTrash() const { return _trash; }

@@ -94,6 +94,10 @@ class FSA {
   /// @return true if state is trash
   bool IsTrash(const State& state) const;
 
+  /// @brief Gives trash state
+  /// @return Copy of trash state
+  State GetTrash() const;
+
  private:
   State _start_state;
   State _trash;
