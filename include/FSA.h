@@ -89,6 +89,11 @@ class FSA {
   /// @return std::string state label
   std::string GetLabel(const State& state) const;
 
+  /// @brief returns whether given state is automaton's trash
+  /// @param state State to check
+  /// @return true if state is trash
+  bool IsTrash(const State& state) const;
+
  private:
   State _start_state;
   State _trash;
