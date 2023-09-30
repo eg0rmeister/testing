@@ -3,9 +3,7 @@
 #include <iostream>
 
 FSA::FSA(const State& start_state, const states_vec& states)
-    : _start_state(State(start_state)),
-      _current_state(State(start_state)),
-      _trash(State()) {
+    : _start_state(State(start_state)), _trash(State()) {
   for (auto& state : states) {
     _states.push_back(State(state));
     _state_by_id[state.ID()] = *_states.rbegin();
@@ -13,7 +11,7 @@ FSA::FSA(const State& start_state, const states_vec& states)
   }
 }
 
-void FSA::Reset() { _current_state = _start_state; }
+void FSA::Reset() {}
 
 void FSA::AddTransition(uint32_t from_id, const Transition& transition) {
   _transitions[from_id].push_back(transition);
@@ -75,7 +73,13 @@ void FSA::SetFinal(uint32_t state_id, bool is_final) {
   }
 }
 
-bool FSA::IsFinal(uint32_t state_id) { return _is_final_state[state_id]; }
+bool FSA::IsFinal(uint32_t state_id) const {
+  if (_is_final_state.contains(state_id)) {
+    return _is_final_state.at(state_id);
+  } else {
+    return false;
+  }
+}
 
 void FSA::Visualize() {
   auto start_state = GetStartState();
