@@ -23,45 +23,51 @@ DFA ConvertNFAtoDFA(NFA nfa) {
   FSA::states_set dfa_states;
   std::unordered_set<bitmask> dfa_states_masks;
 
-  std::queue<bitmask> queue;
   bitmask current_set(nfa_states_count);
   std::unordered_map<size_t, bool> dfa_is_final;
-  State start_state;
+  State start_state = nfa.GetStartState();
+  current_set[id_mapper[start_state.ID()]] = true;
+
+  std::queue<std::pair<bitmask, State>> queue;
+  queue.push({current_set, start_state});
   dfa_states.push_back(start_state);
-  current_set[id_mapper[nfa.GetStartState().ID()]] = true;
+  // current_set[id_mapper[nfa.GetStartState().ID()]] = true;
   while (!queue.empty()) {
-    current_set = queue.front();
-    State src_state_dfa;
+    current_set = queue.front().first;
+    State src_state_dfa = queue.front().second;
     queue.pop();
     for (auto c : alphabet) {
       bitmask new_set(nfa_states_count, false);
       State dest_state_dfa;
+      bool is_empty = true;
       for (size_t i = 0; i < nfa_states_count; ++i) {
         if (current_set[i]) {
           auto new_transitions =
-              nfa.GetTransitionsByLetter(nfa_states[i], std::to_string(c));
+              nfa.GetTransitionsByLetter(nfa_states[i], std::string(1, c));
           for (auto& transition : new_transitions) {
+            is_empty = false;
             new_set[id_mapper[transition.Target().ID()]] = true;
           }
         }
       }
+      if (!is_empty) {
+        dfa_transitions.push_back(
+            {src_state_dfa, Transition(std::string(1, c), dest_state_dfa)});
 
-      dfa_transitions.push_back(
-          {src_state_dfa, (std::to_string(c), dest_state_dfa)});
-
-      if (!dfa_states_masks.contains(new_set)) {
-        dfa_states_masks.insert(new_set);
-        bool is_final = false;
-        for (const auto& state_idx : new_set) {
-          if (state_idx == true && nfa.IsFinal(id_mapper[state_idx])) {
-            is_final = true;
-            break;
+        if (!dfa_states_masks.contains(new_set)) {
+          dfa_states_masks.insert(new_set);
+          bool is_final = false;
+          for (const auto& state_idx : new_set) {
+            if (state_idx == true && nfa.IsFinal(nfa_states[state_idx].ID())) {
+              is_final = true;
+              break;
+            }
           }
-        }
-        dfa_states.push_back(dest_state_dfa);
-        queue.push(new_set);
-        if (is_final) {
-          dfa_is_final[dest_state_dfa.ID()] = true;
+          dfa_states.push_back(dest_state_dfa);
+          queue.push({new_set, dest_state_dfa});
+          if (is_final) {
+            dfa_is_final[dest_state_dfa.ID()] = true;
+          }
         }
       }
     }

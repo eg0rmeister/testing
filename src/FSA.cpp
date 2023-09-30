@@ -75,15 +75,23 @@ void FSA::SetFinal(uint32_t state_id, bool is_final) {
   }
 }
 
-bool FSA::IsFinal(uint32_t state_id)
-{
-  return _is_final_state[state_id];
-}
+bool FSA::IsFinal(uint32_t state_id) { return _is_final_state[state_id]; }
 
 void FSA::Visualize() {
+  auto start_state = GetStartState();
+  std::cout << "Start state:" << std::endl;
+  std::cout << "[" << start_state.ID() << "] " << GetLabel(start_state);
+  if (_is_final_state[start_state.ID()]) {
+    std::cout << "-- final";
+  }
+  std::cout << std::endl;
   std::cout << "States: " << std::endl;
   for (auto state : _states) {
-    std::cout << "[" << state.ID() << "] " << GetLabel(state) << std::endl;
+    std::cout << "[" << state.ID() << "] " << GetLabel(state);
+    if (_is_final_state[state.ID()]) {
+      std::cout << "-- final";
+    }
+    std::cout << std::endl;
   }
 
   std::cout << "Transitions: " << std::endl;
