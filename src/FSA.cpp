@@ -11,8 +11,6 @@ FSA::FSA(const State& start_state, const states_vec& states)
   }
 }
 
-void FSA::Reset() {}
-
 void FSA::AddTransition(uint32_t from_id, const Transition& transition) {
   _transitions[from_id].push_back(transition);
 }
