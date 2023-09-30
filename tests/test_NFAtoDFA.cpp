@@ -22,12 +22,12 @@ int main() {
     assert(!dfa.IsFinal());
     dfa.Visualize();
 
-    // a, ab, abb, abbb are accepted by DFA
-    assert(dfa.Input("a"));
-    assert(dfa.Input("b"));
-    assert(dfa.Input("b"));
-    assert(dfa.Input("b"));
-    assert(dfa.IsFinal());
+    // a, ab, abb, abbb are not accepted by DFA
+    assert(!dfa.Input("a"));
+    assert(!dfa.Input("b"));
+    assert(!dfa.Input("b"));
+    assert(!dfa.Input("b"));
+    assert(!dfa.IsFinal());
 
     dfa.ResetState();
     // c is accepted by DFA

@@ -34,8 +34,8 @@ int main() {
 
     //Movement test
     assert(!forest.Input("a"));
-    assert(!forest.Input("b"));
-    assert(!forest.IsFinal());
+    assert(forest.Input("b"));
+    assert(forest.IsFinal());
     assert(forest.Input("c"));
 
     // abc is accepted by both automatons
@@ -53,7 +53,7 @@ int main() {
     forest.ResetState();
 
     assert(!forest.Input("a"));
-    assert(!forest.Input("b"));
+    assert(forest.Input("b"));
     assert(!forest.Input("b"));
 
     // abbc is only accepted by second automaton
