@@ -78,7 +78,7 @@ class FSA {
   /// @brief Check if state is final
   /// @param state_id ID of state
   /// @return true if this state is final 
-  bool IsFinal(uint32_t state_id);
+  bool IsFinal(uint32_t state_id) const;
 
   /// @brief Print all states and transitions
   void Visualize();
