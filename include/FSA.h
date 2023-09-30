@@ -23,8 +23,6 @@ class FSA {
   /// @param states Vector of all states of automaton including start_state
   FSA(const State& start_state, const states_vec& states);
 
-  void Reset();
-
   /// @brief Add new transition to automaton
   /// @param from_id ID of source state
   /// @param transition 
