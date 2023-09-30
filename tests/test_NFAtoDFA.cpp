@@ -11,14 +11,31 @@
 
 int main() {
   std::string regexp = "ab*+c";
+  REGTree regtree(regexp);
+  NFA nfa = GetNFAFromREG(regtree);
+  nfa = GetNFAWithNoEpsilons(nfa);
   try {
-    REGTree regtree(regexp);
-    NFA nfa = GetNFAFromREG(regtree);
-    nfa.Visualize();
-    nfa = GetNFAWithNoEpsilons(nfa);
-    nfa.Visualize();
-    auto dfa = ConvertNFAtoDFA(nfa);
-    dfa.Visualize();
+    //
+    // NFA to DFA conversion test
+    DFA dfa = ConvertNFAtoDFA(nfa);
+
+    assert(!dfa.IsFinal());
+    assert(!dfa.Input("a"));
+
+    // ab, abb, abbb are accepted by DFA
+    assert(dfa.Input("b"));
+    assert(dfa.Input("b"));
+    assert(dfa.Input("b"));
+    assert(dfa.IsFinal());
+
+    dfa.Reset();
+    // c is accepted by DFA
+    assert(dfa.Input("c"));
+
+    // cb is not accepted by DFA
+    assert(!dfa.Input("b"));
+
+
     return 0;
   } catch (const std::exception& e) {
     std::cout << "FAILED with error " << ' ' << e.what() << '\n';
