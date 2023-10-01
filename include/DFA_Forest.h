@@ -14,6 +14,12 @@ class DFAForest {
   /// @param input Letter to shift by
   /// @return Whether any of automatons arrived to a final state
   bool Input(std::string input);
+
+  /// @brief Checks if any of DFA's in forest accepts given word. After reading word automatons remain in last state.
+  /// @param word Word to check, each character is interpreted as a letter
+  /// @param from_current_state If true, automatons start from current state. Otherwise they reset
+  /// @return True if any of automatons reached final state after reading word
+  bool TestWord(std::string word, bool from_current_state = false);
   
   /// @brief Check if any of automatons is in a final state
   /// @return true if any of automatons is in a final state

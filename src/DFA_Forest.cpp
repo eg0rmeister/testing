@@ -10,6 +10,14 @@ bool DFAForest::Input(std::string input) {
   return is_final;
 }
 
+bool DFAForest::TestWord(std::string word, bool from_current_state) {
+  bool is_final = false;
+  for (auto& dfa : _automatons) {
+    is_final = dfa.TestWord(word) || is_final;
+  }
+  return is_final;
+}
+
 bool DFAForest::IsFinal() {
   for (const auto& dfa : _automatons) {
     if (dfa.IsFinal()) {

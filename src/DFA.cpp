@@ -18,6 +18,15 @@ bool DFA::Input(std::string input) {
   return false;
 }
 
+bool DFA::TestWord(std::string word, bool from_current_state) {
+  if (!from_current_state) {
+    ResetState();
+  }
+  for (const auto& letter : word) {
+    Input(std::string(1, letter));
+  }
+  return IsFinal();
+}
 
 bool DFA::IsFinal() const { return FSA::IsFinal(_current_state.ID()); }
 
