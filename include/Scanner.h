@@ -31,6 +31,7 @@ class Scanner {
 
  private:
 
+  DFAForest _forest;
   std::string _current_lexem = "";
   std::string _last_terminal_lexem = "";
   uint32_t _last_terminal;
