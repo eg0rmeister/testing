@@ -8,6 +8,7 @@ class Scanner {
   /// @param forest forest
   Scanner(DFAForest forest);
 
+  // TODO: Input and Reset should be private or protected, but for the purposes of testing they should be public
   /// @brief Scan one symbol input
   /// @param input symbol to scan
   /// @return true if the state turned to ERROR
@@ -20,9 +21,13 @@ class Scanner {
   /// @return id of the rule
   uint32_t GetLastTerminalId() const;
 
-  /// @brief Gets the lexeme that was last accepted by a rule
+  /// @brief Gets the lexeme that was last accepted by any rule
   /// @return the string corresponding to the lexeme
   std::string GetLastTerminalString() const;
+
+  /// @brief Gets the lexeme that was scanned so far
+  /// @return the string corresponding to the lexeme
+  std::string GetCurrentString() const;
 
  private:
 
