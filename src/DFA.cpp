@@ -30,4 +30,6 @@ bool DFA::TestWord(std::string word, bool from_current_state) {
 
 bool DFA::IsFinal() const { return FSA::IsFinal(_current_state.ID()); }
 
+bool DFA::IsInTrash() const { return IsTrash(_current_state); }
+
 void DFA::ResetState() { _current_state = GetStartState(); }
