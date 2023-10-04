@@ -1,4 +1,4 @@
-#include <Transition.h>
+#include "Transition.h"
 
 Transition::Transition(State target) : Transition("~", target) {}
 

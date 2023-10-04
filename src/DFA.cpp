@@ -1,4 +1,4 @@
-#include <DFA.h>
+#include "DFA.h"
 
 DFA::DFA(const State& start_state, const states_vec& states)
     : FSA(start_state, states), _current_state(start_state) {}

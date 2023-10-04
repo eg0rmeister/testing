@@ -1,4 +1,4 @@
-#include <DFA_Forest.h>
+#include "DFA_Forest.h"
 
 DFAForest::DFAForest(std::vector<DFA> automatons) : _automatons(automatons) {}
 
