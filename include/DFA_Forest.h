@@ -33,7 +33,7 @@ class DFAForest {
 
   /// @brief Check wheter the DFA forest is in an ERROR state
   /// @return returns true if the DFA forest is in an ERROR state
-  bool IsError();
+  bool IsError() const;
 
   /// @brief Resets the state of all automatons to start state
   void ResetState();
