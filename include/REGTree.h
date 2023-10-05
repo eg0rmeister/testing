@@ -11,7 +11,6 @@ class REGTree {
     LetterConstant,
     Iteration,
     Addition,
-    Backslash,
     Empty,
   };
 

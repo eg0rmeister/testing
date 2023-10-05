@@ -3,7 +3,6 @@
 #include <queue>
 #include <stack>
 
-
 REGTree::Token::Token(TokenType type, char letter = 0)
     : type(type), letter(letter) {}
 
@@ -43,7 +42,23 @@ REGTree::~REGTree() { delete root; }
 
 bool REGTree::IsLetter(char letter) {
   return (letter >= '0' && letter <= '9') || (letter >= 'a' && letter <= 'z') ||
-         (letter >= 'A' && letter <= 'Z');
+         (letter >= 'A' && letter <= 'Z')
+         || (letter == '\"')
+         || (letter == '[')
+         || (letter == ']')
+         || (letter == '{')
+         || (letter == '}')
+         || (letter == '/')
+         || (letter == '<')
+         || (letter == '>')
+         || (letter == '-')
+         || (letter == '=')
+         || (letter == '_')
+         || (letter == '|')
+         || (letter == '\'')
+         || (letter == '.')
+         || (letter == ',')
+         ;
 }
 
 typename REGTree::Node REGTree::GetRootNode() const { return Node(*this); }
@@ -51,30 +66,41 @@ typename REGTree::Node REGTree::GetRootNode() const { return Node(*this); }
 std::vector<typename REGTree::Token> REGTree::Tokenize(const std::string& str) {
   std::vector<Token> ret = std::vector<Token>();
   ret.reserve(str.length());
+  bool escaped = false;
   for (size_t i = 0; i < str.length(); ++i) {
-    if (IsLetter(str[i])) {
+    if (IsLetter(str[i]) || escaped) {
+      escaped = false;
       ret.push_back(Token(Letter, str[i]));
       if (((i + 1) < str.size()) && IsLetter(str[i + 1]) || str[i + 1] == '(') {
         ret.push_back(Token(Concatenate));
       }
+      continue;
     }
     if (str[i] == '(') {
       ret.push_back(Token(LeftParenthesis));
+      continue;
     }
     if (str[i] == ')') {
       ret.push_back(Token(RightParenthesis));
       if (((i + 1) < str.size()) && IsLetter(str[i + 1]) || str[i + 1] == '(') {
         ret.push_back(Token(Concatenate));
       }
+      continue;
     }
     if (str[i] == '+') {
       ret.push_back(Token(Add));
+      continue;
     }
     if (str[i] == '*') {
       ret.push_back(Token(Iterate));
       if (((i + 1) < str.size()) && IsLetter(str[i + 1]) || str[i + 1] == '(') {
         ret.push_back(Token(Concatenate));
       }
+      continue;
+    }
+    if (str[i] == '\\') {
+      escaped = true;
+      continue;
     }
   }
   return ret;

@@ -34,13 +34,13 @@ int main() {
     assert(PrintRegexBasedOnTree(empty_tree) == "");
 
     // Creating and assigning a tree
-    std::string regexpr = "(he)*+(g)";
+    std::string regexpr = "(h})*+(\\*)";
     REGTree greeting_tree(regexpr);
     std::cerr << PrintRegexBasedOnTree(greeting_tree) << std::endl;
     copycat = greeting_tree;
     assert(PrintRegexBasedOnTree(greeting_tree) ==
            PrintRegexBasedOnTree(copycat));
-    assert(PrintRegexBasedOnTree(greeting_tree) == "(((h.e)*)+g)");
+    assert(PrintRegexBasedOnTree(greeting_tree) == "(((h.})*)+*)");
 
     // Check that the types and the traversing are correct
     REGTree::Node root = greeting_tree.GetRootNode();
