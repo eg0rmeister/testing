@@ -1,6 +1,6 @@
 #include "Token.h"
 
-Token::Token(std::string lexem, size_t token) : _lexem(lexem), _token(token) {}
+Token::Token(std::string lexeme, size_t token) : _lexeme(lexeme), _token(token) {}
 
 std::string Token::Type() const { return TokenTOString(_token); }
 
