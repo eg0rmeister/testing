@@ -9,6 +9,10 @@ class Token {
  public:
   Token(std::string lexem, size_t token);
 
+  /// @brief Returns type of token
+  /// @return std::string with name of token type - e.g "VAR"
+  std::string Type() const;
+
  private:
   const std::string _lexem;
   const size_t _token;
