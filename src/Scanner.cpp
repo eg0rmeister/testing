@@ -10,3 +10,9 @@ bool Scanner::Input(std::string input) {
   }
   return _forest.IsError();
 }
+
+void Scanner::Reset() {
+  _current_lexem = "";
+  _last_terminal = _forest.GetSize();
+  _last_terminal_lexem = "";
+}
