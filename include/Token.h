@@ -1,7 +1,7 @@
 #pragma once
 #include <string>
 
-enum Tokens { MINUS, NUMBER, PLUS, STR, TYPE, VAR };
+enum Tokens { ERROR, MINUS, NUMBER, PLUS, STR, TYPE, VAR };
 
 std::string TokenTOString(size_t token);
 

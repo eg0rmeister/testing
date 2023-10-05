@@ -4,7 +4,7 @@ Token::Token(std::string lexeme, size_t token) : _lexeme(lexeme), _token(token) 
 
 std::string Token::Type() const { return TokenTOString(_token); }
 
-inline std::string TokenTOString(size_t token) {
+ std::string TokenTOString(size_t token) {
   std::string token_str = "ERROR";
   switch (token) {
     case MINUS:
