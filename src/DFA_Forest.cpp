@@ -51,3 +51,5 @@ void DFAForest::ResetState() {
     dfa.ResetState();
   }
 }
+
+uint32_t DFAForest::GetSize() const { return _automatons.size(); }

@@ -37,6 +37,11 @@ class DFAForest {
 
   /// @brief Resets the state of all automatons to start state
   void ResetState();
+
+  /// @brief Gets the amount of terminal state types
+  /// @return Amount of terminal state types
+  uint32_t GetSize() const;
+
   private:
   std::vector<DFA> _automatons;
 
