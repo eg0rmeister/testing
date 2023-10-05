@@ -16,3 +16,11 @@ void Scanner::Reset() {
   _last_terminal = _forest.GetSize();
   _last_terminal_lexem = "";
 }
+
+uint32_t Scanner::GetLastTerminalId() const { return _last_terminal; }
+
+std::string Scanner::GetLastTerminalString() const {
+  return _last_terminal_lexem;
+}
+
+std::string Scanner::GetCurrentString() const { return _current_lexem; }
