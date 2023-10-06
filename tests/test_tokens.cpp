@@ -13,8 +13,8 @@
 #include "Scanner.h"
 
 int main() {
-  std::string REG0 = "int";
-  std::string REG1 = "aa*bb*";
+  std::string REG0 = "int+float";
+  std::string REG1 = "(a+b+c+d+e+f+g+h+i+j+k+l+m+n+o+p+q+r+s+t+u+v+w+x+y+z+_)*";
 
   DFA dfa0 =
       ConvertNFAtoDFA(GetNFAWithNoEpsilons(GetNFAFromREG(REGTree(REG0))));
@@ -32,7 +32,7 @@ int main() {
     Scanner scanner(dfa_forest, tokens);
 
     // Scanner input
-    std::string line_of_code = "int abb;";
+    std::string line_of_code = "float floaty\n";
     std::string result = "";
     for (size_t i = 0; i < line_of_code.length(); ++i) {
       if (scanner.Input(std::string(1, line_of_code[i]))) {
@@ -46,5 +46,6 @@ int main() {
 
   } catch (const std::exception& e) {
     std::cout << "FAILED with error " << ' ' << e.what() << '\n';
+    return 1;
   }
 }
