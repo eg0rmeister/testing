@@ -1,6 +1,0 @@
-/home/dmitry/Source/lang-23/cpp/srcfolder/CMakeFiles/antlr4_runtime.dir
-/home/dmitry/Source/lang-23/cpp/srcfolder/CMakeFiles/antlr4_runtime-build_static.dir
-/home/dmitry/Source/lang-23/cpp/srcfolder/CMakeFiles/antlr4_runtime-build_shared.dir
-/home/dmitry/Source/lang-23/cpp/srcfolder/CMakeFiles/demo.dir
-/home/dmitry/Source/lang-23/cpp/srcfolder/CMakeFiles/edit_cache.dir
-/home/dmitry/Source/lang-23/cpp/srcfolder/CMakeFiles/rebuild_cache.dir
