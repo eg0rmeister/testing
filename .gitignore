@@ -443,7 +443,9 @@ FodyWeavers.xsd
 *.sln.iml
 
 # ANTLR
+/antlr4_runtime
 /antlr4_runtime/*
+/antlr4cpp_generated_src
 /antlr4cpp_generated_src/*
 demo
 .antlr/*
