@@ -441,3 +441,7 @@ FodyWeavers.xsd
 
 # JetBrains Rider
 *.sln.iml
+
+# ANTLR
+/antlr4_runtime
+/antlr4_runtime/*
