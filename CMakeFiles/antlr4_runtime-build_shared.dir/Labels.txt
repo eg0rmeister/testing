@@ -1,0 +1,6 @@
+# Target labels
+ antlr4_runtime
+# Source files and their labels
+/home/dmitry/Source/lang-23/cpp/srcfolder/CMakeFiles/antlr4_runtime-build_shared
+/home/dmitry/Source/lang-23/cpp/srcfolder/CMakeFiles/antlr4_runtime-build_shared.rule
+/home/dmitry/Source/lang-23/cpp/srcfolder/antlr4_runtime/src/antlr4_runtime-stamp/antlr4_runtime-build_shared.rule
