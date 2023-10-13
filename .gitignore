@@ -446,3 +446,4 @@ FodyWeavers.xsd
 /antlr4_runtime/*
 /antlr4cpp_generated_src/*
 demo
+.antlr/*
