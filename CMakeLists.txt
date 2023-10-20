@@ -1,10 +1,11 @@
-# minimum required CMAKE version
-CMAKE_MINIMUM_REQUIRED(VERSION 3.7 FATAL_ERROR)
+cmake_minimum_required(VERSION 3.7)
+
+project("Antlr-cpp-driver")
 
 list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
 
-# compiler must be 11 or 14
-set(CMAKE_CXX_STANDARD 17)
+# compiler must be at least 17
+set(CMAKE_CXX_STANDARD 20)
 
 # required if linking to static library
 add_definitions(-DANTLR4CPP_STATIC)
@@ -18,24 +19,48 @@ include_directories(${ANTLR4_INCLUDE_DIRS})
 
 # set variable pointing to the antlr tool that supports C++
 # this is not required if the jar file can be found under PATH environment
-set(ANTLR_EXECUTABLE /home/dmitry/Source/lang-23/cpp/antlr-4.13.1-complete.jar)
+set(ANTLR_EXECUTABLE ${CMAKE_CURRENT_SOURCE_DIR}/tools/antlr-4.13.1-complete.jar)
 # add macros to generate ANTLR Cpp code from grammar
 find_package(ANTLR REQUIRED)
 
+# CMake commands copied by the CMake file for CImg
+
+# To use PKG_CHECK_MODULES to find some optional packages
+find_package(PkgConfig)
+
+
+# CMake commands for this specific project start here
+
+
+
 # Call macro to add lexer and grammar to your build dependencies.
-antlr_target(SampleGrammarLexer TLexer.g4 LEXER
-             PACKAGE antlrcpptest)
-antlr_target(SampleGrammarParser TParser.g4 PARSER
-             PACKAGE antlrcpptest
-             DEPENDS_ANTLR SampleGrammarLexer
-             COMPILE_FLAGS -lib ${ANTLR_SampleGrammarLexer_OUTPUT_DIR})
+antlr_target(ExprGrammarParser Expr.g4 VISITOR OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/libs/)
 
-# include generated files in project environment
-include_directories(${ANTLR_SampleGrammarLexer_OUTPUT_DIR})
-include_directories(${ANTLR_SampleGrammarParser_OUTPUT_DIR})
+# add our project source directories
+include_directories(${PROJECT_SOURCE_DIR}
+					 ${PROJECT_SOURCE_DIR}/libs/
+  )
+  
 
-# add generated grammar to demo binary target
-add_executable(demo main.cpp
-               ${ANTLR_SampleGrammarLexer_CXX_OUTPUTS}
-               ${ANTLR_SampleGrammarParser_CXX_OUTPUTS})
-target_link_libraries(demo antlr4_static)
+add_executable(driver driver.cpp NewExprVisitor.cpp ${ANTLR_ExprGrammarParser_CXX_OUTPUTS})
+
+# link required libraries
+target_link_libraries(driver antlr4_static ${SYSTEM_LIBS})
+
+# copy the input file next to the generated executable
+add_custom_command(TARGET driver POST_BUILD
+  COMMAND ${CMAKE_COMMAND} -E copy_if_different
+  "${PROJECT_SOURCE_DIR}/input.txt"
+  $<TARGET_FILE_DIR:driver>)
+
+# necessary because the default working directory of Visual Studio
+# is not the same as the one in which the binary is created
+# so we copy the input file twice:
+# one for when you launch the executale in Visual Studio (CTRL+F5)
+# one for when you launch it normally
+if (WIN32)
+add_custom_command(TARGET driver POST_BUILD
+  COMMAND ${CMAKE_COMMAND} -E copy_if_different
+  "${PROJECT_SOURCE_DIR}/input.txt"
+  $<TARGET_FILE_DIR:driver>/../)
+endif()

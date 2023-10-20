@@ -449,3 +449,19 @@ FodyWeavers.xsd
 /antlr4cpp_generated_src/*
 demo
 .antlr/*
+
+# Project-specific
+build/
+antlr4-runtime/Expr*
+libs/Expr.interp
+libs/Expr.tokens
+libs/ExprBaseVisitor.cpp
+libs/ExprBaseVisitor.h
+libs/ExprLexer.cpp
+libs/ExprLexer.h
+libs/ExprLexer.interp
+libs/ExprLexer.tokens
+libs/ExprParser.cpp
+libs/ExprParser.h
+libs/ExprVisitor.cpp
+libs/ExprVisitor.h

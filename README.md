@@ -4,7 +4,8 @@ ANTLR4 also uses *origin* for it's repo and it otherwise causes errors.
 
 ## Getting started
 ```bash
-$ cmake .
+$ cd build
+$ cmake ../
 $ make
 ```
-Default target is `demo`, it produces `demo` binary file in current directory
+Default target is `driver`, it produces `driver` binary file in current (build) directory
