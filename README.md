@@ -4,6 +4,7 @@ ANTLR4 also uses *origin* for it's repo and it otherwise causes errors.
 
 ## Getting started
 ```bash
+$ mkdir build
 $ cd build
 $ cmake ../
 $ make
