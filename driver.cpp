@@ -20,8 +20,8 @@ int main(int argc, const char* argv[]) {
   InterpreterVisitor visitor;
   try {
     visitor.visitProg(tree);
-  } catch (...) {
-    std::cout << "Error occured!\n";
+  } catch (const std::exception& ex) {
+    std::cout << "Error occured!\n" << ex.what();
   }
 
   return 0;
