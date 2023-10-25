@@ -42,7 +42,7 @@ include_directories(${PROJECT_SOURCE_DIR}
   )
   
 
-add_executable(driver driver.cpp NewExprVisitor.cpp ${ANTLR_ExprGrammarParser_CXX_OUTPUTS})
+add_executable(driver driver.cpp NewExprVisitor.cpp InterpreterVisitor.cpp ${ANTLR_ExprGrammarParser_CXX_OUTPUTS})
 
 # link required libraries
 target_link_libraries(driver antlr4_static ${SYSTEM_LIBS})
