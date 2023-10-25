@@ -19,6 +19,15 @@ std::any InterpreterVisitor::visitExpr(ExprParser::ExprContext *ctx) {
 }
 
 std::any InterpreterVisitor::visitStmt(ExprParser::StmtContext *ctx) {
-  std::cout << "Stmt: " << ctx->getText() << '\n';
+	if (ctx->assign != nullptr) {
+		std::cout << "AssignStmt: " << ctx->getText() << '\n';
+		visitExpr(ctx->expr());
+	} else if (ctx->printexp != nullptr) {
+		std::cout << "PrintStmt: " << ctx->getText() << '\n';
+		visitExpr(ctx->expr());
+	} else {
+		std::cout << "UnknownStmt: " << ctx->getText() << '\n';
+	}
+  
   return std::any();
 }
