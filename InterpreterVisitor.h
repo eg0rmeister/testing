@@ -1,4 +1,5 @@
 #pragma once
+#include <map>
 #include <string>
 
 #include "antlr4-runtime.h"
@@ -13,4 +14,13 @@ class InterpreterVisitor : ExprBaseVisitor {
   std::any visitExpr(ExprParser::ExprContext *ctx);
 
   std::any visitStmt(ExprParser::StmtContext *ctx);
+
+ private:
+  std::any visitPrintStmt(ExprParser::StmtContext *ctx);
+
+  std::any visitAssignStmt(ExprParser::StmtContext *ctx);
+
+  int visitNumberExpr(antlr4::Token* number);
+
+  std::map<std::string, std::any> _variables;
 };
