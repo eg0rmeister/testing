@@ -29,9 +29,6 @@ class InterpreterVisitor : ExprBaseVisitor {
 
   std::any visitAssignStmt(ExprParser::StmtContext *ctx);
 
-  /// @brief Process number expression
-  /// @param ctx Expression context
-  /// @return number as a string
   std::any visitNumberExpr(ExprParser::ExprContext *ctx);
 
   std::any visitBraceExpr(ExprParser::ExprContext *ctx);
