@@ -12,7 +12,7 @@ set(ANTLR4_GIT_REPOSITORY https://github.com/antlr/antlr4.git)
 if(NOT DEFINED ANTLR4_TAG)
   # Set to branch name to keep library updated at the cost of needing to rebuild after 'clean'
   # Set to commit hash to keep the build stable and does not need to rebuild after 'clean'
-  set(ANTLR4_TAG master)
+  set(ANTLR4_TAG 5a7b4d4)
 endif()
 
 # Ensure that the include dir already exists at configure time (to avoid cmake erroring
