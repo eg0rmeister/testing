@@ -38,51 +38,60 @@
 
 ## Использование
 
-Вот пример кода, преобразующий массив РВ в лес ДКА, из файла `main.cpp`:
+Вот пример кода, в котором создаётся сканнер, выделяющий токены `TYPE`(тип) и `VAR`(переменная):
 
 ```cpp
-#include <DFA.h>
-#include <DFA_Forest.h>
-#include <NFA.h>
-#include <NFA_to_DFA.h>
-#include <REGTree.h>
-#include <REG_to_NFA.h>
-
+#include <cassert>
 #include <iostream>
 #include <string>
 #include <unordered_set>
 #include <vector>
 
+#include "DFA.h"
+#include "DFA_Forest.h"
+#include "NFA.h"
+#include "NFA_to_DFA.h"
+#include "REGTree.h"
+#include "REG_to_NFA.h"
+#include "Scanner.h"
+
 int main() {
-  // Create array of regular expressions
-  std::string regs[] = {"abc*", "ab*c"};
+  std::string REG0 = "int+float";
+  std::string REG1 = "(a+b+c+d+e+f+g+h+i+j+k+l+m+n+o+p+q+r+s+t+u+v+w+x+y+z+_)*";
+
+  // DFA for types
+  DFA dfa0 =
+      ConvertNFAtoDFA(GetNFAWithNoEpsilons(GetNFAFromREG(REGTree(REG0))));
+  // DFA for variables
+  DFA dfa1 =
+      ConvertNFAtoDFA(GetNFAWithNoEpsilons(GetNFAFromREG(REGTree(REG1))));
 
   std::vector<DFA> dfa_vector;
-  for (const auto& reg : regs) {
-    // Build parse tree
-    auto reg_tree = REGTree(reg);
-    // Create NFA from tree
-    auto nfa = GetNFAFromREG(reg_tree);
-    // Remove epsilon-transitions from NFA
-    auto clean_nfa = GetNFAWithNoEpsilons(nfa);
-    // Convert NFA to DFA using Thompson's algorithm
-    auto dfa = ConvertNFAtoDFA(clean_nfa);
-    // Print this DFA
-    dfa.Visualize();
-    // Save it
-    dfa_vector.push_back(dfa);
+  dfa_vector.push_back(dfa0);
+  dfa_vector.push_back(dfa1);
+  DFAForest dfa_forest(dfa_vector);
+  try {
+    // Create scanner from DFA0 (types) and DFA1 (variables)
+    std::vector<size_t> tokens = {TYPE, VAR};
+    Scanner scanner(dfa_forest, tokens);
+
+    // Scanner input
+    std::string line_of_code = "float floaty\n";
+    std::string result = "";
+    for (size_t i = 0; i < line_of_code.length(); ++i) {
+      if (scanner.Input(std::string(1, line_of_code[i]))) {
+        result += scanner.GetLastToken().Type();
+        result += ' ';
+        scanner.Reset();
+      }
+    }
+    std::cout << result << '\n';
+    assert((result == "TYPE VAR "));
+
+  } catch (const std::exception& e) {
+    std::cout << "FAILED with error " << ' ' << e.what() << '\n';
+    return 1;
   }
-
-  // Create DFAForest - forest of automatons
-  DFAForest forest(dfa_vector);
-
-  // Check if any of DFA's accepts following words
-  std::cout << std::boolalpha << forest.TestWord("ab") << '\n';     // true
-  std::cout << std::boolalpha << forest.TestWord("abc") << '\n';    // true
-  std::cout << std::boolalpha << forest.TestWord("abbc") << '\n';   // true
-  std::cout << std::boolalpha << forest.TestWord("ababc") << '\n';  // false
-
-  return 0;
 }
 
 ```
