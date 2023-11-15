@@ -6,6 +6,7 @@ list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
 
 # compiler must be at least 17
 set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pthread")
 
 # add external build for antlrcpp
 include(ExternalAntlr4Cpp)
@@ -19,7 +20,6 @@ set(ANTLR_EXECUTABLE ${CMAKE_CURRENT_SOURCE_DIR}/tools/antlr-4.13.1-complete.jar
 find_package(ANTLR REQUIRED)
 
 # CMake commands for this specific project start here
-
 # Call macro to add lexer and grammar to your build dependencies.
 antlr_target(ExprGrammarParser Expr.g4 VISITOR OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/libs/)
 
