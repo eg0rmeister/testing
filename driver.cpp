@@ -1,7 +1,6 @@
 #include <iostream>
 
 #include "InterpreterVisitor.h"
-#include "NewExprVisitor.h"
 #include "antlr4-runtime.h"
 #include "ExprLexer.h"
 #include "ExprParser.h"
