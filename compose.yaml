@@ -1,0 +1,7 @@
+services:
+  compiler:
+    build: .
+    volumes:
+      - ./Project:/code
+    entrypoint: bash
+    tty: true
