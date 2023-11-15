@@ -3,8 +3,8 @@
 #include "InterpreterVisitor.h"
 #include "NewExprVisitor.h"
 #include "antlr4-runtime.h"
-#include "libs/ExprLexer.h"
-#include "libs/ExprParser.h"
+#include "ExprLexer.h"
+#include "ExprParser.h"
 
 int main(int argc, const char* argv[]) {
   std::ifstream stream;
