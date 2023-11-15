@@ -16,7 +16,6 @@ include_directories(${ANTLR4_INCLUDE_DIRS})
 # set variable pointing to the antlr tool that supports C++
 # this is not required if the jar file can be found under PATH environment
 set(ANTLR_EXECUTABLE ${CMAKE_CURRENT_SOURCE_DIR}/tools/antlr-4.13.1-complete.jar)
-# add macros to generate ANTLR Cpp code from grammar
 find_package(ANTLR REQUIRED)
 
 # CMake commands for this specific project start here
@@ -24,9 +23,7 @@ find_package(ANTLR REQUIRED)
 antlr_target(ExprGrammarParser Expr.g4 VISITOR OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/libs/)
 
 # add our project source directories
-include_directories(${PROJECT_SOURCE_DIR}
-					 ${PROJECT_SOURCE_DIR}/libs/
-  )
+include_directories(${PROJECT_SOURCE_DIR} ${PROJECT_SOURCE_DIR}/libs/)
 
 add_executable(driver driver.cpp NewExprVisitor.cpp InterpreterVisitor.cpp ${ANTLR_ExprGrammarParser_CXX_OUTPUTS})
 
