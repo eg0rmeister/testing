@@ -26,12 +26,12 @@ expr:   function_ident=IDENT '(' arguments=exprs ')' // FunctionExpression
 
 fun: FUN ident=IDENT '(' arguments=idents ')' '{' NEWLINE ((stmt NEWLINE)*) '}';
 
-idents: IDENT ',' idents
-      | IDENT
+idents: ident=IDENT ',' rest=idents
+      | ident=IDENT
       |
       ;
 
-exprs:   expr ',' exprs
-     |   expr
+exprs:   expression=expr ',' rest=exprs
+     |   expression=expr
      |
      ;

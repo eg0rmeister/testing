@@ -62,19 +62,41 @@ std::any InterpreterVisitor::visitStmt(ExprParser::StmtContext *ctx) {
   return std::any();
 }
 
-std::any InterpreterVisitor::visitFun(ExprParser::FunContext *context) {  
+std::any InterpreterVisitor::visitFun(ExprParser::FunContext *context) {
   _functions[context->ident->getText()] = context;
   return std::any();
 }
 
 // TODO: Implement real idents
 std::any InterpreterVisitor::visitIdents(ExprParser::IdentsContext *context) {
-  return std::any();
+  if (context->ident == nullptr) {
+    return std::vector<string>();
+  }
+  if (context->rest == nullptr) {
+    std::vector<string> ret;
+    ret.push_back(context->ident->getText());
+    return ret;
+  }
+  std::vector<string> ret =
+      std::any_cast<std::vector<string>>(context->rest->accept(this));
+  ret.push_back(context->ident->getText());
+  return ret;
 }
 
 // TODO: Implement real exprs
 std::any InterpreterVisitor::visitExprs(ExprParser::ExprsContext *context) {
-  return std::any();
+  if (context->expression == nullptr) {
+    return std::vector<int>();
+  }
+  if (context->rest == nullptr) {
+    std::vector<int> ret;
+    ret.push_back(std::any_cast<int>(context->expression->accept(this)));
+    return ret;
+  }
+  std::vector<int> ret =
+      std::any_cast<std::vector<int>>(context->rest->accept(this));
+  ret.push_back(std::any_cast<int>(context->expression->accept(this)));
+  return ret;
 }
 
 std::any InterpreterVisitor::visitPrintStmt(ExprParser::StmtContext *ctx) {
@@ -138,7 +160,6 @@ std::any InterpreterVisitor::visitFunExpr(ExprParser::ExprContext *ctx) {
   }
   return std::any();
 }
-
 
 Printable operator*(const Printable &lhs, const Printable &rhs);
 
