@@ -8,3 +8,11 @@ struct Printable {
   std::any value;
   std::string str;
 };
+
+Printable operator+(const Printable &lhs, const Printable &rhs);
+
+Printable operator-(const Printable &lhs, const Printable &rhs);
+
+Printable operator*(const Printable &lhs, const Printable &rhs);
+
+Printable operator/(const Printable &lhs, const Printable &rhs);
