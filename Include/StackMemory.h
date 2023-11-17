@@ -1,16 +1,19 @@
 #pragma once
+
 #include <map>
 #include <stack>
 #include <string>
 #include <vector>
 
+#include "Printable.h"
+
 class StackMemory {
  public:
-  void Declare(const std::string& name, int value);
+  void Declare(const std::string& name, Printable value);
 
-  void Set(const std::string& name, int value);
+  void Set(const std::string& name, Printable value);
   
-  int Get(const std::string& name);
+  Printable Get(const std::string& name);
 
   void Scope_in();
 
@@ -22,5 +25,5 @@ class StackMemory {
   std::string _declare_delimiter = "{";
 
   std::vector<std::string> _declare_history;
-  std::map<std::string, std::stack<int>> _variables_history;
+  std::map<std::string, std::stack<Printable>> _variables_history;
 };

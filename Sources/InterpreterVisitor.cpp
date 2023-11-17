@@ -129,10 +129,7 @@ std::any InterpreterVisitor::visitBraceExpr(ExprParser::ExprContext *ctx) {
 
 std::any InterpreterVisitor::visitVarIdentExpr(ExprParser::ExprContext *ctx) {
   auto name = ctx->variable_ident->getText();
-  if (_variables.find(name) == _variables.end()) {
-    throw std::runtime_error("Variable not found: " + name + " !\n");
-  }
-  return _variables[name];
+  return memory.Get(name);
 }
 
 std::any InterpreterVisitor::visitAddExpr(ExprParser::ExprContext *ctx) {

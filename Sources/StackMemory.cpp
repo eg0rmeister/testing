@@ -1,14 +1,16 @@
 #include "StackMemory.h"
+#include <iostream>
 
-void StackMemory::Declare(const std::string& name, int value) {
+void StackMemory::Declare(const std::string& name, Printable value) {
   if (CheckDeclared(name)) {
     throw(std::runtime_error("Variable " + name +
                              " already declared in this scope"));
   }
+  _declare_history.push_back(name);
   _variables_history[name].push(value);
 }
 
-void StackMemory::Set(const std::string& name, int value) {
+void StackMemory::Set(const std::string& name, Printable value) {
   if (!CheckDeclared(name)) {
     throw(std::runtime_error("Variable " + name +
                              " was not declared in this scope"));
@@ -17,7 +19,7 @@ void StackMemory::Set(const std::string& name, int value) {
   _variables_history[name].push(value);
 }
 
-int StackMemory::Get(const std::string& name) {
+Printable StackMemory::Get(const std::string& name) {
   if (!CheckDeclared(name)) {
     throw(std::runtime_error("Variable " + name +
                              " was not declared in this scope"));
@@ -38,14 +40,15 @@ void StackMemory::Scope_out() {
 }
 
 bool StackMemory::CheckDeclared(const std::string& name) {
-    size_t distance_from_end = 0;
-    while (distance_from_end < _declare_history.size()) {
+    size_t distance_from_end = 1;
+    while (distance_from_end <= _declare_history.size()) {
       if (_declare_history[_declare_history.size() - distance_from_end] == _declare_delimiter) {
         break;
       }
       if (_declare_history[_declare_history.size() - distance_from_end] == name) {
         return true;
       }
+      ++distance_from_end;
     }
     return false;
   }

@@ -20,7 +20,7 @@ int main(int argc, const char* argv[]) {
   try {
     visitor.visitFile(tree);
   } catch (const std::exception& ex) {
-    std::cout << "Error occured!\n" << ex.what();
+    std::cout << "Error occured!\n" << ex.what() << std::endl;
   }
 
   return 0;
