@@ -8,6 +8,7 @@ NEWLINE : [\r\n]+ ;
 INT     : [0-9]+ ;
 IDENT   : [a-zA-Z]+ ;
 
+file: fun* NEWLINE prog;
 
 prog:  FUN MAIN '(' idents ')' '{' NEWLINE ((stmt NEWLINE)*) '}'
     ;
@@ -22,7 +23,7 @@ expr:   left=expr op=('*'|'/') right=expr // MulExpression | DivExpression # lef
     |   function_ident=IDENT '(' arguments=exprs ')' // FunctionExpression
     ;
 
-fun: FUN ident=IDENT '(' arguments=idents ')';
+fun: FUN ident=IDENT '(' arguments=idents ')' '{' NEWLINE ((stmt NEWLINE)*) '}';
 
 idents: IDENT ',' idents
       | IDENT
