@@ -6,6 +6,7 @@
 #include "ExprBaseVisitor.h"
 
 struct Printable {
+  /// @brief Wrapper around std::any to print variables of any type
   Printable();
   Printable(std::any value, std::string str);
   std::any value;
@@ -28,7 +29,6 @@ class InterpreterVisitor : ExprBaseVisitor {
 
 
  private:
-  /// @brief Wrapper around std::any to print variables of any type
 
   std::any visitPrintStmt(ExprParser::StmtContext *ctx);
 
