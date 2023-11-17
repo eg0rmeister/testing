@@ -104,11 +104,12 @@ std::any InterpreterVisitor::visitPrintStmt(ExprParser::StmtContext *ctx) {
   return std::any();
 }
 
+// For now assign is declare and assign
 std::any InterpreterVisitor::visitAssignStmt(ExprParser::StmtContext *ctx) {
   std::cout << "> " << ctx->getText() << '\n';
   auto variable_name = ctx->ident->getText();
   auto variable_value = std::any_cast<Printable>(ctx->assign->accept(this));
-  _variables[variable_name] = variable_value;
+  memory.Declare(variable_name, variable_value);
   return std::any();
 }
 
