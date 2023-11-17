@@ -7,7 +7,7 @@
 
 int main(int argc, const char* argv[]) {
   std::ifstream stream;
-  stream.open("input.txt");
+  stream.open("../input.txt");
 
   antlr4::ANTLRInputStream input(stream);
   ExprLexer lexer(&input);

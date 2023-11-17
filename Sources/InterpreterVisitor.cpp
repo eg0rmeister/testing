@@ -158,7 +158,7 @@ std::any InterpreterVisitor::visitFunExpr(ExprParser::ExprContext *ctx) {
   for (auto statement : _functions.at(ctx->function_ident->getText())->stmt()) {
     statement->accept(this);
   }
-  return std::any();
+  return _functions.at(ctx->function_ident->getText())->return_expr->accept(this);
 }
 
 Printable operator*(const Printable &lhs, const Printable &rhs);
