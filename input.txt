@@ -11,6 +11,12 @@ def main() {
     print b
     print a
     print c
-    helloworld()
     print helloworld()
+    print helloworldd()
 }
+
+def helloworldd() {
+    print(a)
+    return 2
+}
+
