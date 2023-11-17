@@ -17,7 +17,7 @@ void StackMemory::Set(const std::string& name, int value) {
   _variables_history[name].push(value);
 }
 
-int StackMemory::Get(const std::string& name, int value) {
+int StackMemory::Get(const std::string& name) {
   if (!CheckDeclared(name)) {
     throw(std::runtime_error("Variable " + name +
                              " was not declared in this scope"));

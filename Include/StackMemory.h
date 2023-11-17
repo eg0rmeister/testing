@@ -10,7 +10,7 @@ class StackMemory {
 
   void Set(const std::string& name, int value);
   
-  int Get(const std::string& name, int value);
+  int Get(const std::string& name);
 
   void Scope_in();
 
