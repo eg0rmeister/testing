@@ -5,13 +5,8 @@
 #include "antlr4-runtime.h"
 #include "ExprBaseVisitor.h"
 
-struct Printable {
-  /// @brief Wrapper around std::any to print variables of any type
-  Printable();
-  Printable(std::any value, std::string str);
-  std::any value;
-  std::string str;
-};
+#include "StackMemory.h"
+#include "Printable.h"
 
 class InterpreterVisitor : ExprBaseVisitor {
  public:
