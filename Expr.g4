@@ -24,7 +24,12 @@ expr:   function_ident=IDENT '(' arguments=exprs ')' // FunctionExpression
     |   variable_ident=IDENT // IdentExpression
     ;
 
-fun: FUN ident=IDENT '(' arguments=idents ')' '{' NEWLINE ((stmt NEWLINE)*) '}';
+fun: FUN ident=IDENT '(' arguments=idents ')' 
+'{' 
+    NEWLINE ((stmt NEWLINE)*)
+    'return' return_expr=expr
+    NEWLINE
+'}';
 
 idents: ident=IDENT ',' rest=idents
       | ident=IDENT
