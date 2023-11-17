@@ -2,10 +2,6 @@
 
 using namespace std;
 
-// std::any InterpreterVisitor::visitFile(ExprParser::ProgContext *ctx) {
-//   return std::any();
-// }
-
 std::any InterpreterVisitor::visitFile(ExprParser::FileContext *context) {
   for (auto function : context->fun()) {
     function->accept(this);
@@ -67,7 +63,6 @@ std::any InterpreterVisitor::visitFun(ExprParser::FunContext *context) {
   return std::any();
 }
 
-// TODO: Implement real idents
 std::any InterpreterVisitor::visitIdents(ExprParser::IdentsContext *context) {
   if (context->ident == nullptr) {
     return std::vector<string>();
@@ -83,7 +78,6 @@ std::any InterpreterVisitor::visitIdents(ExprParser::IdentsContext *context) {
   return ret;
 }
 
-// TODO: Implement real exprs
 std::any InterpreterVisitor::visitExprs(ExprParser::ExprsContext *context) {
   if (context->expression == nullptr) {
     return std::vector<int>();
@@ -140,14 +134,10 @@ std::any InterpreterVisitor::visitVarIdentExpr(ExprParser::ExprContext *ctx) {
   return _variables[name];
 }
 
-Printable operator+(const Printable &lhs, const Printable &rhs);
-
 std::any InterpreterVisitor::visitAddExpr(ExprParser::ExprContext *ctx) {
   return std::any_cast<Printable>(ctx->left->accept(this)) +
          std::any_cast<Printable>(ctx->right->accept(this));
 }
-
-Printable operator-(const Printable &lhs, const Printable &rhs);
 
 std::any InterpreterVisitor::visitSubExpr(ExprParser::ExprContext *ctx) {
   return std::any_cast<Printable>(ctx->left->accept(this)) -
@@ -161,57 +151,12 @@ std::any InterpreterVisitor::visitFunExpr(ExprParser::ExprContext *ctx) {
   return std::any();
 }
 
-Printable operator*(const Printable &lhs, const Printable &rhs);
-
 std::any InterpreterVisitor::visitMulExpr(ExprParser::ExprContext *ctx) {
   return std::any_cast<Printable>(ctx->left->accept(this)) *
          std::any_cast<Printable>(ctx->right->accept(this));
 }
 
-Printable operator/(const Printable &lhs, const Printable &rhs);
-
 std::any InterpreterVisitor::visitDivExpr(ExprParser::ExprContext *ctx) {
   return std::any_cast<Printable>(ctx->left->accept(this)) /
          std::any_cast<Printable>(ctx->right->accept(this));
-}
-
-Printable::Printable() : Printable(std::any(), std::string()) {}
-
-Printable::Printable(std::any value, std::string str)
-    : value(value), str(str) {}
-
-Printable operator+(const Printable &lhs, const Printable &rhs) {
-  if (lhs.value.type() == typeid(int) && rhs.value.type() == typeid(int)) {
-    int result = std::any_cast<int>(lhs.value) + std::any_cast<int>(rhs.value);
-    return {result, std::to_string(result)};
-  }
-  throw std::runtime_error("No operator+ for these operands: " + lhs.str + " " +
-                           rhs.str + " !");
-}
-
-Printable operator-(const Printable &lhs, const Printable &rhs) {
-  if (lhs.value.type() == typeid(int) && rhs.value.type() == typeid(int)) {
-    int result = std::any_cast<int>(lhs.value) - std::any_cast<int>(rhs.value);
-    return {result, std::to_string(result)};
-  }
-  throw std::runtime_error("No operator- for these operands: " + lhs.str + " " +
-                           rhs.str + " !");
-}
-
-Printable operator*(const Printable &lhs, const Printable &rhs) {
-  if (lhs.value.type() == typeid(int) && rhs.value.type() == typeid(int)) {
-    int result = std::any_cast<int>(lhs.value) * std::any_cast<int>(rhs.value);
-    return {result, std::to_string(result)};
-  }
-  throw std::runtime_error("No operator* for these operands: " + lhs.str + " " +
-                           rhs.str + " !");
-}
-
-Printable operator/(const Printable &lhs, const Printable &rhs) {
-  if (lhs.value.type() == typeid(int) && rhs.value.type() == typeid(int)) {
-    int result = std::any_cast<int>(lhs.value) / std::any_cast<int>(rhs.value);
-    return {result, std::to_string(result)};
-  }
-  throw std::runtime_error("No operator/ for these operands: " + lhs.str + " " +
-                           rhs.str + " !");
 }
