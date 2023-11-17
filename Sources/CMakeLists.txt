@@ -1,0 +1,5 @@
+add_library(AllVisitor
+  InterpreterVisitor.cpp
+  Printable.cpp
+  StackMemory.cpp
+)

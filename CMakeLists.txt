@@ -28,14 +28,11 @@ antlr_target(ExprGrammarParser Expr.g4 VISITOR OUTPUT_DIRECTORY ${GENERATED_DIR}
 
 # Add our project source directories
 include_directories(${HEADERS_DIR} ${GENERATED_DIR})
+# List all the cpp files used
+add_subdirectory(${SOURCES_DIR} AllVisitor)
+link_libraries(AllVisitor)
 
 add_executable(driver driver.cpp ${ANTLR_ExprGrammarParser_CXX_OUTPUTS})
-
-# List all the cpp files used
-target_sources(driver PUBLIC ${SOURCES_DIR}/InterpreterVisitor.cpp
-PUBLIC ${SOURCES_DIR}/Printable.cpp
-PUBLIC ${SOURCES_DIR}/StackMemory.cpp
-)
 
 # Link required libraries
 target_link_libraries(driver antlr4_static ${SYSTEM_LIBS})
