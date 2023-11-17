@@ -14,13 +14,14 @@ prog:  FUN MAIN '(' idents ')' '{' NEWLINE ((stmt NEWLINE)*) '}'
     ;
 stmt: 'print' printexp=expr
     | ident=IDENT ('=') assign=expr
+    | execute=expr
     ;
-expr:   left=expr op=('*'|'/') right=expr // MulExpression | DivExpression # left - .expr(0)
+expr:   function_ident=IDENT '(' arguments=exprs ')' // FunctionExpression
+    |   left=expr op=('*'|'/') right=expr // MulExpression | DivExpression # left - .expr(0)
     |   left=expr op=('+'|'-') right=expr // AddExpression | SubExpression
     |   value=INT // NumberExpression
     |   '(' exp=expr ')' // BraceExpression
     |   variable_ident=IDENT // IdentExpression
-    |   function_ident=IDENT '(' arguments=exprs ')' // FunctionExpression
     ;
 
 fun: FUN ident=IDENT '(' arguments=idents ')' '{' NEWLINE ((stmt NEWLINE)*) '}';

@@ -2,7 +2,15 @@
 
 using namespace std;
 
-std::any InterpreterVisitor::visitFile(ExprParser::ProgContext *ctx) {
+// std::any InterpreterVisitor::visitFile(ExprParser::ProgContext *ctx) {
+//   return std::any();
+// }
+
+std::any InterpreterVisitor::visitFile(ExprParser::FileContext *context) {
+  for (auto function : context->fun()) {
+    function->accept(this);
+  }
+  context->prog()->accept(this);
   return std::any();
 }
 
@@ -20,8 +28,11 @@ std::any InterpreterVisitor::visitExpr(ExprParser::ExprContext *ctx) {
   if (ctx->exp != nullptr) {
     return visitBraceExpr(ctx);
   }
-  if (ctx->ident != nullptr) {
-    return visitIdentExpr(ctx);
+  if (ctx->variable_ident != nullptr) {
+    return visitVarIdentExpr(ctx);
+  }
+  if (ctx->function_ident != 0) {
+    return visitFunExpr(ctx);
   }
   if (ctx->op->getText() == "+") {
     return visitAddExpr(ctx);
@@ -44,8 +55,25 @@ std::any InterpreterVisitor::visitStmt(ExprParser::StmtContext *ctx) {
     return visitAssignStmt(ctx);
   } else if (ctx->printexp != nullptr) {
     return visitPrintStmt(ctx);
+  } else if (ctx->execute != nullptr) {
+    return visitExecuteStmt(ctx);
   }
   throw std::runtime_error("Unknown expression: " + ctx->getText() + " !\n");
+  return std::any();
+}
+
+std::any InterpreterVisitor::visitFun(ExprParser::FunContext *context) {  
+  _functions[context->ident->getText()] = context;
+  return std::any();
+}
+
+// TODO: Implement real idents
+std::any InterpreterVisitor::visitIdents(ExprParser::IdentsContext *context) {
+  return std::any();
+}
+
+// TODO: Implement real exprs
+std::any InterpreterVisitor::visitExprs(ExprParser::ExprsContext *context) {
   return std::any();
 }
 
@@ -68,6 +96,12 @@ std::any InterpreterVisitor::visitAssignStmt(ExprParser::StmtContext *ctx) {
   return std::any();
 }
 
+std::any InterpreterVisitor::visitExecuteStmt(ExprParser::StmtContext *ctx) {
+  std::cout << "> " << ctx->getText() << '\n';
+  ctx->execute->accept(this);
+  return std::any();
+}
+
 std::any InterpreterVisitor::visitNumberExpr(ExprParser::ExprContext *ctx) {
   return Printable(std::stoi(ctx->value->getText()), ctx->value->getText());
 }
@@ -76,8 +110,8 @@ std::any InterpreterVisitor::visitBraceExpr(ExprParser::ExprContext *ctx) {
   return ctx->exp->accept(this);
 }
 
-std::any InterpreterVisitor::visitIdentExpr(ExprParser::ExprContext *ctx) {
-  auto name = ctx->ident->getText();
+std::any InterpreterVisitor::visitVarIdentExpr(ExprParser::ExprContext *ctx) {
+  auto name = ctx->variable_ident->getText();
   if (_variables.find(name) == _variables.end()) {
     throw std::runtime_error("Variable not found: " + name + " !\n");
   }
@@ -97,6 +131,14 @@ std::any InterpreterVisitor::visitSubExpr(ExprParser::ExprContext *ctx) {
   return std::any_cast<Printable>(ctx->left->accept(this)) -
          std::any_cast<Printable>(ctx->right->accept(this));
 }
+
+std::any InterpreterVisitor::visitFunExpr(ExprParser::ExprContext *ctx) {
+  for (auto statement : _functions.at(ctx->function_ident->getText())->stmt()) {
+    statement->accept(this);
+  }
+  return std::any();
+}
+
 
 Printable operator*(const Printable &lhs, const Printable &rhs);
 

@@ -14,11 +14,11 @@ int main(int argc, const char* argv[]) {
   antlr4::CommonTokenStream tokens(&lexer);
   ExprParser parser(&tokens);
 
-  ExprParser::ProgContext* tree = parser.prog();
+  ExprParser::FileContext* tree = parser.file();
 
   InterpreterVisitor visitor;
   try {
-    visitor.visitProg(tree);
+    visitor.visitFile(tree);
   } catch (const std::exception& ex) {
     std::cout << "Error occured!\n" << ex.what();
   }

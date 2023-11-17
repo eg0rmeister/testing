@@ -1,9 +1,14 @@
-fun main() {
-    a = 2
+def helloworld() {
+    print((5 + 3) / 8 + 101)
+}
+
+
+def main() {
     a = (3+3)
     b = 4-a
     c = b / a
     print b
     print a
     print c
+    helloworld()
 }

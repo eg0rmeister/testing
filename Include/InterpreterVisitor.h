@@ -15,6 +15,8 @@ struct Printable {
 
 class InterpreterVisitor : ExprBaseVisitor {
  public:
+  std::any visitFile(ExprParser::FileContext *context) override;
+
   std::any visitProg(ExprParser::ProgContext *ctx) override;
 
   std::any visitExpr(ExprParser::ExprContext *ctx) override;
@@ -34,11 +36,13 @@ class InterpreterVisitor : ExprBaseVisitor {
 
   std::any visitAssignStmt(ExprParser::StmtContext *ctx);
 
+  std::any visitExecuteStmt(ExprParser::StmtContext *ctx);
+
   std::any visitNumberExpr(ExprParser::ExprContext *ctx);
 
   std::any visitBraceExpr(ExprParser::ExprContext *ctx);
 
-  std::any visitIdentExpr(ExprParser::ExprContext *ctx);
+  std::any visitVarIdentExpr(ExprParser::ExprContext *ctx);
 
   std::any visitDivExpr(ExprParser::ExprContext *ctx);
 
@@ -48,5 +52,8 @@ class InterpreterVisitor : ExprBaseVisitor {
 
   std::any visitSubExpr(ExprParser::ExprContext *ctx);
 
+  std::any visitFunExpr(ExprParser::ExprContext *ctx);
+
   std::map<std::string, Printable> _variables;
+  std::map<std::string, ExprParser::FunContext*> _functions;
 };
