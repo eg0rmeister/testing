@@ -14,13 +14,18 @@ struct Printable {
 
 class InterpreterVisitor : ExprBaseVisitor {
  public:
-  std::any visitFile(ExprParser::ProgContext *ctx);
+  std::any visitProg(ExprParser::ProgContext *ctx) override;
 
-  std::any visitProg(ExprParser::ProgContext *ctx);
+  std::any visitExpr(ExprParser::ExprContext *ctx) override;
 
-  std::any visitExpr(ExprParser::ExprContext *ctx);
+  std::any visitStmt(ExprParser::StmtContext *ctx) override;
 
-  std::any visitStmt(ExprParser::StmtContext *ctx);
+  std::any visitFun(ExprParser::FunContext *context) override;
+
+  std::any visitIdents(ExprParser::IdentsContext *context) override;
+
+  std::any visitExprs(ExprParser::ExprsContext *context) override;
+
 
  private:
   /// @brief Wrapper around std::any to print variables of any type
