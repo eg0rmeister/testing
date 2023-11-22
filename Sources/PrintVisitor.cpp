@@ -20,7 +20,7 @@ std::any PrintVisitor::visitProg(ExprParser::ProgContext* ctx) {
 }
 
 std::any PrintVisitor::visitExpr(ExprParser::ExprContext* ctx) {
-  std::cout << "Expr:";
+  std::cout << "Expr: ";
   if (ctx->value != nullptr) {
     return visitNumberExpr(ctx);
   }
@@ -62,7 +62,7 @@ std::any PrintVisitor::visitStmt(ExprParser::StmtContext* ctx) {
 }
 
 std::any PrintVisitor::visitFun(ExprParser::FunContext* context) {
-  std::cout << "Fun";
+  std::cout << "Fun" << std::endl;
   for (auto statement : context->stmt()) {
     statement->accept(this);
   }
@@ -118,6 +118,7 @@ std::any PrintVisitor::visitNumberExpr(ExprParser::ExprContext* ctx) {
 
 std::any PrintVisitor::visitBraceExpr(ExprParser::ExprContext* ctx) {
   std::cout << "Brace" << std::endl;
+  ctx->exp->accept(this);
   return std::any();
 }
 
