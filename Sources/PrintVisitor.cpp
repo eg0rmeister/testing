@@ -92,3 +92,9 @@ std::any PrintVisitor::visitExprs(ExprParser::ExprsContext* context) {
   context->rest->accept(this);
   return std::any();
 }
+
+std::any PrintVisitor::visitPrintStmt(ExprParser::StmtContext* ctx) {
+  std::cout << "Print" << std::endl;
+  ctx->printexp->accept(this);
+  return std::any();
+}
