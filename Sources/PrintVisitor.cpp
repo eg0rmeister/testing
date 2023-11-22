@@ -18,3 +18,33 @@ std::any PrintVisitor::visitProg(ExprParser::ProgContext* ctx) {
   }
   return std::any();
 }
+
+std::any PrintVisitor::visitExpr(ExprParser::ExprContext* ctx) {
+  std::cout << "Expr:";
+  if (ctx->value != nullptr) {
+    return visitNumberExpr(ctx);
+  }
+  if (ctx->exp != nullptr) {
+    return visitBraceExpr(ctx);
+  }
+  if (ctx->variable_ident != nullptr) {
+    return visitVarIdentExpr(ctx);
+  }
+  if (ctx->function_ident != 0) {
+    return visitFunExpr(ctx);
+  }
+  if (ctx->op->getText() == "+") {
+    return visitAddExpr(ctx);
+  }
+  if (ctx->op->getText() == "-") {
+    return visitSubExpr(ctx);
+  }
+  if (ctx->op->getText() == "*") {
+    return visitMulExpr(ctx);
+  }
+  if (ctx->op->getText() == "/") {
+    return visitDivExpr(ctx);
+  }
+  std::cout << "Expr: " << ctx->getText() << '\n';
+  return std::any();
+}
