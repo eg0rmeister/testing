@@ -45,6 +45,18 @@ std::any PrintVisitor::visitExpr(ExprParser::ExprContext* ctx) {
   if (ctx->op->getText() == "/") {
     return visitDivExpr(ctx);
   }
-  std::cout << "Expr: " << ctx->getText() << '\n';
+  return std::any();
+}
+
+std::any PrintVisitor::visitStmt(ExprParser::StmtContext* ctx) {
+  std::cout << "Stmt: ";
+  if (ctx->assign != nullptr) {
+    return visitAssignStmt(ctx);
+  } else if (ctx->printexp != nullptr) {
+    return visitPrintStmt(ctx);
+  } else if (ctx->execute != nullptr) {
+    return visitExecuteStmt(ctx);
+  }
+  throw std::runtime_error("Unknown expression: " + ctx->getText() + " !\n");
   return std::any();
 }
