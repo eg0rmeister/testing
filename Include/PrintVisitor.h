@@ -47,4 +47,6 @@ class PrintVisitor : ExprBaseVisitor {
 
   std::any visitFunExpr(ExprParser::ExprContext *ctx);
 
+  std::map<std::string, ExprParser::FunContext*> _functions;
+
 };
