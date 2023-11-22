@@ -110,3 +110,13 @@ std::any PrintVisitor::visitExecuteStmt(ExprParser::StmtContext* ctx) {
   ctx->execute->accept(this);
   return std::any();
 }
+
+std::any PrintVisitor::visitNumberExpr(ExprParser::ExprContext* ctx) {
+  std::cout << "Number" << std::endl;
+  return std::any();
+}
+
+std::any PrintVisitor::visitBraceExpr(ExprParser::ExprContext* ctx) {
+  std::cout << "Brace" << std::endl;
+  return std::any();
+}
