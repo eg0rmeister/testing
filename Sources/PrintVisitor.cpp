@@ -60,3 +60,9 @@ std::any PrintVisitor::visitStmt(ExprParser::StmtContext* ctx) {
   throw std::runtime_error("Unknown expression: " + ctx->getText() + " !\n");
   return std::any();
 }
+
+std::any PrintVisitor::visitFun(ExprParser::FunContext* context) {
+  std::cout << "Fun declaration";
+  _functions[context->ident->getText()] = context;
+  return std::any();
+}
