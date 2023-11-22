@@ -120,3 +120,41 @@ std::any PrintVisitor::visitBraceExpr(ExprParser::ExprContext* ctx) {
   std::cout << "Brace" << std::endl;
   return std::any();
 }
+
+std::any PrintVisitor::visitVarIdentExpr(ExprParser::ExprContext* ctx) {
+  std::cout << "VarIdent" << std::endl;
+  return std::any();
+}
+
+std::any PrintVisitor::visitDivExpr(ExprParser::ExprContext* ctx) {
+  std::cout << "Div" << std::endl;
+  ctx->left->accept(this);
+  ctx->right->accept(this);
+  return std::any();
+}
+
+std::any PrintVisitor::visitMulExpr(ExprParser::ExprContext* ctx) {
+  std::cout << "Mul" << std::endl;
+  ctx->left->accept(this);
+  ctx->right->accept(this);
+  return std::any();
+}
+
+std::any PrintVisitor::visitAddExpr(ExprParser::ExprContext* ctx) {
+  std::cout << "Add" << std::endl;
+  ctx->left->accept(this);
+  ctx->right->accept(this);
+  return std::any();
+}
+
+std::any PrintVisitor::visitSubExpr(ExprParser::ExprContext* ctx) {
+  std::cout << "Sub" << std::endl;
+  ctx->left->accept(this);
+  ctx->right->accept(this);
+  return std::any();
+}
+
+std::any PrintVisitor::visitFunExpr(ExprParser::ExprContext* ctx) {
+  std::cout << "Fun" << std::endl;
+  return std::any();
+}
