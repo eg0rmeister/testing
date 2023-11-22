@@ -77,5 +77,18 @@ std::any PrintVisitor::visitIdents(ExprParser::IdentsContext* context) {
   if (context->rest == nullptr) {
     return std::any();
   }
+  context->rest->accept(this);
+  return std::any();
+}
+
+std::any PrintVisitor::visitExprs(ExprParser::ExprsContext* context) {
+  std::cout << "Exprs" << std::endl;
+  if (context->expression == nullptr) {
+    return std::any();
+  }
+  if (context->rest == nullptr) {
+    return std::any();
+  }
+  context->rest->accept(this);
   return std::any();
 }
