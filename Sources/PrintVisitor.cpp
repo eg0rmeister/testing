@@ -98,3 +98,9 @@ std::any PrintVisitor::visitPrintStmt(ExprParser::StmtContext* ctx) {
   ctx->printexp->accept(this);
   return std::any();
 }
+
+std::any PrintVisitor::visitAssignStmt(ExprParser::StmtContext* ctx) {
+  std::cout << "Assign" << std::endl;
+  ctx->assign->accept(this);
+  return std::any();
+}
