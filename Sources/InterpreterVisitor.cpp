@@ -143,10 +143,13 @@ std::any InterpreterVisitor::visitSubExpr(ExprParser::ExprContext *ctx) {
 }
 
 std::any InterpreterVisitor::visitFunExpr(ExprParser::ExprContext *ctx) {
+  memory.Scope_in();
   for (auto statement : _functions.at(ctx->function_ident->getText())->stmt()) {
     statement->accept(this);
   }
-  return _functions.at(ctx->function_ident->getText())->return_expr->accept(this);
+  std::any result = _functions.at(ctx->function_ident->getText())->return_expr->accept(this);
+  memory.Scope_out();
+  return result;
 }
 
 std::any InterpreterVisitor::visitMulExpr(ExprParser::ExprContext *ctx) {

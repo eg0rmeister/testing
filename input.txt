@@ -13,9 +13,11 @@ def main() {
     print c
     print helloworld()
     print helloworldd()
+    print a
 }
 
 def helloworldd() {
+    a = 100
     print(a)
     return 2
 }
