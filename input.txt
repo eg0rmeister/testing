@@ -16,7 +16,8 @@ def main() {
 }
 
 def helloworldd() {
+    a = a + 1
     print(a)
-    return 2
+    return a
 }
 
