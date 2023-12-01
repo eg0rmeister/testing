@@ -24,6 +24,7 @@ class InterpreterVisitor : ExprBaseVisitor {
 
   std::any visitExprs(ExprParser::ExprsContext *context) override;
 
+  std::any visitStatements(ExprParser::StatementsContext *context) override;
 
  private:
 
