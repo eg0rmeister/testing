@@ -11,9 +11,7 @@ std::any InterpreterVisitor::visitFile(ExprParser::FileContext *context) {
 }
 
 std::any InterpreterVisitor::visitProg(ExprParser::ProgContext *ctx) {
-  for (auto statement : ctx->stmt()) {
-    statement->accept(this);
-  }
+  ctx->statements()->accept(this);
   return std::any();
 }
 
@@ -115,6 +113,14 @@ std::any InterpreterVisitor::visitExprs(ExprParser::ExprsContext *context) {
   return ret;
 }
 
+std::any InterpreterVisitor::visitStatements(
+    ExprParser::StatementsContext *context) {
+  for (auto statement : context->stmt()) {
+    statement->accept(this);
+  }
+  return std::any();
+}
+
 std::any InterpreterVisitor::visitPrintStmt(ExprParser::StmtContext *ctx) {
   std::cout << "> " << ctx->getText() << '\n';
   std::string output = "";
@@ -138,6 +144,16 @@ std::any InterpreterVisitor::visitAssignStmt(ExprParser::StmtContext *ctx) {
 std::any InterpreterVisitor::visitExecuteStmt(ExprParser::StmtContext *ctx) {
   std::cout << "> " << ctx->getText() << '\n';
   ctx->execute->accept(this);
+  return std::any();
+}
+
+std::any InterpreterVisitor::visitIfStmt(ExprParser::StmtContext *ctx) {
+  if (std::any_cast<int>(std::any_cast<Printable>(ctx->ifexp->accept(this)).value) != 0)
+  {
+    ctx->ifstmt->accept(this);
+  } else if (ctx->elsestmt != nullptr) {
+    ctx->elsestmt->accept(this);
+  }
   return std::any();
 }
 
@@ -174,9 +190,7 @@ std::any InterpreterVisitor::visitSubExpr(ExprParser::ExprContext *ctx) {
 
 std::any InterpreterVisitor::visitFunExpr(ExprParser::ExprContext *ctx) {
   memory.Scope_in();
-  for (auto statement : _functions.at(ctx->function_ident->getText())->stmt()) {
-    statement->accept(this);
-  }
+  _functions.at(ctx->function_ident->getText())->statements()->accept(this);
   std::any result = _functions.at(ctx->function_ident->getText())->return_expr->accept(this);
   memory.Scope_out();
   return result;
