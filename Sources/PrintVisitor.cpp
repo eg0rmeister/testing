@@ -13,9 +13,7 @@ std::any PrintVisitor::visitFile(ExprParser::FileContext* context) {
 
 std::any PrintVisitor::visitProg(ExprParser::ProgContext* ctx) {
   std::cout << "Main" << std::endl;
-  for (auto statement : ctx->stmt()) {
-    statement->accept(this);
-  }
+  ctx->statements()->accept(this);
   return std::any();
 }
 
@@ -63,9 +61,7 @@ std::any PrintVisitor::visitStmt(ExprParser::StmtContext* ctx) {
 
 std::any PrintVisitor::visitFun(ExprParser::FunContext* context) {
   std::cout << "Fun" << std::endl;
-  for (auto statement : context->stmt()) {
-    statement->accept(this);
-  }
+  context->statements()->accept(this);
   return std::any();
 }
 
@@ -93,6 +89,14 @@ std::any PrintVisitor::visitExprs(ExprParser::ExprsContext* context) {
   return std::any();
 }
 
+std::any PrintVisitor::visitStatements(ExprParser::StatementsContext* context) {
+  std::cout << "Statements" << std::endl;
+  for (auto statement : context->stmt()) {
+    statement->accept(this);
+  } 
+  return std::any();
+}
+
 std::any PrintVisitor::visitPrintStmt(ExprParser::StmtContext* ctx) {
   std::cout << "Print" << std::endl;
   ctx->printexp->accept(this);
@@ -108,6 +112,14 @@ std::any PrintVisitor::visitAssignStmt(ExprParser::StmtContext* ctx) {
 std::any PrintVisitor::visitExecuteStmt(ExprParser::StmtContext* ctx) {
   std::cout << "Execute" << std::endl;
   ctx->execute->accept(this);
+  return std::any();
+}
+
+std::any PrintVisitor::visitIfStmt(ExprParser::StmtContext* ctx) {
+  std::cout << "If statement" << std::endl;
+  ctx->ifstmt->accept(this);
+  std::cout << "Else statement" << std::endl;
+  ctx->elsestmt->accept(this);
   return std::any();
 }
 
@@ -157,5 +169,47 @@ std::any PrintVisitor::visitSubExpr(ExprParser::ExprContext* ctx) {
 
 std::any PrintVisitor::visitFunExpr(ExprParser::ExprContext* ctx) {
   std::cout << "Fun" << std::endl;
+  return std::any();
+}
+
+std::any PrintVisitor::visitMoreExpr(ExprParser::ExprContext* ctx) {
+  std::cout << "More Expr" << std::endl;
+  ctx->left->accept(this);
+  ctx->right->accept(this);
+  return std::any();
+}
+
+std::any PrintVisitor::visitLessExpr(ExprParser::ExprContext* ctx) {
+  std::cout << "Less Expr" << std::endl;
+  ctx->left->accept(this);
+  ctx->right->accept(this);
+  return std::any();
+}
+
+std::any PrintVisitor::visitEqualExpr(ExprParser::ExprContext* ctx) {
+  std::cout << "Equal Expr" << std::endl;
+  ctx->left->accept(this);
+  ctx->right->accept(this);
+  return std::any();
+}
+
+std::any PrintVisitor::visitNotEqualExpr(ExprParser::ExprContext* ctx) {
+  std::cout << "NotEqual Expr" << std::endl;
+  ctx->left->accept(this);
+  ctx->right->accept(this);
+  return std::any();
+}
+
+std::any PrintVisitor::visitLessOrEqualExpr(ExprParser::ExprContext* ctx) {
+  std::cout << "LessOrEqual Expr" << std::endl;
+  ctx->left->accept(this);
+  ctx->right->accept(this);
+  return std::any();
+}
+
+std::any PrintVisitor::visitMoreOrEqualExpr(ExprParser::ExprContext* ctx) {
+  std::cout << "MoreOrEqual Expr" << std::endl;
+  ctx->left->accept(this);
+  ctx->right->accept(this);
   return std::any();
 }
