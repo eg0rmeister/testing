@@ -27,6 +27,11 @@ class InterpreterVisitor : ExprBaseVisitor {
 
  private:
 
+  /// @brief Visit all statements from stmt() list of ctx
+  /// @param ctx Statement context
+  /// @return Nothing
+  std::any visitAllStmts(ExprParser::StmtContext *ctx);
+
   std::any visitPrintStmt(ExprParser::StmtContext *ctx);
 
   std::any visitAssignStmt(ExprParser::StmtContext *ctx);
