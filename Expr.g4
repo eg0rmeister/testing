@@ -10,15 +10,18 @@ IDENT   : [a-zA-Z]+ ;
 
 file: (fun NEWLINE)* prog NEWLINE (fun NEWLINE)*;
 
-prog:  FUN MAIN '(' idents ')' '{' NEWLINE ((stmt NEWLINE)*) '}'
+prog:  FUN MAIN '(' idents ')' '{' NEWLINE statements '}'
     ;
 stmt: 'print' printexp=expr
     | ident=IDENT ('=') assign=expr
     | execute=expr
+    | 'if' ifexp=expr '{' NEWLINE ifstmt=statements '}'
+    | 'if' ifexp=expr '{' NEWLINE ifstmt=statements '}' 'else' '{' NEWLINE elsestmt=statements '}'
+    | 'if' ifexp=expr '{' NEWLINE ifstmt=statements '}' NEWLINE 'else' '{' NEWLINE elsestmt=statements '}'
     | 'while' '(' while_condition=expr ')' '{' NEWLINE ((stmt NEWLINE)*) '}'
     ;
 expr:   function_ident=IDENT '(' arguments=exprs ')' // FunctionExpression
-    |   left=expr op=('*'|'/') right=expr // MulExpression | DivExpression # left - .expr(0)
+    |   left=expr op=('*'|'/') right=expr // MulExpression | DivExpression
     |   left=expr op=('+'|'-') right=expr // AddExpression | SubExpression
     |   value=INT // NumberExpression
     |   '(' exp=expr ')' // BraceExpression
@@ -26,10 +29,11 @@ expr:   function_ident=IDENT '(' arguments=exprs ')' // FunctionExpression
     |   left=expr op=('>'|'<'|'=='|'!='|'>='|'<=') right=expr
     |   left=expr op=('&&'|'||') right=expr
     ;
+statements: ((stmt NEWLINE)*);
 
 fun: FUN ident=IDENT '(' arguments=idents ')' 
 '{' 
-    NEWLINE ((stmt NEWLINE)*)
+    NEWLINE statements
     'return' return_expr=expr
     NEWLINE
 '}';
