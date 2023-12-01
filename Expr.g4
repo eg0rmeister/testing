@@ -15,7 +15,8 @@ prog:  FUN MAIN '(' idents ')' '{' NEWLINE ((stmt NEWLINE)*) '}'
 stmt: 'print' printexp=expr
     | ident=IDENT ('=') assign=expr
     | execute=expr
-    | 'if' ifexp=expr '{' NEWLINE ((stmt NEWLINE)*) '}'
+    | 'if' ifexp=expr '{' NEWLINE ((ifstmt=stmt NEWLINE)*) '}'
+    | 'if' ifexp=expr '{' NEWLINE ((ifstmt=stmt NEWLINE)*) '}' NEWLINE 'else' '{' NEWLINE ((elsestmt=stmt NEWLINE)*) '}'
     ;
 expr:   function_ident=IDENT '(' arguments=exprs ')' // FunctionExpression
     |   left=expr op=('*'|'/') right=expr // MulExpression | DivExpression # left - .expr(0)
