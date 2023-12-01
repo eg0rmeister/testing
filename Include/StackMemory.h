@@ -12,6 +12,12 @@ class StackMemory {
   void Declare(const std::string& name, Printable value);
 
   void Set(const std::string& name, Printable value);
+
+  
+  /// @brief Assign new value to variable 'name' or declare this variable if it was not declared before
+  /// @param name Variable name
+  /// @param value Value to assign
+  void SetOrDeclare(const std::string& name, Printable value);
   
   Printable Get(const std::string& name);
 

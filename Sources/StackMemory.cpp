@@ -1,4 +1,5 @@
 #include "StackMemory.h"
+
 #include <iostream>
 
 void StackMemory::Declare(const std::string& name, Printable value) {
@@ -17,6 +18,14 @@ void StackMemory::Set(const std::string& name, Printable value) {
   }
   _variables_history[name].pop();
   _variables_history[name].push(value);
+}
+
+void StackMemory::SetOrDeclare(const std::string& name, Printable value) {
+  if (!CheckDeclared(name)) {
+    Declare(name, value);
+  } else {
+    Set(name, value);
+  }
 }
 
 Printable StackMemory::Get(const std::string& name) {
@@ -40,15 +49,16 @@ void StackMemory::Scope_out() {
 }
 
 bool StackMemory::CheckDeclared(const std::string& name) {
-    size_t distance_from_end = 1;
-    while (distance_from_end <= _declare_history.size()) {
-      if (_declare_history[_declare_history.size() - distance_from_end] == _declare_delimiter) {
-        break;
-      }
-      if (_declare_history[_declare_history.size() - distance_from_end] == name) {
-        return true;
-      }
-      ++distance_from_end;
+  size_t distance_from_end = 1;
+  while (distance_from_end <= _declare_history.size()) {
+    if (_declare_history[_declare_history.size() - distance_from_end] ==
+        _declare_delimiter) {
+      break;
     }
-    return false;
+    if (_declare_history[_declare_history.size() - distance_from_end] == name) {
+      return true;
+    }
+    ++distance_from_end;
   }
+  return false;
+}
