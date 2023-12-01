@@ -1,6 +1,7 @@
-#include <string>
-#include <iostream>
 #include "PrintVisitor.h"
+
+#include <iostream>
+#include <string>
 
 std::any PrintVisitor::visitFile(ExprParser::FileContext* context) {
   std::cout << "File" << std::endl;
@@ -93,7 +94,7 @@ std::any PrintVisitor::visitStatements(ExprParser::StatementsContext* context) {
   std::cout << "Statements" << std::endl;
   for (auto statement : context->stmt()) {
     statement->accept(this);
-  } 
+  }
   return std::any();
 }
 
@@ -116,10 +117,22 @@ std::any PrintVisitor::visitExecuteStmt(ExprParser::StmtContext* ctx) {
 }
 
 std::any PrintVisitor::visitIfStmt(ExprParser::StmtContext* ctx) {
-  std::cout << "If statement" << std::endl;
+  std::cout << "If statement condition" << std::endl;
+  ctx->ifexp->accept(this);
+  std::cout << "If statement body" << std::endl;
   ctx->ifstmt->accept(this);
-  std::cout << "Else statement" << std::endl;
-  ctx->elsestmt->accept(this);
+  if (ctx->elsestmt != nullptr) {
+    std::cout << "If statement else body" << std::endl;
+    ctx->elsestmt->accept(this);
+  }
+  return std::any();
+}
+
+std::any PrintVisitor::visitWhileStmt(ExprParser::StmtContext* ctx) {
+  std::cout << "While statement TO BE WRITTEN" << std::endl;
+  // ctx->while_cond->accept(this);
+  // std::cout << "While statement body" << std::endl;
+  // ctx->statements().accept(this);
   return std::any();
 }
 
@@ -173,42 +186,42 @@ std::any PrintVisitor::visitFunExpr(ExprParser::ExprContext* ctx) {
 }
 
 std::any PrintVisitor::visitMoreExpr(ExprParser::ExprContext* ctx) {
-  std::cout << "More Expr" << std::endl;
+  std::cout << "More" << std::endl;
   ctx->left->accept(this);
   ctx->right->accept(this);
   return std::any();
 }
 
 std::any PrintVisitor::visitLessExpr(ExprParser::ExprContext* ctx) {
-  std::cout << "Less Expr" << std::endl;
+  std::cout << "Less" << std::endl;
   ctx->left->accept(this);
   ctx->right->accept(this);
   return std::any();
 }
 
 std::any PrintVisitor::visitEqualExpr(ExprParser::ExprContext* ctx) {
-  std::cout << "Equal Expr" << std::endl;
+  std::cout << "Equal" << std::endl;
   ctx->left->accept(this);
   ctx->right->accept(this);
   return std::any();
 }
 
 std::any PrintVisitor::visitNotEqualExpr(ExprParser::ExprContext* ctx) {
-  std::cout << "NotEqual Expr" << std::endl;
+  std::cout << "NotEqual" << std::endl;
   ctx->left->accept(this);
   ctx->right->accept(this);
   return std::any();
 }
 
 std::any PrintVisitor::visitLessOrEqualExpr(ExprParser::ExprContext* ctx) {
-  std::cout << "LessOrEqual Expr" << std::endl;
+  std::cout << "LessOrEqual" << std::endl;
   ctx->left->accept(this);
   ctx->right->accept(this);
   return std::any();
 }
 
 std::any PrintVisitor::visitMoreOrEqualExpr(ExprParser::ExprContext* ctx) {
-  std::cout << "MoreOrEqual Expr" << std::endl;
+  std::cout << "MoreOrEqual" << std::endl;
   ctx->left->accept(this);
   ctx->right->accept(this);
   return std::any();
