@@ -49,6 +49,18 @@ class InterpreterVisitor : ExprBaseVisitor {
 
   std::any visitFunExpr(ExprParser::ExprContext *ctx);
 
+  std::any visitMoreExpr(ExprParser::ExprContext *ctx);
+
+  std::any visitLessExpr(ExprParser::ExprContext *ctx);
+
+  std::any visitEqualExpr(ExprParser::ExprContext *ctx);
+
+  std::any visitNotEqualExpr(ExprParser::ExprContext *ctx);
+
+  std::any visitLessOrEqualExpr(ExprParser::ExprContext *ctx);
+
+  std::any visitMoreOrEqualExpr(ExprParser::ExprContext *ctx);
+
   StackMemory memory;
   std::map<std::string, ExprParser::FunContext*> _functions;
 };
