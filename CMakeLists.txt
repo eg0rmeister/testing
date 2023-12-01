@@ -41,9 +41,13 @@ add_subdirectory(${SOURCES_DIR} AllVisitor)
 link_libraries(AllVisitor)
 
 add_executable(driver driver.cpp ${ANTLR_ExprGrammarParser_CXX_OUTPUTS})
+add_executable(ex_long example_long.cpp)
+add_executable(ex_short example_short.cpp)
 
 # Link required libraries
 target_link_libraries(driver antlr4_static ${SYSTEM_LIBS} ${llvm_libs})
+target_link_libraries(ex_long ${SYSTEM_LIBS} ${llvm_libs})
+target_link_libraries(ex_short ${SYSTEM_LIBS} ${llvm_libs})
 
 # Copy the input file next to the generated executable
 add_custom_command(TARGET driver POST_BUILD

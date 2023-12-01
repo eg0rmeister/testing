@@ -6,7 +6,7 @@ def helloworld() {
 
 def main() {
     a = 6
-    b = 4-a
+    b = 4+a
     c = b / a
     print b
     print a

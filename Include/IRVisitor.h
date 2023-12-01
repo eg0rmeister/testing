@@ -26,7 +26,7 @@
 
 class IRVisitor : ExprBaseVisitor {
  public:
-  IRVisitor() : Builder(TheContext), TheModule("test", TheContext) {}
+  IRVisitor();
 
   std::any visitFile(ExprParser::FileContext *context) override;
 
@@ -68,8 +68,7 @@ class IRVisitor : ExprBaseVisitor {
   StackMemory memory;
   std::map<std::string, ExprParser::FunContext *> _functions;
 
-  llvm::LLVMContext TheContext;
-  llvm::IRBuilder<> Builder;
-  llvm::Module TheModule;
-  std::map<std::string, llvm::Value *> NamedValues;
+  std::unique_ptr<llvm::LLVMContext> TheContext;
+  std::unique_ptr<llvm::Module> TheModule;
+  std::unique_ptr<llvm::IRBuilder<>> Builder;
 };
