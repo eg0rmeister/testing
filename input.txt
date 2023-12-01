@@ -14,6 +14,9 @@ def main() {
     } else {
       print(a)
     }
+    while (b > 0) {
+        b = b - 5
+    }
     print b
     print a
     print c

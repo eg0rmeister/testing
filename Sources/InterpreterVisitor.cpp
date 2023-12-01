@@ -78,13 +78,6 @@ std::any InterpreterVisitor::visitStmt(ExprParser::StmtContext *ctx) {
   return std::any();
 }
 
-std::any InterpreterVisitor::visitAllStmts(ExprParser::StmtContext *ctx) {
-  for (auto statement : ctx->stmt()) {
-    statement->accept(this);
-  }
-  return std::any();
-}
-
 std::any InterpreterVisitor::visitFun(ExprParser::FunContext *context) {
   _functions[context->ident->getText()] = context;
   return std::any();
@@ -167,7 +160,7 @@ std::any InterpreterVisitor::visitIfStmt(ExprParser::StmtContext *ctx) {
 std::any InterpreterVisitor::visitWhileStmt(ExprParser::StmtContext *ctx) {
   while (std::any_cast<int>(
       std::any_cast<Printable>(ctx->while_condition->accept(this)).value)) {
-    visitAllStmts(ctx);
+    ctx->whilestmts->accept(this);
   }
   return std::any();
 }
@@ -197,9 +190,7 @@ std::any InterpreterVisitor::visitSubExpr(ExprParser::ExprContext *ctx) {
 
 std::any InterpreterVisitor::visitFunExpr(ExprParser::ExprContext *ctx) {
   memory.Scope_in();
-  for (auto statement : _functions.at(ctx->function_ident->getText())->stmt()) {
-    statement->accept(this);
-  }
+  _functions.at(ctx->function_ident->getText())->statements()->accept(this);
   std::any result = _functions.at(ctx->function_ident->getText())->return_expr->accept(this);
   memory.Scope_out();
   return result;
