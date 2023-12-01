@@ -5,17 +5,25 @@ def helloworld() {
 
 
 def main() {
-    a = 6
-    b = 4-a
-    c = b / a
+    b = 10
+    a = 38
+    c = b > a
+    print(c)
+    if (b > a) {
+      print(b)
+    } else {
+      print(a)
+    }
     print b
     print a
     print c
     print helloworld()
     print helloworldd()
+    print a
 }
 
 def helloworldd() {
+    a = 100
     print(a)
     return 2
 }
