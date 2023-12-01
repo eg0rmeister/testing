@@ -16,6 +16,7 @@ def main() {
     }
     while (b > 0) {
         b = b - 5
+        break
     }
     print b
     print a
