@@ -53,6 +53,8 @@ std::any InterpreterVisitor::visitStmt(ExprParser::StmtContext *ctx) {
     return visitPrintStmt(ctx);
   } else if (ctx->execute != nullptr) {
     return visitExecuteStmt(ctx);
+  } else if (ctx->while_cond != nullptr) {
+    return visitWhileStmt(ctx);
   }
   throw std::runtime_error("Unknown expression: " + ctx->getText() + " !\n");
   return std::any();
@@ -116,6 +118,14 @@ std::any InterpreterVisitor::visitAssignStmt(ExprParser::StmtContext *ctx) {
 std::any InterpreterVisitor::visitExecuteStmt(ExprParser::StmtContext *ctx) {
   std::cout << "> " << ctx->getText() << '\n';
   ctx->execute->accept(this);
+  return std::any();
+}
+
+std::any InterpreterVisitor::visitWhileStmt(ExprParser::StmtContext *ctx) {
+  while (std::any_cast<int>(ctx->while_cond->accept(this)))
+  {
+    std::cout << 1;
+  }
   return std::any();
 }
 

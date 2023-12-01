@@ -15,6 +15,7 @@ prog:  FUN MAIN '(' idents ')' '{' NEWLINE ((stmt NEWLINE)*) '}'
 stmt: 'print' printexp=expr
     | ident=IDENT ('=') assign=expr
     | execute=expr
+    | 'while' '(' while_cond=expr ')' '{' (NEWLINE stmt)* '}'
     ;
 expr:   function_ident=IDENT '(' arguments=exprs ')' // FunctionExpression
     |   left=expr op=('*'|'/') right=expr // MulExpression | DivExpression # left - .expr(0)
