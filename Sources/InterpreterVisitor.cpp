@@ -114,8 +114,8 @@ std::any InterpreterVisitor::visitExprs(ExprParser::ExprsContext *context) {
 }
 
 std::any InterpreterVisitor::visitStatements(
-    ExprParser::StatementsContext *context) {
-  for (auto statement : context->stmt()) {
+    ExprParser::StatementsContext *ctx) {
+  for (auto statement : ctx->stmt()) {
     statement->accept(this);
   }
   return std::any();
