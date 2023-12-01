@@ -152,6 +152,38 @@ std::any InterpreterVisitor::visitFunExpr(ExprParser::ExprContext *ctx) {
   return result;
 }
 
+std::any InterpreterVisitor::visitMoreExpr(ExprParser::ExprContext *ctx) {
+  return std::any_cast<Printable>(ctx->left->accept(this)) >
+         std::any_cast<Printable>(ctx->right->accept(this));
+}
+
+std::any InterpreterVisitor::visitLessExpr(ExprParser::ExprContext *ctx) {
+  return std::any_cast<Printable>(ctx->left->accept(this)) <
+         std::any_cast<Printable>(ctx->right->accept(this));
+}
+
+std::any InterpreterVisitor::visitEqualExpr(ExprParser::ExprContext *ctx) {
+  return std::any_cast<Printable>(ctx->left->accept(this)) ==
+         std::any_cast<Printable>(ctx->right->accept(this));
+}
+
+std::any InterpreterVisitor::visitNotEqualExpr(ExprParser::ExprContext *ctx) {
+  return std::any_cast<Printable>(ctx->left->accept(this)) !=
+         std::any_cast<Printable>(ctx->right->accept(this));
+}
+
+std::any InterpreterVisitor::visitLessOrEqualExpr(
+    ExprParser::ExprContext *ctx) {
+  return std::any_cast<Printable>(ctx->left->accept(this)) <=
+         std::any_cast<Printable>(ctx->right->accept(this));
+}
+
+std::any InterpreterVisitor::visitMoreOrEqualExpr(
+    ExprParser::ExprContext *ctx) {
+  return std::any_cast<Printable>(ctx->left->accept(this)) >=
+         std::any_cast<Printable>(ctx->right->accept(this));
+}
+
 std::any InterpreterVisitor::visitMulExpr(ExprParser::ExprContext *ctx) {
   return std::any_cast<Printable>(ctx->left->accept(this)) *
          std::any_cast<Printable>(ctx->right->accept(this));
