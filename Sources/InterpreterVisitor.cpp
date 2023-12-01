@@ -11,7 +11,9 @@ std::any InterpreterVisitor::visitFile(ExprParser::FileContext *context) {
 }
 
 std::any InterpreterVisitor::visitProg(ExprParser::ProgContext *ctx) {
-  ctx->statements()->accept(this);
+  for (auto statement : ctx->stmt()) {
+    statement->accept(this);
+  }
   return std::any();
 }
 
@@ -40,24 +42,6 @@ std::any InterpreterVisitor::visitExpr(ExprParser::ExprContext *ctx) {
   if (ctx->op->getText() == "/") {
     return visitDivExpr(ctx);
   }
-  if (ctx->op->getText() == ">") {
-    return visitMoreExpr(ctx);
-  }
-  if (ctx->op->getText() == "<") {
-    return visitLessExpr(ctx);
-  }
-  if (ctx->op->getText() == ">=") {
-    return visitMoreOrEqualExpr(ctx);
-  }
-  if (ctx->op->getText() == "<=") {
-    return visitLessOrEqualExpr(ctx);
-  }
-  if (ctx->op->getText() == "==") {
-    return visitEqualExpr(ctx);
-  }
-  if (ctx->op->getText() == "!=") {
-    return visitNotEqualExpr(ctx);
-  }
   std::cout << "Expr: " << ctx->getText() << '\n';
   return std::any();
 }
@@ -69,8 +53,6 @@ std::any InterpreterVisitor::visitStmt(ExprParser::StmtContext *ctx) {
     return visitPrintStmt(ctx);
   } else if (ctx->execute != nullptr) {
     return visitExecuteStmt(ctx);
-  } else if (ctx->ifexp != nullptr) {
-    return visitIfStmt(ctx);
   } else if (ctx->while_condition != nullptr) {
     return visitWhileStmt(ctx);
   }
@@ -120,14 +102,6 @@ std::any InterpreterVisitor::visitExprs(ExprParser::ExprsContext *context) {
   return ret;
 }
 
-std::any InterpreterVisitor::visitStatements(
-    ExprParser::StatementsContext *context) {
-  for (auto statement : context->stmt()) {
-    statement->accept(this);
-  }
-  return std::any();
-}
-
 std::any InterpreterVisitor::visitPrintStmt(ExprParser::StmtContext *ctx) {
   std::cout << "> " << ctx->getText() << '\n';
   std::string output = "";
@@ -151,16 +125,6 @@ std::any InterpreterVisitor::visitAssignStmt(ExprParser::StmtContext *ctx) {
 std::any InterpreterVisitor::visitExecuteStmt(ExprParser::StmtContext *ctx) {
   std::cout << "> " << ctx->getText() << '\n';
   ctx->execute->accept(this);
-  return std::any();
-}
-
-std::any InterpreterVisitor::visitIfStmt(ExprParser::StmtContext *ctx) {
-  if (std::any_cast<int>(std::any_cast<Printable>(ctx->ifexp->accept(this)).value) != 0)
-  {
-    ctx->ifstmt->accept(this);
-  } else if (ctx->elsestmt != nullptr) {
-    ctx->elsestmt->accept(this);
-  }
   return std::any();
 }
 
@@ -200,7 +164,8 @@ std::any InterpreterVisitor::visitFunExpr(ExprParser::ExprContext *ctx) {
   for (auto statement : _functions.at(ctx->function_ident->getText())->stmt()) {
     statement->accept(this);
   }
-  std::any result = _functions.at(ctx->function_ident->getText())->return_expr->accept(this);
+  std::any result =
+      _functions.at(ctx->function_ident->getText())->return_expr->accept(this);
   memory.Scope_out();
   return result;
 }

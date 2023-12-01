@@ -24,7 +24,6 @@ class InterpreterVisitor : ExprBaseVisitor {
 
   std::any visitExprs(ExprParser::ExprsContext *context) override;
 
-  std::any visitStatements(ExprParser::StatementsContext *context) override;
 
  private:
 
@@ -38,8 +37,6 @@ class InterpreterVisitor : ExprBaseVisitor {
   std::any visitAssignStmt(ExprParser::StmtContext *ctx);
 
   std::any visitExecuteStmt(ExprParser::StmtContext *ctx);
-
-  std::any visitIfStmt(ExprParser::StmtContext *ctx); 
 
   std::any visitWhileStmt(ExprParser::StmtContext *ctx);
 
