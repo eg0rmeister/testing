@@ -22,6 +22,8 @@ expr:   function_ident=IDENT '(' arguments=exprs ')' // FunctionExpression
     |   value=INT // NumberExpression
     |   '(' exp=expr ')' // BraceExpression
     |   variable_ident=IDENT // IdentExpression
+    |   left=expr op=('>'|'<'|'=='|'!='|'>='|'<=') right=expr
+    |   left=expr op=('&&'|'||') right=expr
     ;
 
 fun: FUN ident=IDENT '(' arguments=idents ')' 
