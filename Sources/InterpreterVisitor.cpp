@@ -42,6 +42,24 @@ std::any InterpreterVisitor::visitExpr(ExprParser::ExprContext *ctx) {
   if (ctx->op->getText() == "/") {
     return visitDivExpr(ctx);
   }
+  if (ctx->op->getText() == ">") {
+    return visitMoreExpr(ctx);
+  }
+  if (ctx->op->getText() == "<") {
+    return visitLessExpr(ctx);
+  }
+  if (ctx->op->getText() == ">=") {
+    return visitMoreOrEqualExpr(ctx);
+  }
+  if (ctx->op->getText() == "<=") {
+    return visitLessOrEqualExpr(ctx);
+  }
+  if (ctx->op->getText() == "==") {
+    return visitEqualExpr(ctx);
+  }
+  if (ctx->op->getText() == "!=") {
+    return visitNotEqualExpr(ctx);
+  }
   std::cout << "Expr: " << ctx->getText() << '\n';
   return std::any();
 }
