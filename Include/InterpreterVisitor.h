@@ -33,6 +33,8 @@ class InterpreterVisitor : ExprBaseVisitor {
 
   std::any visitExecuteStmt(ExprParser::StmtContext *ctx);
 
+  std::any visitIfStmt(ExprParser::StmtContext *ctx); 
+
   std::any visitNumberExpr(ExprParser::ExprContext *ctx);
 
   std::any visitBraceExpr(ExprParser::ExprContext *ctx);
