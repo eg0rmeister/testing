@@ -21,14 +21,19 @@ class StackMemory {
   
   Printable Get(const std::string& name);
 
-  void Scope_in();
+  void ScopeIn();
 
-  void Scope_out();
+  void ScopeInLocal();
+
+  void ScopeOut();
+
+  void ScopeOutLocal();
 
  private:
   bool CheckDeclared(const std::string& name);
 
   std::string _declare_delimiter = "{";
+  std::string _declare_delimiter_local = "[";
 
   std::vector<std::string> _declare_history;
   std::map<std::string, std::stack<Printable>> _variables_history;

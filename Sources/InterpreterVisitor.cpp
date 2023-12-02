@@ -163,12 +163,14 @@ std::any InterpreterVisitor::visitIfStmt(ExprParser::StmtContext *ctx) {
 }
 
 std::any InterpreterVisitor::visitWhileStmt(ExprParser::StmtContext *ctx) {
+  memory.ScopeInLocal();
   while (std::any_cast<int>(
       std::any_cast<Printable>(ctx->while_condition->accept(this)).value)) {
     if (!std::any_cast<bool>(ctx->whilestmts->accept(this))) {
       break;
     }
   }
+  memory.ScopeOutLocal();
   return std::any();
 }
 
@@ -196,11 +198,11 @@ std::any InterpreterVisitor::visitSubExpr(ExprParser::ExprContext *ctx) {
 }
 
 std::any InterpreterVisitor::visitFunExpr(ExprParser::ExprContext *ctx) {
-  memory.Scope_in();
+  memory.ScopeIn();
   _functions.at(ctx->function_ident->getText())->statements()->accept(this);
   std::any result =
       _functions.at(ctx->function_ident->getText())->return_expr->accept(this);
-  memory.Scope_out();
+  memory.ScopeOut();
   return result;
 }
 

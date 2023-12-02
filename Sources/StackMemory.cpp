@@ -36,12 +36,24 @@ Printable StackMemory::Get(const std::string& name) {
   return _variables_history.at(name).top();
 }
 
-void StackMemory::Scope_in() { _declare_history.push_back(_declare_delimiter); }
+void StackMemory::ScopeIn() { _declare_history.push_back(_declare_delimiter); }
 
-void StackMemory::Scope_out() {
+void StackMemory::ScopeInLocal() { _declare_history.push_back(_declare_delimiter_local); }
+
+void StackMemory::ScopeOut() {
   std::string current_name = _declare_history.back();
   _declare_history.pop_back();
   while (current_name != _declare_delimiter) {
+    _variables_history.at(current_name).pop();
+    current_name = _declare_history.back();
+    _declare_history.pop_back();
+  }
+}
+
+void StackMemory::ScopeOutLocal() {
+  std::string current_name = _declare_history.back();
+  _declare_history.pop_back();
+  while (current_name != _declare_delimiter_local) {
     _variables_history.at(current_name).pop();
     current_name = _declare_history.back();
     _declare_history.pop_back();
