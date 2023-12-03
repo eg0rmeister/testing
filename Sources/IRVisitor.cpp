@@ -58,6 +58,8 @@ std::any IRVisitor::visitStmt(ExprParser::StmtContext *ctx) {
     return visitPrintStmt(ctx);
   } else if (ctx->execute != nullptr) {
     return visitExecuteStmt(ctx);
+  } else if (ctx->declare_ident != nullptr) {
+    return visitDeclareStmt(ctx);
   }
   throw std::runtime_error("Unknown expression: " + ctx->getText() + " !\n");
   return std::any();

@@ -13,6 +13,7 @@ file: (fun NEWLINE)* prog NEWLINE (fun NEWLINE)*;
 prog:  FUN MAIN '(' idents ')' '{' NEWLINE statements '}'
     ;
 stmt: 'print' printexp=expr
+    | 'declare' declare_ident=IDENT
     | ident=IDENT ('=') assign=expr
     | execute=expr
     | 'if' ifexp=expr '{' NEWLINE ifstmt=statements '}'
