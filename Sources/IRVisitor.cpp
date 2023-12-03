@@ -1,6 +1,13 @@
+#include <vector>
+#include <set>
+#include <string>
 #include "IRVisitor.h"
 
-using namespace std;
+// using namespace std;
+
+using std::vector;
+using std::string;
+using std::set;
 
 std::any IRVisitor::visitFile(ExprParser::FileContext *context) {
   for (auto function : context->fun()) {
@@ -11,9 +18,7 @@ std::any IRVisitor::visitFile(ExprParser::FileContext *context) {
 }
 
 std::any IRVisitor::visitProg(ExprParser::ProgContext *ctx) {
-  for (auto statement : ctx->stmt()) {
-    statement->accept(this);
-  }
+  ctx->statements()->accept();
   return std::any();
 }
 
@@ -58,8 +63,28 @@ std::any IRVisitor::visitStmt(ExprParser::StmtContext *ctx) {
   return std::any();
 }
 
+template <typename T>
+bool check_unique(std::vector<T> vec){
+  set<T> unique_elements(vec.begin(), vec.end());
+  return unique_elements.size() == vec.size();
+}
+
 std::any IRVisitor::visitFun(ExprParser::FunContext *context) {
-  _functions[context->ident->getText()] = context;
+  string func_name = context->ident->getText();
+  vector<string> args = std::any_cast<vector<string>>(context->arguments->accept(this));
+  if (!check_unique(args)) {
+    throw std::runtime_error("Some argument appears in definition of " + func_name + " multiple times!\n");
+  }
+  llvm::ArrayRef<llvm::Type*> arguments(std::vector<llvm::Type*>(args.size(), Builder.getInt32Ty()));
+
+  llvm::FunctionType* func_type = llvm::FunctionType::get(Builder.getInt32Ty(), arguments, false);
+  llvm::Function* func = llvm::Function::Create(func_type, llvm::Function::ExternalLinkage, func_name, TheModule);
+  llvm::BasicBlock* func_block = llvm::BasicBlock::Create(TheContext, func_name + "bb", func);
+  Builder.SetInsertPoint(func_block);
+  
+  context->statements()->accept(this);
+
+  NamedFunctions[func_name] = func;
   return std::any();
 }
 
@@ -143,9 +168,9 @@ std::any IRVisitor::visitSubExpr(ExprParser::ExprContext *ctx) {
 }
 
 std::any IRVisitor::visitFunExpr(ExprParser::ExprContext *ctx) {
-  for (auto statement : _functions.at(ctx->function_ident->getText())->stmt()) {
-    statement->accept(this);
-  }
+  // for (auto statement : _functions.at(ctx->function_ident->getText())->stmt()) {
+  //   statement->accept(this);
+  // }
   return _functions.at(ctx->function_ident->getText())->return_expr->accept(this);
 }
 

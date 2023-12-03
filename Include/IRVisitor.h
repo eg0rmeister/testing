@@ -66,10 +66,10 @@ class IRVisitor : ExprBaseVisitor {
   std::any visitFunExpr(ExprParser::ExprContext *ctx);
 
   StackMemory memory;
-  std::map<std::string, ExprParser::FunContext *> _functions;
 
   llvm::LLVMContext TheContext;
   llvm::IRBuilder<> Builder;
   llvm::Module TheModule;
   std::map<std::string, llvm::Value *> NamedValues;
+  std::map<std::string, llvm::Function *> NamedFunctions;
 };
