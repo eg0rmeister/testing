@@ -74,4 +74,5 @@ class IRVisitor : ExprBaseVisitor {
   llvm::Module TheModule;
   std::map<std::string, llvm::Value *> NamedValues;
   std::map<std::string, llvm::Function *> NamedFunctions;
+  std::map<std::string, llvm::AllocaInst *> NamedVariables;
 };

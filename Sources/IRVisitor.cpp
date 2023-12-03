@@ -18,7 +18,7 @@ std::any IRVisitor::visitFile(ExprParser::FileContext *context) {
 }
 
 std::any IRVisitor::visitProg(ExprParser::ProgContext *ctx) {
-  ctx->statements()->accept();
+  ctx->statements()->accept(this);
   return std::any();
 }
 
@@ -134,9 +134,8 @@ std::any IRVisitor::visitPrintStmt(ExprParser::StmtContext *ctx) {
 // For now assign is declare and assign
 std::any IRVisitor::visitAssignStmt(ExprParser::StmtContext *ctx) {
   std::cout << "> " << ctx->getText() << '\n';
-  auto variable_name = ctx->ident->getText();
-  auto variable_value = std::any_cast<Printable>(ctx->assign->accept(this));
-  memory.Declare(variable_name, variable_value);
+  string variable_name = ctx->ident->getText();
+  Builder.CreateStore(std::any_cast<llvm::Value*>(ctx->assign->accept(this)), NamedVariables.at(variable_name));
   return std::any();
 }
 
