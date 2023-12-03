@@ -146,6 +146,13 @@ std::any IRVisitor::visitExecuteStmt(ExprParser::StmtContext *ctx) {
   return std::any();
 }
 
+std::any IRVisitor::visitDeclareStmt(ExprParser::StmtContext *ctx)
+{
+  llvm::AllocaInst* value_alloca = Builder.CreateAlloca(Builder.getInt32Ty());
+  NamedVariables[ctx->declare_ident->getText()] = value_alloca;
+  return std::any();
+}
+
 std::any IRVisitor::visitNumberExpr(ExprParser::ExprContext *ctx) {
   return Printable(std::stoi(ctx->value->getText()), ctx->value->getText());
 }
