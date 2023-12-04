@@ -117,12 +117,33 @@ void IRVisitor::printIR() {
 }
 
 std::any IRVisitor::visitPrintStmt(ExprParser::StmtContext *ctx) {
-  std::cout << "> " << ctx->getText() << '\n';
-  std::string output = "";
-  auto expr = ctx->printexp->accept(this);
-  if (expr.has_value()) {
-    output = std::any_cast<Printable>(expr).str;
-  }
+  llvm::FunctionType* printf_type = llvm::FunctionType::get(
+    Builder.getInt32Ty(),
+    {Builder.getInt8PtrTy()},
+    true
+  );
+  llvm::Function* printf_func = llvm::Function::Create(
+    printf_type,
+    llvm::Function::ExternalLinkage,
+    "printf",
+    TheModule
+  );
+  // llvm::Function* printf_func = TheModule.getFunction("printf");
+  string int_string = "%d\n";
+  auto fmt_int = llvm::ConstantDataArray::getString(TheContext, int_string);
+  auto string_int_alloca = Builder.CreateAlloca(fmt_int->getType());
+  auto string_int_value = Builder.CreateStore(fmt_int, string_int_alloca);
+  auto formatted_int_string = Builder.CreateBitCast(
+    string_int_alloca,
+    Builder.getInt8PtrTy()
+  );
+
+  Builder.CreateCall(
+    printf_func,
+    {
+      formatted_int_string, 
+      std::any_cast<llvm::Value*>(ctx->printexp->accept(this))
+    }
   std::cout << output << '\n';
   return std::any();
 }
