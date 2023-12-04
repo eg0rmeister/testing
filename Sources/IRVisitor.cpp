@@ -144,7 +144,7 @@ std::any IRVisitor::visitPrintStmt(ExprParser::StmtContext *ctx) {
       formatted_int_string, 
       std::any_cast<llvm::Value*>(ctx->printexp->accept(this))
     }
-  std::cout << output << '\n';
+  );
   return std::any();
 }
 
@@ -162,6 +162,7 @@ std::any IRVisitor::visitExecuteStmt(ExprParser::StmtContext *ctx) {
   return std::any();
 }
 
+// No check for redeclaration now
 std::any IRVisitor::visitDeclareStmt(ExprParser::StmtContext *ctx)
 {
   llvm::AllocaInst* value_alloca = Builder.CreateAlloca(Builder.getInt32Ty());
@@ -170,7 +171,7 @@ std::any IRVisitor::visitDeclareStmt(ExprParser::StmtContext *ctx)
 }
 
 std::any IRVisitor::visitNumberExpr(ExprParser::ExprContext *ctx) {
-  return Printable(std::stoi(ctx->value->getText()), ctx->value->getText());
+  return static_cast<llvm::Value*>(llvm::ConstantInt::get(Builder.getInt32Ty(), llvm::APInt(32, std::stoi(ctx->getText()), true)));
 }
 
 std::any IRVisitor::visitBraceExpr(ExprParser::ExprContext *ctx) {
