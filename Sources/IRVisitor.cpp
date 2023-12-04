@@ -117,18 +117,21 @@ void IRVisitor::printIR() {
 }
 
 std::any IRVisitor::visitPrintStmt(ExprParser::StmtContext *ctx) {
-  llvm::FunctionType* printf_type = llvm::FunctionType::get(
-    Builder.getInt32Ty(),
-    {Builder.getInt8PtrTy()},
-    true
-  );
-  llvm::Function* printf_func = llvm::Function::Create(
-    printf_type,
-    llvm::Function::ExternalLinkage,
-    "printf",
-    TheModule
-  );
-  // llvm::Function* printf_func = TheModule.getFunction("printf");
+  // Try to get existing printf function. If it is not declared, declare one
+  llvm::Function* printf_func = TheModule.getFunction("printf");
+  if (printf_func == nullptr){
+    llvm::FunctionType* printf_type = llvm::FunctionType::get(
+      Builder.getInt32Ty(),
+      {Builder.getInt8PtrTy()},
+      true
+    );
+    printf_func = llvm::Function::Create(
+      printf_type,
+      llvm::Function::ExternalLinkage,
+      "printf",
+      TheModule
+    );
+  }
   string int_string = "%d\n";
   auto fmt_int = llvm::ConstantDataArray::getString(TheContext, int_string);
   auto string_int_alloca = Builder.CreateAlloca(fmt_int->getType());
