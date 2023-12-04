@@ -25,6 +25,7 @@ std::any IRVisitor::visitProg(ExprParser::ProgContext *ctx) {
   Builder.SetInsertPoint(func_block);
   
   ctx->statements()->accept(this);
+  Builder.CreateRet(llvm::ConstantInt::get(Builder.getInt32Ty(), llvm::APInt(32, 0, true)));
   return std::any();
 }
 
