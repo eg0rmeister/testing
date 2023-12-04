@@ -22,6 +22,15 @@ include_directories(${ANTLR4_INCLUDE_DIRS})
 set(ANTLR_EXECUTABLE ${CMAKE_CURRENT_SOURCE_DIR}/tools/antlr-4.13.1-complete.jar)
 find_package(ANTLR REQUIRED)
 
+# Building the antlr files before building target
+execute_process(COMMAND bash -c  "jexec ${ANTLR_EXECUTABLE}\
+ ${PROJECT_SOURCE_DIR}/Expr.g4\
+ -o ${GENERATED_DIR}\
+ -visitor\
+ -no-listener\
+ -Dlanguage=Cpp"
+)
+
 # CMake commands for this specific project start here
 
 # Find LLVM
@@ -32,8 +41,11 @@ llvm_map_components_to_libnames(llvm_libs support core irreader)
 message(STATUS "Found LLVM ${LLVM_PACKAGE_VERSION}")
 
 # Call macro to add lexer and grammar to your build dependencies.
+# It kinda does not generate files, no idea why it is here
 antlr_target(ExprGrammarParser Expr.g4 VISITOR OUTPUT_DIRECTORY ${GENERATED_DIR})
 
+# linking antlr files in advance to 
+link_libraries(antlr4_static)
 # Add our project source directories
 include_directories(${HEADERS_DIR} ${GENERATED_DIR})
 # List all the cpp files used
