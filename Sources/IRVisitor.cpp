@@ -187,13 +187,17 @@ std::any IRVisitor::visitVarIdentExpr(ExprParser::ExprContext *ctx) {
 }
 
 std::any IRVisitor::visitAddExpr(ExprParser::ExprContext *ctx) {
-  return std::any_cast<Printable>(ctx->left->accept(this)) +
-         std::any_cast<Printable>(ctx->right->accept(this));
+  return Builder.CreateAdd(
+    std::any_cast<llvm::Value*>(ctx->left->accept(this)),
+    std::any_cast<llvm::Value*>(ctx->right->accept(this))
+  );
 }
 
 std::any IRVisitor::visitSubExpr(ExprParser::ExprContext *ctx) {
-  return std::any_cast<Printable>(ctx->left->accept(this)) -
-         std::any_cast<Printable>(ctx->right->accept(this));
+  return Builder.CreateSub(
+    std::any_cast<llvm::Value*>(ctx->left->accept(this)),
+    std::any_cast<llvm::Value*>(ctx->right->accept(this))
+  );
 }
 
 std::any IRVisitor::visitFunExpr(ExprParser::ExprContext *ctx) {
@@ -203,11 +207,15 @@ std::any IRVisitor::visitFunExpr(ExprParser::ExprContext *ctx) {
 }
 
 std::any IRVisitor::visitMulExpr(ExprParser::ExprContext *ctx) {
-  return std::any_cast<Printable>(ctx->left->accept(this)) *
-         std::any_cast<Printable>(ctx->right->accept(this));
+  return Builder.CreateMul(
+    std::any_cast<llvm::Value*>(ctx->left->accept(this)),
+    std::any_cast<llvm::Value*>(ctx->right->accept(this))
+  );
 }
 
 std::any IRVisitor::visitDivExpr(ExprParser::ExprContext *ctx) {
-  return std::any_cast<Printable>(ctx->left->accept(this)) /
-         std::any_cast<Printable>(ctx->right->accept(this));
+  return Builder.CreateUDiv(
+    std::any_cast<llvm::Value*>(ctx->left->accept(this)),
+    std::any_cast<llvm::Value*>(ctx->right->accept(this))
+  );
 }

@@ -2,7 +2,12 @@
 def main() {
     declare a
     a = 3
+    print 110
     print 5
+    print 110 + 5
+    print 110/5
+    print 110 * 5
+    print 110 - 5
 }
 
 
