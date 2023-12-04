@@ -117,7 +117,7 @@ std::any IRVisitor::visitPrintStmt(ExprParser::StmtContext *ctx) {
   return std::any();
 }
 
-// For now assign is declare and assign
+// For now assign is assign only
 std::any IRVisitor::visitAssignStmt(ExprParser::StmtContext *ctx) {
   std::cout << "> " << ctx->getText() << '\n';
   string variable_name = ctx->ident->getText();
@@ -162,10 +162,9 @@ std::any IRVisitor::visitSubExpr(ExprParser::ExprContext *ctx) {
 }
 
 std::any IRVisitor::visitFunExpr(ExprParser::ExprContext *ctx) {
-  // for (auto statement : _functions.at(ctx->function_ident->getText())->stmt()) {
-  //   statement->accept(this);
-  // }
-  return _functions.at(ctx->function_ident->getText())->return_expr->accept(this);
+  string func_name = ctx->function_ident->getText();
+  vector<llvm::Value*> arguments = std::any_cast<vector<llvm::Value*>>(ctx->arguments->accept(this));
+  return Builder.CreateCall(NamedFunctions.at(func_name), arguments);
 }
 
 std::any IRVisitor::visitMulExpr(ExprParser::ExprContext *ctx) {

@@ -67,25 +67,13 @@ std::any PrintVisitor::visitFun(ExprParser::FunContext* context) {
 
 std::any PrintVisitor::visitIdents(ExprParser::IdentsContext* context) {
   std::cout << "Idents" << std::endl;
-  if (context->ident == nullptr) {
-    return std::any();
-  }
-  if (context->rest == nullptr) {
-    return std::any();
-  }
-  context->rest->accept(this);
   return std::any();
 }
 
 std::any PrintVisitor::visitExprs(ExprParser::ExprsContext* context) {
-  std::cout << "Exprs" << std::endl;
-  if (context->expression == nullptr) {
-    return std::any();
+  for (auto expr : context->expr()) {
+    expr->accept(this);
   }
-  if (context->rest == nullptr) {
-    return std::any();
-  }
-  context->rest->accept(this);
   return std::any();
 }
 
