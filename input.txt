@@ -1,13 +1,19 @@
 
 def main() {
     declare a
-    a = 3
+    declare b
+    a = 1100
+    b = 50
     print 110
     print 5
     print 110 + 5
-    print 110/5
-    print 110 * 5
     print 110 - 5
+    print 110 * 5
+    print 110 / 5
+    print a + b
+    print a - b
+    print a * b
+    print a / b
 }
 
 

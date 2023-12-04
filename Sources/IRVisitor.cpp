@@ -182,8 +182,8 @@ std::any IRVisitor::visitBraceExpr(ExprParser::ExprContext *ctx) {
 }
 
 std::any IRVisitor::visitVarIdentExpr(ExprParser::ExprContext *ctx) {
-  auto name = ctx->variable_ident->getText();
-  return memory.Get(name);
+  llvm::AllocaInst* alloca_inst = NamedVariables.at(ctx->variable_ident->getText());
+  return static_cast<llvm::Value*>(Builder.CreateLoad(Builder.getInt32Ty(), alloca_inst));
 }
 
 std::any IRVisitor::visitAddExpr(ExprParser::ExprContext *ctx) {

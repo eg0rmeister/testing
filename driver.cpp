@@ -2,6 +2,7 @@
 
 #include "InterpreterVisitor.h"
 #include "PrintVisitor.h"
+#include "IRVisitor.h"
 #include "antlr4-runtime.h"
 #include "ExprLexer.h"
 #include "ExprParser.h"
