@@ -18,6 +18,12 @@ std::any IRVisitor::visitFile(ExprParser::FileContext *context) {
 }
 
 std::any IRVisitor::visitProg(ExprParser::ProgContext *ctx) {
+  string func_name = "main";
+  llvm::FunctionType* func_type = llvm::FunctionType::get(Builder.getInt32Ty(), false);
+  llvm::Function* func = llvm::Function::Create(func_type, llvm::Function::ExternalLinkage, func_name, TheModule);
+  llvm::BasicBlock* func_block = llvm::BasicBlock::Create(TheContext, func_name + "bb", func);
+  Builder.SetInsertPoint(func_block);
+  
   ctx->statements()->accept(this);
   return std::any();
 }
@@ -104,6 +110,10 @@ std::any IRVisitor::visitExprs(ExprParser::ExprsContext *context) {
     ret.push_back(std::any_cast<llvm::Value*>(expr->accept(this)));
   }
   return ret;
+}
+
+void IRVisitor::printIR() {
+  TheModule.print(llvm::outs(), nullptr);
 }
 
 std::any IRVisitor::visitPrintStmt(ExprParser::StmtContext *ctx) {

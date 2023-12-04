@@ -42,6 +42,8 @@ class IRVisitor : ExprBaseVisitor {
 
   std::any visitExprs(ExprParser::ExprsContext *context) override;
 
+  void printIR();
+
  private:
   std::any visitPrintStmt(ExprParser::StmtContext *ctx);
 

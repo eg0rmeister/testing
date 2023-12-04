@@ -8,7 +8,7 @@ NEWLINE : [\r\n]+ ;
 INT     : [0-9]+ ;
 IDENT   : [a-zA-Z]+ ;
 
-file: (fun NEWLINE)* prog NEWLINE (fun NEWLINE)*;
+file: (fun NEWLINE)* NEWLINE* prog NEWLINE (fun NEWLINE)*;
 
 prog:  FUN MAIN '(' idents ')' '{' NEWLINE statements '}'
     ;
