@@ -53,7 +53,6 @@ std::any IRVisitor::visitExpr(ExprParser::ExprContext *ctx) {
   if (ctx->op->getText() == "/") {
     return visitDivExpr(ctx);
   }
-  std::cout << "Expr: " << ctx->getText() << '\n';
   return std::any();
 }
 
@@ -129,14 +128,14 @@ std::any IRVisitor::visitPrintStmt(ExprParser::StmtContext *ctx) {
 
 // For now assign is assign only
 std::any IRVisitor::visitAssignStmt(ExprParser::StmtContext *ctx) {
-  std::cout << "> " << ctx->getText() << '\n';
   string variable_name = ctx->ident->getText();
-  Builder.CreateStore(std::any_cast<llvm::Value*>(ctx->assign->accept(this)), NamedVariables.at(variable_name));
+  llvm::Value* value = std::any_cast<llvm::Value*>(ctx->assign->accept(this));
+  llvm::AllocaInst* alloca_inst = NamedVariables.at(variable_name);
+  Builder.CreateStore(value, alloca_inst);
   return std::any();
 }
 
 std::any IRVisitor::visitExecuteStmt(ExprParser::StmtContext *ctx) {
-  std::cout << "> " << ctx->getText() << '\n';
   ctx->execute->accept(this);
   return std::any();
 }
