@@ -27,6 +27,11 @@ def main() {
     print middle >= big
     print small != big
     print big > small
+    if big > small {
+        print(5)
+    } else {
+        print 6
+    }
 }
 
 

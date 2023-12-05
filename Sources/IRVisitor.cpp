@@ -23,6 +23,7 @@ std::any IRVisitor::visitProg(ExprParser::ProgContext *ctx) {
   llvm::Function* func = llvm::Function::Create(func_type, llvm::Function::ExternalLinkage, func_name, TheModule);
   llvm::BasicBlock* func_block = llvm::BasicBlock::Create(TheContext, func_name + "bb", func);
   Builder.SetInsertPoint(func_block);
+  current_function = func;
   
   ctx->statements()->accept(this);
   Builder.CreateRet(llvm::ConstantInt::get(Builder.getInt32Ty(), llvm::APInt(32, 0, true)));
@@ -84,6 +85,8 @@ std::any IRVisitor::visitStmt(ExprParser::StmtContext *ctx) {
     return visitExecuteStmt(ctx);
   } else if (ctx->declare_ident != nullptr) {
     return visitDeclareStmt(ctx);
+  } else if (ctx->ifexp != nullptr) {
+    return visitIfStmt(ctx);
   }
   throw std::runtime_error("Unknown expression: " + ctx->getText() + " !\n");
   return std::any();
@@ -108,6 +111,7 @@ std::any IRVisitor::visitFun(ExprParser::FunContext *context) {
   llvm::Function* func = llvm::Function::Create(func_type, llvm::Function::ExternalLinkage, func_name, TheModule);
   llvm::BasicBlock* func_block = llvm::BasicBlock::Create(TheContext, func_name + "bb", func);
   Builder.SetInsertPoint(func_block);
+  current_function = func;
   
   context->statements()->accept(this);
 
@@ -189,6 +193,33 @@ std::any IRVisitor::visitDeclareStmt(ExprParser::StmtContext *ctx)
 {
   llvm::AllocaInst* value_alloca = Builder.CreateAlloca(Builder.getInt32Ty());
   NamedVariables[ctx->declare_ident->getText()] = value_alloca;
+  return std::any();
+}
+
+std::any IRVisitor::visitIfStmt(ExprParser::StmtContext *ctx) {
+  llvm::BasicBlock* if_block = llvm::BasicBlock::Create(TheContext, "btrue", current_function);
+  llvm::BasicBlock* else_block = nullptr;
+  if (ctx->elsestmt != nullptr) {
+    else_block = llvm::BasicBlock::Create(TheContext, "bfalse", current_function);
+  }
+  llvm::BasicBlock* rest_block = llvm::BasicBlock::Create(TheContext, "bend", current_function);
+  if (else_block == nullptr) {
+    else_block = rest_block;
+  }
+  Builder.CreateCondBr(
+    std::any_cast<llvm::Value*>(ctx->ifexp->accept(this)),
+    if_block,
+    else_block
+  );
+  Builder.SetInsertPoint(if_block);
+  ctx->ifstmt->accept(this);
+  Builder.CreateBr(rest_block);
+  if (ctx->elsestmt != nullptr) {
+    Builder.SetInsertPoint(else_block);
+    ctx->elsestmt->accept(this);
+    Builder.CreateBr(rest_block);
+  }
+  Builder.SetInsertPoint(rest_block);
   return std::any();
 }
 
