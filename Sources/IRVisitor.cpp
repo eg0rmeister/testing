@@ -77,6 +77,7 @@ bool check_unique(std::vector<T> vec){
   return unique_elements.size() == vec.size();
 }
 
+// This needs return statement
 std::any IRVisitor::visitFun(ExprParser::FunContext *context) {
   string func_name = context->ident->getText();
   vector<string> args = std::any_cast<vector<string>>(context->arguments->accept(this));
