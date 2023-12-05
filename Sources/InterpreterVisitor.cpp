@@ -1,6 +1,10 @@
 #include "InterpreterVisitor.h"
 
-namespace utility {}  // namespace utility
+namespace utility {}  // namespace utility\
+
+using std::vector;
+using std::string;
+
 
 std::any InterpreterVisitor::visitFile(ExprParser::FileContext *context) {
   for (auto function : context->fun()) {

@@ -45,6 +45,7 @@ class IRVisitor : ExprBaseVisitor {
   void printIR();
 
  private:
+
   std::any visitPrintStmt(ExprParser::StmtContext *ctx);
 
   std::any visitAssignStmt(ExprParser::StmtContext *ctx);
@@ -52,6 +53,10 @@ class IRVisitor : ExprBaseVisitor {
   std::any visitExecuteStmt(ExprParser::StmtContext *ctx);
 
   std::any visitDeclareStmt(ExprParser::StmtContext *ctx);
+
+  std::any visitIfStmt(ExprParser::StmtContext *ctx); 
+
+  std::any visitWhileStmt(ExprParser::StmtContext *ctx);
 
   std::any visitNumberExpr(ExprParser::ExprContext *ctx);
 
@@ -68,6 +73,18 @@ class IRVisitor : ExprBaseVisitor {
   std::any visitSubExpr(ExprParser::ExprContext *ctx);
 
   std::any visitFunExpr(ExprParser::ExprContext *ctx);
+
+  std::any visitMoreExpr(ExprParser::ExprContext *ctx);
+
+  std::any visitLessExpr(ExprParser::ExprContext *ctx);
+
+  std::any visitEqualExpr(ExprParser::ExprContext *ctx);
+
+  std::any visitNotEqualExpr(ExprParser::ExprContext *ctx);
+
+  std::any visitLessOrEqualExpr(ExprParser::ExprContext *ctx);
+
+  std::any visitMoreOrEqualExpr(ExprParser::ExprContext *ctx);
 
   StackMemory memory;
 
