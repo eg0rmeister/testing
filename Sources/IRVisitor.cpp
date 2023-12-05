@@ -98,7 +98,7 @@ bool check_unique(std::vector<T> vec){
   return unique_elements.size() == vec.size();
 }
 
-// This needs return statement
+// This needs argument work. (will probably come with symbol table)
 std::any IRVisitor::visitFun(ExprParser::FunContext *context) {
   string func_name = context->ident->getText();
   vector<string> args = std::any_cast<vector<string>>(context->arguments->accept(this));
@@ -114,6 +114,11 @@ std::any IRVisitor::visitFun(ExprParser::FunContext *context) {
   current_function = func;
   
   context->statements()->accept(this);
+  if (context->return_expr == nullptr) {
+    Builder.CreateRet(llvm::ConstantInt::get(Builder.getInt32Ty(), llvm::APInt(32, 0, true)));
+  } else {
+    Builder.CreateRet(std::any_cast<llvm::Value*>(context->return_expr->accept(this)));
+  }
 
   NamedFunctions[func_name] = func;
   return std::any();

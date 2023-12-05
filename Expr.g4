@@ -36,8 +36,8 @@ statements: ((stmt NEWLINE)*);
 fun: FUN ident=IDENT '(' arguments=idents ')' 
 '{' 
     NEWLINE statements
-    'return' return_expr=expr
-    NEWLINE
+    ('return' return_expr=expr
+    NEWLINE|)
 '}';
 
 idents: IDENT (',' IDENT)*
