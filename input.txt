@@ -14,8 +14,19 @@ def main() {
     print a - b
     print a * b
     print a / b
-    b = 10
-    a = 38
+    declare small
+    declare middle
+    declare middler
+    declare big
+    small = 1
+    middle = 2
+    big = 2
+    print small < big
+    print small <= big
+    print middle == big
+    print middle >= big
+    print small != big
+    print big > small
 }
 
 

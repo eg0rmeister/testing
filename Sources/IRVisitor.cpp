@@ -54,6 +54,24 @@ std::any IRVisitor::visitExpr(ExprParser::ExprContext *ctx) {
   if (ctx->op->getText() == "/") {
     return visitDivExpr(ctx);
   }
+  if (ctx->op->getText() == ">") {
+    return visitMoreExpr(ctx);
+  }
+  if (ctx->op->getText() == "<") {
+    return visitLessExpr(ctx);
+  }
+  if (ctx->op->getText() == ">=") {
+    return visitMoreOrEqualExpr(ctx);
+  }
+  if (ctx->op->getText() == "<=") {
+    return visitLessOrEqualExpr(ctx);
+  }
+  if (ctx->op->getText() == "==") {
+    return visitEqualExpr(ctx);
+  }
+  if (ctx->op->getText() == "!=") {
+    return visitNotEqualExpr(ctx);
+  }
   return std::any();
 }
 
@@ -205,6 +223,66 @@ std::any IRVisitor::visitFunExpr(ExprParser::ExprContext *ctx) {
   string func_name = ctx->function_ident->getText();
   vector<llvm::Value*> arguments = std::any_cast<vector<llvm::Value*>>(ctx->arguments->accept(this));
   return Builder.CreateCall(NamedFunctions.at(func_name), arguments);
+}
+
+std::any IRVisitor::visitMoreExpr(ExprParser::ExprContext *ctx) {
+  llvm::Value* lhs = std::any_cast<llvm::Value*>(ctx->left->accept(this));
+  llvm::Value* rhs = std::any_cast<llvm::Value*>(ctx->right->accept(this));
+  return Builder.CreateCmp(
+    llvm::CmpInst::Predicate::ICMP_SGT,
+    lhs,
+    rhs
+  );
+}
+
+std::any IRVisitor::visitLessExpr(ExprParser::ExprContext *ctx) {
+  llvm::Value* lhs = std::any_cast<llvm::Value*>(ctx->left->accept(this));
+  llvm::Value* rhs = std::any_cast<llvm::Value*>(ctx->right->accept(this));
+  return Builder.CreateCmp(
+    llvm::CmpInst::Predicate::ICMP_SLT,
+    lhs,
+    rhs
+  );
+}
+
+std::any IRVisitor::visitEqualExpr(ExprParser::ExprContext *ctx) {
+  llvm::Value* lhs = std::any_cast<llvm::Value*>(ctx->left->accept(this));
+  llvm::Value* rhs = std::any_cast<llvm::Value*>(ctx->right->accept(this));
+  return Builder.CreateCmp(
+    llvm::CmpInst::Predicate::ICMP_EQ,
+    lhs,
+    rhs
+  );
+}
+
+std::any IRVisitor::visitNotEqualExpr(ExprParser::ExprContext *ctx) {
+  llvm::Value* lhs = std::any_cast<llvm::Value*>(ctx->left->accept(this));
+  llvm::Value* rhs = std::any_cast<llvm::Value*>(ctx->right->accept(this));
+  return Builder.CreateCmp(
+    llvm::CmpInst::Predicate::ICMP_NE,
+    lhs,
+    rhs
+  );
+}
+
+std::any IRVisitor::visitLessOrEqualExpr(ExprParser::ExprContext *ctx) {
+  llvm::Value* lhs = std::any_cast<llvm::Value*>(ctx->left->accept(this));
+  llvm::Value* rhs = std::any_cast<llvm::Value*>(ctx->right->accept(this));
+  return Builder.CreateCmp(
+    llvm::CmpInst::Predicate::ICMP_SLE,
+    lhs,
+    rhs
+  );
+}
+
+std::any IRVisitor::visitMoreOrEqualExpr(ExprParser::ExprContext *ctx) {
+  llvm::Value* lhs = std::any_cast<llvm::Value*>(ctx->left->accept(this));
+  llvm::Value* rhs = std::any_cast<llvm::Value*>(ctx->right->accept(this));
+  return Builder.CreateCmp(
+    llvm::CmpInst::Predicate::ICMP_SGE,
+    lhs,
+    rhs
+  );
 }
 
 std::any IRVisitor::visitMulExpr(ExprParser::ExprContext *ctx) {
