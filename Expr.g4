@@ -19,7 +19,8 @@ stmt: 'print' printexp=expr
     | 'if' ifexp=expr '{' NEWLINE ifstmt=statements '}'
     | 'if' ifexp=expr '{' NEWLINE ifstmt=statements '}' 'else' '{' NEWLINE elsestmt=statements '}'
     | 'if' ifexp=expr '{' NEWLINE ifstmt=statements '}' NEWLINE 'else' '{' NEWLINE elsestmt=statements '}'
-    | 'while' '(' while_cond=expr ')' '{' (NEWLINE stmt)* '}'
+    | 'while' '(' while_condition=expr ')' '{' NEWLINE whilestmts=statements '}'
+    | 'break'
     ;
 expr:   function_ident=IDENT '(' arguments=exprs ')' // FunctionExpression
     |   left=expr op=('*'|'/') right=expr // MulExpression | DivExpression
