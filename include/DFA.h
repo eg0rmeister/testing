@@ -23,6 +23,9 @@ class DFA : public FSA {
   /// @return true if the DFA is in final state
   bool IsFinal() const;
 
+  /// @brief Checks whether the DFA is in trash state
+  /// @return true if the DFA is in trash state
+  bool IsInTrash() const;
 
   /// @brief Returns automaton to starting state
   void ResetState();

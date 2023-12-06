@@ -1,4 +1,4 @@
-#include <DFA_Forest.h>
+#include "DFA_Forest.h"
 
 DFAForest::DFAForest(std::vector<DFA> automatons) : _automatons(automatons) {}
 
@@ -37,8 +37,19 @@ std::vector<uint32_t> DFAForest::WhichFinal() {
   return ret;
 }
 
+bool DFAForest::IsError() const {
+  for (const auto& automaton : _automatons) {
+    if (!automaton.IsInTrash()) {
+      return false;
+    }
+  }
+  return true; 
+}
+
 void DFAForest::ResetState() {
   for (auto& dfa : _automatons) {
     dfa.ResetState();
   }
 }
+
+uint32_t DFAForest::GetSize() const { return _automatons.size(); }

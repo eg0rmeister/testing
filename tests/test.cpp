@@ -10,6 +10,10 @@ int main() {
   try {
     State state1;
     State state2;
+    State state_copy(state1);
+    State state_assign = state_copy;
+    assert(state_copy == state1);
+    assert(state_copy == state_assign);
     assert((state1.ID() == 0));
     assert((state2.ID() == 1));
     std::unordered_set<State> states;

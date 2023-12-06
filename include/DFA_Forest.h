@@ -29,8 +29,19 @@ class DFAForest {
   /// @return vector of indexes of automatons that are in a final state
   std::vector<uint32_t> WhichFinal();
 
+
+
+  /// @brief Check wheter the DFA forest is in an ERROR state
+  /// @return returns true if the DFA forest is in an ERROR state
+  bool IsError() const;
+
   /// @brief Resets the state of all automatons to start state
   void ResetState();
+
+  /// @brief Gets the amount of terminal state types
+  /// @return Amount of terminal state types
+  uint32_t GetSize() const;
+
   private:
   std::vector<DFA> _automatons;
 

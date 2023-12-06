@@ -1,4 +1,4 @@
-#include <REG_to_NFA.h>
+#include "REG_to_NFA.h"
 
 #include <stdexcept>
 

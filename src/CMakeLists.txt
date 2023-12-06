@@ -1,0 +1,14 @@
+add_library(AllCompiler 
+  DFA_Forest.cpp
+  DFA.cpp
+  FSA.cpp
+  NFA_to_DFA.cpp
+  NFA.cpp
+  REG_to_NFA.cpp
+  REGTree.cpp
+  Scanner.cpp
+  State.cpp
+  Token.cpp
+  Transition.cpp
+  UniqueObject.cpp
+)

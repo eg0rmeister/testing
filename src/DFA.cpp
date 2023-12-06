@@ -1,4 +1,4 @@
-#include <DFA.h>
+#include "DFA.h"
 
 DFA::DFA(const State& start_state, const states_vec& states)
     : FSA(start_state, states), _current_state(start_state) {}
@@ -29,5 +29,7 @@ bool DFA::TestWord(std::string word, bool from_current_state) {
 }
 
 bool DFA::IsFinal() const { return FSA::IsFinal(_current_state.ID()); }
+
+bool DFA::IsInTrash() const { return IsTrash(_current_state); }
 
 void DFA::ResetState() { _current_state = GetStartState(); }

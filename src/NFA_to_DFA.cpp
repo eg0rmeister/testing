@@ -1,4 +1,4 @@
-#include <NFA_to_DFA.h>
+#include "NFA_to_DFA.h"
 
 #include <queue>
 #include <unordered_map>

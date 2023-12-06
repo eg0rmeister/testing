@@ -16,10 +16,8 @@ int main() {
   std::string REG0 = "int+float";
   std::string REG1 = "(a+b+c+d+e+f+g+h+i+j+k+l+m+n+o+p+q+r+s+t+u+v+w+x+y+z+_)*";
 
-  // DFA for types
   DFA dfa0 =
       ConvertNFAtoDFA(GetNFAWithNoEpsilons(GetNFAFromREG(REGTree(REG0))));
-  // DFA for variables
   DFA dfa1 =
       ConvertNFAtoDFA(GetNFAWithNoEpsilons(GetNFAFromREG(REGTree(REG1))));
 
@@ -28,8 +26,9 @@ int main() {
   dfa_vector.push_back(dfa1);
   DFAForest dfa_forest(dfa_vector);
   try {
-    // Create scanner from DFA0 (types) and DFA1 (variables)
-    std::vector<size_t> tokens = {TYPE, VAR};
+    //
+    // Scanner test
+    std::vector<size_t>tokens = {TYPE, VAR};
     Scanner scanner(dfa_forest, tokens);
 
     // Scanner input
