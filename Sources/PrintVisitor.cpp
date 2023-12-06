@@ -74,6 +74,10 @@ std::any PrintVisitor::visitStmt(ExprParser::StmtContext* ctx) {
     return visitExecuteStmt(ctx);
   } else if (ctx->ifexp != nullptr) {
     return visitIfStmt(ctx);
+  } else if (ctx->while_condition != nullptr) {
+    return visitWhileStmt(ctx);
+  } else if (ctx->getText() == "break") {
+    return std::any();
   }
   throw std::runtime_error("Unknown expression: " + ctx->getText() + " !\n");
   return std::any();
@@ -125,10 +129,22 @@ std::any PrintVisitor::visitExecuteStmt(ExprParser::StmtContext* ctx) {
 }
 
 std::any PrintVisitor::visitIfStmt(ExprParser::StmtContext* ctx) {
+  std::cout << "If" << std::endl;
+  std::cout << "If condition" << std::endl;
+  ctx->ifexp->accept(this);
   std::cout << "If statement" << std::endl;
   ctx->ifstmt->accept(this);
   std::cout << "Else statement" << std::endl;
   ctx->elsestmt->accept(this);
+  return std::any();
+}
+
+std::any PrintVisitor::visitWhileStmt(ExprParser::StmtContext *ctx) {
+  std::cout << "While" << std::endl;
+  std::cout << "While condition" << std::endl;
+  ctx->while_condition->accept(this);
+  std::cout << "While statement" << std::endl;
+  ctx->whilestmts->accept(this);
   return std::any();
 }
 
