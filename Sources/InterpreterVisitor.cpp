@@ -58,6 +58,12 @@ std::any InterpreterVisitor::visitExpr(ExprParser::ExprContext *ctx) {
   if (ctx->op->getText() == "!=") {
     return visitNotEqualExpr(ctx);
   }
+  if (ctx->op->getText() == "&&") {
+    return visitAndExpr(ctx);
+  }
+  if (ctx->op->getText() == "||") {
+    return visitOrExpr(ctx);
+  }
   std::cout << "Expr: " << ctx->getText() << '\n';
   return std::any();
 }
@@ -235,6 +241,16 @@ std::any InterpreterVisitor::visitLessOrEqualExpr(
 std::any InterpreterVisitor::visitMoreOrEqualExpr(
     ExprParser::ExprContext *ctx) {
   return std::any_cast<Printable>(ctx->left->accept(this)) >=
+         std::any_cast<Printable>(ctx->right->accept(this));
+}
+
+std::any InterpreterVisitor::visitAndExpr(ExprParser::ExprContext *ctx) {
+    return std::any_cast<Printable>(ctx->left->accept(this)) &&
+         std::any_cast<Printable>(ctx->right->accept(this));
+}
+
+std::any InterpreterVisitor::visitOrExpr(ExprParser::ExprContext *ctx) {
+    return std::any_cast<Printable>(ctx->left->accept(this)) ||
          std::any_cast<Printable>(ctx->right->accept(this));
 }
 

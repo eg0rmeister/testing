@@ -7,7 +7,7 @@ def helloworld() {
 def main() {
     b = 10
     a = 38
-    c = b > a
+    c = 0 && (b > a) && (10 < 38)
     print(c)
     if (b > a) {
       print(b)

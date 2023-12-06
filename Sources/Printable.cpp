@@ -103,3 +103,21 @@ Printable operator!=(const Printable &lhs, const Printable &rhs) {
   throw std::runtime_error("No operator!= for these operands: " + lhs.str + " " +
                            rhs.str + " !");
 }
+
+Printable operator&&(const Printable &lhs, const Printable &rhs) {
+  if (lhs.value.type() == typeid(int) && rhs.value.type() == typeid(int)) {
+    int result = (std::any_cast<int>(lhs.value) != 0) && (std::any_cast<int>(rhs.value) != 0);
+    return {result, std::to_string(result)};
+  }
+  throw std::runtime_error("No operator&& for these operands: " + lhs.str + " " +
+                           rhs.str + " !");
+}
+
+Printable operator||(const Printable &lhs, const Printable &rhs) {
+  if (lhs.value.type() == typeid(int) && rhs.value.type() == typeid(int)) {
+    int result = (std::any_cast<int>(lhs.value) != 0) || (std::any_cast<int>(rhs.value) != 0);
+    return {result, std::to_string(result)};
+  }
+  throw std::runtime_error("No operator|| for these operands: " + lhs.str + " " +
+                           rhs.str + " !");
+}

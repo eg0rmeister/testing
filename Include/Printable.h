@@ -30,3 +30,7 @@ Printable operator>=(const Printable &lhs, const Printable &rhs);
 Printable operator==(const Printable &lhs, const Printable &rhs);
 
 Printable operator!=(const Printable &lhs, const Printable &rhs);
+
+Printable operator&&(const Printable &lhs, const Printable &rhs);
+
+Printable operator||(const Printable &lhs, const Printable &rhs);

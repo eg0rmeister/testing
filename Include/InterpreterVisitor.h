@@ -66,6 +66,10 @@ class InterpreterVisitor : ExprBaseVisitor {
 
   std::any visitMoreOrEqualExpr(ExprParser::ExprContext *ctx);
 
+  std::any visitAndExpr(ExprParser::ExprContext *ctx);
+
+  std::any visitOrExpr(ExprParser::ExprContext *ctx);
+
   StackMemory memory;
   std::map<std::string, ExprParser::FunContext*> _functions;
 };
