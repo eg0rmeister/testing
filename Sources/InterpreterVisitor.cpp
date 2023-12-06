@@ -84,32 +84,18 @@ std::any InterpreterVisitor::visitFun(ExprParser::FunContext *context) {
 }
 
 std::any InterpreterVisitor::visitIdents(ExprParser::IdentsContext *context) {
-  if (context->ident == nullptr) {
-    return std::vector<string>();
+  vector<string> ret;
+  for (auto ident : context->IDENT()) {
+    ret.push_back(ident->getText());
   }
-  if (context->rest == nullptr) {
-    std::vector<string> ret;
-    ret.push_back(context->ident->getText());
-    return ret;
-  }
-  std::vector<string> ret =
-      std::any_cast<std::vector<string>>(context->rest->accept(this));
-  ret.push_back(context->ident->getText());
   return ret;
 }
 
 std::any InterpreterVisitor::visitExprs(ExprParser::ExprsContext *context) {
-  if (context->expression == nullptr) {
-    return std::vector<int>();
+  vector<Printable> ret;
+  for (auto expr : context->expr()) {
+    ret.push_back(std::any_cast<Printable>(expr->accept(this)));
   }
-  if (context->rest == nullptr) {
-    std::vector<int> ret;
-    ret.push_back(std::any_cast<int>(context->expression->accept(this)));
-    return ret;
-  }
-  std::vector<int> ret =
-      std::any_cast<std::vector<int>>(context->rest->accept(this));
-  ret.push_back(std::any_cast<int>(context->expression->accept(this)));
   return ret;
 }
 

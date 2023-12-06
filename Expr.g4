@@ -38,12 +38,10 @@ fun: FUN ident=IDENT '(' arguments=idents ')'
     NEWLINE
 '}';
 
-idents: ident=IDENT ',' rest=idents
-      | ident=IDENT
+idents: IDENT (',' IDENT)*
       |
       ;
 
-exprs:   expression=expr ',' rest=exprs
-     |   expression=expr
+exprs:   expr (',' expr)*
      |
      ;
