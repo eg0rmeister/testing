@@ -1,0 +1,116 @@
+#include "FSA.h"
+
+#include <iostream>
+
+FSA::FSA(const State& start_state, const states_vec& states)
+    : _start_state(State(start_state)), _trash(State()) {
+  for (auto& state : states) {
+    _states.push_back(State(state));
+    _state_by_id[state.ID()] = *_states.rbegin();
+    _is_final_state[state.ID()] = false;
+  }
+}
+
+void FSA::AddTransition(uint32_t from_id, const Transition& transition) {
+  _transitions[from_id].push_back(transition);
+}
+
+void FSA::AddTransition(uint32_t from_id, uint32_t to_id,
+                        const std::string& input) {
+  Transition transition = Transition(input, GetState(to_id));
+  _transitions[from_id].push_back(transition);
+}
+
+FSA::transitions_map FSA::GetAllTransitions() const { return _transitions; }
+
+void FSA::AddState(const State& state, bool is_final) {
+  if (_state_by_id.contains(state.ID())) {
+    _is_final_state[state.ID()] = is_final;
+    return;
+  }
+
+  _states.push_back(State(state));
+  _state_by_id[state.ID()] = _states.back();
+  _is_final_state[state.ID()] = is_final;
+}
+
+State FSA::GetState(uint32_t state_id) { return _state_by_id[state_id]; }
+
+State FSA::GetStartState() const { return _start_state; }
+
+FSA::states_vec FSA::GetStates() const {
+  states_vec ret;
+  ret.reserve(_states.size());
+  for (auto state_pointer : _states) {
+    ret.push_back(state_pointer);
+  }
+  return ret;
+}
+
+std::vector<State> FSA::GetFinalStates() const {
+  std::vector<State> final_states;
+  for (auto state : _states) {
+    if (_is_final_state.contains(state.ID()) &&
+        _is_final_state.at(state.ID())) {
+      final_states.emplace_back(state);
+    }
+  }
+  return final_states;
+}
+
+FSA::transitions_set FSA::GetTransitions(const State& state) const {
+  if (!_transitions.contains(state.ID())) {
+    return FSA::transitions_set();
+  }
+  return _transitions.at(state.ID());
+}
+
+void FSA::SetFinal(uint32_t state_id, bool is_final) {
+  if (_is_final_state.contains(state_id)) {
+    _is_final_state[state_id] = is_final;
+  }
+}
+
+bool FSA::IsFinal(uint32_t state_id) const {
+  if (_is_final_state.contains(state_id)) {
+    return _is_final_state.at(state_id);
+  } else {
+    return false;
+  }
+}
+
+void FSA::Visualize() {
+  auto start_state = GetStartState();
+  std::cout << "Start state:" << std::endl;
+  std::cout << "[" << start_state.ID() << "] " << GetLabel(start_state);
+  if (_is_final_state[start_state.ID()]) {
+    std::cout << "-- final";
+  }
+  std::cout << std::endl;
+  std::cout << "States: " << std::endl;
+  for (auto state : _states) {
+    std::cout << "[" << state.ID() << "] " << GetLabel(state);
+    if (_is_final_state[state.ID()]) {
+      std::cout << "-- final";
+    }
+    std::cout << std::endl;
+  }
+
+  std::cout << "Transitions: " << std::endl;
+  for (auto state : _states) {
+    if (_transitions.contains(state.ID())) {
+      auto& current_transitions = _transitions.at(state.ID());
+
+      for (const Transition& current_transition : current_transitions) {
+        std::cout << state.ID() << " - " << current_transition.Input() << " -> "
+                  << current_transition.Target().ID() << std::endl;
+      }
+    }
+  }
+}
+
+std::string FSA::GetLabel(const State& state) const { return std::string(); }
+
+bool FSA::IsTrash(const State& state) const { return state == _trash; }
+
+State FSA::GetTrash() const { return _trash; }
