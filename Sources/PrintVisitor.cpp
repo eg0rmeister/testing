@@ -43,6 +43,24 @@ std::any PrintVisitor::visitExpr(ExprParser::ExprContext* ctx) {
   if (ctx->op->getText() == "/") {
     return visitDivExpr(ctx);
   }
+  if (ctx->op->getText() == ">") {
+    return visitMoreExpr(ctx);
+  }
+  if (ctx->op->getText() == "<") {
+    return visitLessExpr(ctx);
+  }
+  if (ctx->op->getText() == ">=") {
+    return visitMoreOrEqualExpr(ctx);
+  }
+  if (ctx->op->getText() == "<=") {
+    return visitLessOrEqualExpr(ctx);
+  }
+  if (ctx->op->getText() == "==") {
+    return visitEqualExpr(ctx);
+  }
+  if (ctx->op->getText() == "!=") {
+    return visitNotEqualExpr(ctx);
+  }
   return std::any();
 }
 
@@ -164,42 +182,42 @@ std::any PrintVisitor::visitFunExpr(ExprParser::ExprContext* ctx) {
 }
 
 std::any PrintVisitor::visitMoreExpr(ExprParser::ExprContext* ctx) {
-  std::cout << "More Expr" << std::endl;
+  std::cout << "More" << std::endl;
   ctx->left->accept(this);
   ctx->right->accept(this);
   return std::any();
 }
 
 std::any PrintVisitor::visitLessExpr(ExprParser::ExprContext* ctx) {
-  std::cout << "Less Expr" << std::endl;
+  std::cout << "Less" << std::endl;
   ctx->left->accept(this);
   ctx->right->accept(this);
   return std::any();
 }
 
 std::any PrintVisitor::visitEqualExpr(ExprParser::ExprContext* ctx) {
-  std::cout << "Equal Expr" << std::endl;
+  std::cout << "Equal" << std::endl;
   ctx->left->accept(this);
   ctx->right->accept(this);
   return std::any();
 }
 
 std::any PrintVisitor::visitNotEqualExpr(ExprParser::ExprContext* ctx) {
-  std::cout << "NotEqual Expr" << std::endl;
+  std::cout << "NotEqual" << std::endl;
   ctx->left->accept(this);
   ctx->right->accept(this);
   return std::any();
 }
 
 std::any PrintVisitor::visitLessOrEqualExpr(ExprParser::ExprContext* ctx) {
-  std::cout << "LessOrEqual Expr" << std::endl;
+  std::cout << "LessOrEqual" << std::endl;
   ctx->left->accept(this);
   ctx->right->accept(this);
   return std::any();
 }
 
 std::any PrintVisitor::visitMoreOrEqualExpr(ExprParser::ExprContext* ctx) {
-  std::cout << "MoreOrEqual Expr" << std::endl;
+  std::cout << "MoreOrEqual" << std::endl;
   ctx->left->accept(this);
   ctx->right->accept(this);
   return std::any();
