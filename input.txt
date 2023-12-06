@@ -14,9 +14,15 @@ def main() {
   } else {
     print(a)
   }
+  while (b > 0) {
+    b = b - 5
+    d = 8
+    break
+  }
+  d = 1
   print b
   print a
-  print c
+  print d
   print helloworld()
   print helloworldd()
   print a
