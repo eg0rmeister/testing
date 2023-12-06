@@ -54,6 +54,8 @@ std::any PrintVisitor::visitStmt(ExprParser::StmtContext* ctx) {
     return visitPrintStmt(ctx);
   } else if (ctx->execute != nullptr) {
     return visitExecuteStmt(ctx);
+  } else if (ctx->ifexp != nullptr) {
+    return visitIfStmt(ctx);
   }
   throw std::runtime_error("Unknown expression: " + ctx->getText() + " !\n");
   return std::any();
