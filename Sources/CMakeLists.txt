@@ -3,5 +3,5 @@ add_library(AllVisitor
   Printable.cpp
   StackMemory.cpp
   PrintVisitor.cpp
-  IRVisitor.cpp
+  #IRVisitor.cpp
 )

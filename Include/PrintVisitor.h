@@ -64,4 +64,15 @@ class PrintVisitor : ExprBaseVisitor {
   std::any visitLessOrEqualExpr(ExprParser::ExprContext *ctx);
 
   std::any visitMoreOrEqualExpr(ExprParser::ExprContext *ctx);
+
+  std::string getTab(size_t tab_level);
+
+  /// @brief Increase tab_level_ by 1
+  void tabUp();
+
+  /// @brief Increase tab_level_ by 1
+  void tabDown();
+
+  // tab counter for printing tree
+  size_t tab_level_ = 0;
 };
