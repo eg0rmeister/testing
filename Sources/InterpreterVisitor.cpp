@@ -1,6 +1,9 @@
 #include "InterpreterVisitor.h"
 
-using namespace std;
+namespace utility {}  // namespace utility
+
+using std::vector;
+using std::string;
 
 std::any InterpreterVisitor::visitFile(ExprParser::FileContext *context) {
   for (auto function : context->fun()) {
@@ -71,8 +74,10 @@ std::any InterpreterVisitor::visitStmt(ExprParser::StmtContext *ctx) {
     return visitExecuteStmt(ctx);
   } else if (ctx->ifexp != nullptr) {
     return visitIfStmt(ctx);
-  } else if (ctx->while_cond != nullptr) {
+  } else if (ctx->while_condition != nullptr) {
     return visitWhileStmt(ctx);
+  } else if (ctx->getText() == "break") {
+    return std::any();
   }
   throw std::runtime_error("Unknown expression: " + ctx->getText() + " !\n");
   return std::any();
@@ -84,41 +89,30 @@ std::any InterpreterVisitor::visitFun(ExprParser::FunContext *context) {
 }
 
 std::any InterpreterVisitor::visitIdents(ExprParser::IdentsContext *context) {
-  if (context->ident == nullptr) {
-    return std::vector<string>();
+  vector<string> ret;
+  for (auto ident : context->IDENT()) {
+    ret.push_back(ident->getText());
   }
-  if (context->rest == nullptr) {
-    std::vector<string> ret;
-    ret.push_back(context->ident->getText());
-    return ret;
-  }
-  std::vector<string> ret =
-      std::any_cast<std::vector<string>>(context->rest->accept(this));
-  ret.push_back(context->ident->getText());
   return ret;
 }
 
 std::any InterpreterVisitor::visitExprs(ExprParser::ExprsContext *context) {
-  if (context->expression == nullptr) {
-    return std::vector<int>();
+  vector<Printable> ret;
+  for (auto expr : context->expr()) {
+    ret.push_back(std::any_cast<Printable>(expr->accept(this)));
   }
-  if (context->rest == nullptr) {
-    std::vector<int> ret;
-    ret.push_back(std::any_cast<int>(context->expression->accept(this)));
-    return ret;
-  }
-  std::vector<int> ret =
-      std::any_cast<std::vector<int>>(context->rest->accept(this));
-  ret.push_back(std::any_cast<int>(context->expression->accept(this)));
   return ret;
 }
 
 std::any InterpreterVisitor::visitStatements(
-    ExprParser::StatementsContext *context) {
-  for (auto statement : context->stmt()) {
+    ExprParser::StatementsContext *ctx) {
+  for (auto statement : ctx->stmt()) {
+    if (statement->getText() == "break") {
+      return false;
+    }
     statement->accept(this);
   }
-  return std::any();
+  return true;
 }
 
 std::any InterpreterVisitor::visitPrintStmt(ExprParser::StmtContext *ctx) {
@@ -137,7 +131,7 @@ std::any InterpreterVisitor::visitAssignStmt(ExprParser::StmtContext *ctx) {
   std::cout << "> " << ctx->getText() << '\n';
   auto variable_name = ctx->ident->getText();
   auto variable_value = std::any_cast<Printable>(ctx->assign->accept(this));
-  memory.Declare(variable_name, variable_value);
+  memory.SetOrDeclare(variable_name, variable_value);
   return std::any();
 }
 
@@ -148,8 +142,8 @@ std::any InterpreterVisitor::visitExecuteStmt(ExprParser::StmtContext *ctx) {
 }
 
 std::any InterpreterVisitor::visitIfStmt(ExprParser::StmtContext *ctx) {
-  if (std::any_cast<int>(std::any_cast<Printable>(ctx->ifexp->accept(this)).value) != 0)
-  {
+  if (std::any_cast<int>(
+          std::any_cast<Printable>(ctx->ifexp->accept(this)).value) != 0) {
     ctx->ifstmt->accept(this);
   } else if (ctx->elsestmt != nullptr) {
     ctx->elsestmt->accept(this);
@@ -158,10 +152,14 @@ std::any InterpreterVisitor::visitIfStmt(ExprParser::StmtContext *ctx) {
 }
 
 std::any InterpreterVisitor::visitWhileStmt(ExprParser::StmtContext *ctx) {
-  while (std::any_cast<int>(ctx->while_cond->accept(this)))
-  {
-    std::cout << 1;
+  memory.ScopeInLocal();
+  while (std::any_cast<int>(
+      std::any_cast<Printable>(ctx->while_condition->accept(this)).value)) {
+    if (!std::any_cast<bool>(ctx->whilestmts->accept(this))) {
+      break;
+    }
   }
+  memory.ScopeOutLocal();
   return std::any();
 }
 
@@ -189,10 +187,11 @@ std::any InterpreterVisitor::visitSubExpr(ExprParser::ExprContext *ctx) {
 }
 
 std::any InterpreterVisitor::visitFunExpr(ExprParser::ExprContext *ctx) {
-  memory.Scope_in();
+  memory.ScopeIn();
   _functions.at(ctx->function_ident->getText())->statements()->accept(this);
-  std::any result = _functions.at(ctx->function_ident->getText())->return_expr->accept(this);
-  memory.Scope_out();
+  std::any result =
+      _functions.at(ctx->function_ident->getText())->return_expr->accept(this);
+  memory.ScopeOut();
   return result;
 }
 

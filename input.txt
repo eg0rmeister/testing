@@ -1,30 +1,36 @@
 def helloworld() {
-    print((5 + 3) / 8 + 101)
-    return 0
+  print((5 + 3) / 8 + 101)
+  return 0
 }
 
 
 def main() {
-    b = 10
-    a = 38
-    c = b > a
-    print(c)
-    if (b > a) {
-      print(b)
-    } else {
-      print(a)
-    }
-    print b
-    print a
-    print c
-    print helloworld()
-    print helloworldd()
-    print a
+  b = 10
+  a = 38
+  c = b > a
+  print(c)
+  if (b > a) {
+    print(b)
+  } else {
+    print(a)
+  }
+  while (b > 0) {
+    b = b - 5
+    d = 8
+    break
+  }
+  d = 1
+  print b
+  print a
+  print d
+  print helloworld()
+  print helloworldd()
+  print a
 }
 
 def helloworldd() {
-    a = 100
-    print(a)
-    return 2
+  a = 100
+  print(a)
+  return 2
 }
 
