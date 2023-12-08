@@ -3,14 +3,17 @@
 #include <iostream>
 #include <string>
 
+PrintVisitor::PrintVisitor() {
+  root_ = new ASTNode("root");
+  current_node_ = root_;
+}
+
 std::any PrintVisitor::visitFile(ExprParser::FileContext* context) {
   std::cout << "File" << std::endl;
-  ++tab_level_;
   for (auto function : context->fun()) {
     function->accept(this);
   }
   context->prog()->accept(this);
-  --tab_level_;
   return std::any();
 }
 
@@ -90,9 +93,9 @@ std::any PrintVisitor::visitStmt(ExprParser::StmtContext* ctx) {
 
 std::any PrintVisitor::visitFun(ExprParser::FunContext* context) {
   std::cout << "Fun" << std::endl;
-  tabUp();
+  tabUp("Fun");
   context->statements()->accept(this);
-  tabDown();
+  tabDown("Fun");
   return std::any();
 }
 
@@ -103,11 +106,11 @@ std::any PrintVisitor::visitIdents(ExprParser::IdentsContext* context) {
 
 std::any PrintVisitor::visitExprs(ExprParser::ExprsContext* context) {
   std::cout << "Exprs" << std::endl;
-  tabUp();
+  tabUp("Exprs");
   for (auto expr : context->expr()) {
     expr->accept(this);
   }
-  tabDown();
+  tabDown("Exprs");
   return std::any();
 }
 
@@ -122,117 +125,121 @@ std::any PrintVisitor::visitStatements(ExprParser::StatementsContext* context) {
 
 std::any PrintVisitor::visitPrintStmt(ExprParser::StmtContext* ctx) {
   std::cout << "Print" << std::endl;
-  tabUp();
+  tabUp("Print");
   ctx->printexp->accept(this);
-  tabDown();
+  tabDown("Print");
   return std::any();
 }
 
 std::any PrintVisitor::visitAssignStmt(ExprParser::StmtContext* ctx) {
   std::cout << "Assign" << std::endl;
-  tabUp();
+  tabUp("Assign");
   ctx->assign->accept(this);
-  tabDown();
+  tabDown("Assign");
   return std::any();
 }
 
 std::any PrintVisitor::visitExecuteStmt(ExprParser::StmtContext* ctx) {
   std::cout << "Execute" << std::endl;
-  tabUp();
+  tabUp("Execute");
   ctx->execute->accept(this);
-  tabDown();
+  tabDown("Execute");
   return std::any();
 }
 
 std::any PrintVisitor::visitIfStmt(ExprParser::StmtContext* ctx) {
   std::cout << "If" << std::endl;
-  tabUp();
+  tabUp("IfStmt");
   auto tab = getTab(tab_level_);
   std::cout << tab << "If statement condition" << std::endl;
-  tabUp();
+  tabUp("IfStmtCond");
   ctx->ifexp->accept(this);
-  tabDown();
+  tabDown("IfStmtCond");
   std::cout << tab << "If statement body" << std::endl;
-  tabUp();
+  tabUp("If statement body");
   ctx->ifstmt->accept(this);
-  tabDown();
+  tabDown("If statement body");
   if (ctx->elsestmt != nullptr) {
     std::cout << tab << "If statement else body" << std::endl;
-    tabUp();
+    tabUp("IfStmtElseCond");
     ctx->elsestmt->accept(this);
-    tabDown();
+    tabDown("IfStmtElseCond");
   }
-  tabDown();
+  tabDown("IfStmt");
   return std::any();
 }
 
-std::any PrintVisitor::visitWhileStmt(ExprParser::StmtContext *ctx) {
+std::any PrintVisitor::visitWhileStmt(ExprParser::StmtContext* ctx) {
   std::cout << "While" << std::endl;
-  tabUp();
+  tabUp("While");
   auto tab = getTab(tab_level_);
   std::cout << tab << "While condition" << std::endl;
-  tabUp();
+  tabUp("WhileCond");
   ctx->while_condition->accept(this);
-  tabDown();
+  tabDown("WhileCond");
   std::cout << tab << "While statement" << std::endl;
-  tabUp();
+  tabUp("While statement");
   ctx->whilestmts->accept(this);
-  tabDown();
-  tabDown();
+  tabDown("While statement");
+  tabDown("While");
   return std::any();
 }
 
 std::any PrintVisitor::visitNumberExpr(ExprParser::ExprContext* ctx) {
+  tabUp("Number");
   std::cout << "Number " << ctx->getText() << std::endl;
+  tabDown("Number");
   return std::any();
 }
 
 std::any PrintVisitor::visitBraceExpr(ExprParser::ExprContext* ctx) {
   std::cout << "Brace" << std::endl;
-  tabUp();
+  tabUp("Brace");
   ctx->exp->accept(this);
-  tabDown();
+  tabDown("Brace");
   return std::any();
 }
 
 std::any PrintVisitor::visitVarIdentExpr(ExprParser::ExprContext* ctx) {
+  tabUp("VarIdent");
   std::cout << "VarIdent " << ctx->getText() << std::endl;
+  tabDown("VarIdent");
   return std::any();
 }
 
 std::any PrintVisitor::visitDivExpr(ExprParser::ExprContext* ctx) {
   std::cout << "Div" << std::endl;
-  tabUp();
+  tabUp("Div");
   ctx->left->accept(this);
   ctx->right->accept(this);
-  tabDown();
+  tabDown("Div");
   return std::any();
 }
 
 std::any PrintVisitor::visitMulExpr(ExprParser::ExprContext* ctx) {
   std::cout << "Mul" << std::endl;
-  tabUp();
+  tabUp("Mul");
   ctx->left->accept(this);
   ctx->right->accept(this);
-  tabDown();
+  tabDown("Mul");
   return std::any();
 }
 
 std::any PrintVisitor::visitAddExpr(ExprParser::ExprContext* ctx) {
   std::cout << "Add" << std::endl;
-  tabUp();
+  tabUp("Add");
   ctx->left->accept(this);
   ctx->right->accept(this);
-  tabDown();
+  tabDown("Add");
   return std::any();
 }
 
 std::any PrintVisitor::visitSubExpr(ExprParser::ExprContext* ctx) {
   std::cout << "Sub" << std::endl;
-  tabUp();
+  tabUp("Sub");
   ctx->left->accept(this);
   ctx->right->accept(this);
-  tabDown();
+  tabDown("Sub");
   return std::any();
 }
 
@@ -243,69 +250,79 @@ std::any PrintVisitor::visitFunExpr(ExprParser::ExprContext* ctx) {
 
 std::any PrintVisitor::visitMoreExpr(ExprParser::ExprContext* ctx) {
   std::cout << "More" << std::endl;
-  tabUp();
+  tabUp("More");
   ctx->left->accept(this);
   ctx->right->accept(this);
-  tabDown();
+  tabDown("More");
   return std::any();
 }
 
 std::any PrintVisitor::visitLessExpr(ExprParser::ExprContext* ctx) {
   std::cout << "Less" << std::endl;
-  tabUp();
+  tabUp("Less");
   ctx->left->accept(this);
   ctx->right->accept(this);
-  tabDown();
+  tabDown("Less");
   return std::any();
 }
 
 std::any PrintVisitor::visitEqualExpr(ExprParser::ExprContext* ctx) {
   std::cout << "Equal" << std::endl;
-  tabUp();
+  tabUp("Equal");
   ctx->left->accept(this);
   ctx->right->accept(this);
-  tabDown();
+  tabDown("Equal");
   return std::any();
 }
 
 std::any PrintVisitor::visitNotEqualExpr(ExprParser::ExprContext* ctx) {
   std::cout << "NotEqual" << std::endl;
   std::cout << "NotEqual" << std::endl;
-  tabUp();
+  tabUp("NotEqual");
   ctx->left->accept(this);
   ctx->right->accept(this);
-  tabDown();
+  tabDown("NotEqual");
   return std::any();
 }
 
 std::any PrintVisitor::visitLessOrEqualExpr(ExprParser::ExprContext* ctx) {
   std::cout << "LessOrEqual" << std::endl;
   std::cout << "LessOrEqual" << std::endl;
-  tabUp();
+  tabUp("LessOrEqual");
   ctx->left->accept(this);
   ctx->right->accept(this);
-  tabDown();
+  tabDown("LessOrEqual");
   return std::any();
 }
 
 std::any PrintVisitor::visitMoreOrEqualExpr(ExprParser::ExprContext* ctx) {
   std::cout << "MoreOrEqual" << std::endl;
-  tabUp();
+  tabUp("MoreOrEqual");
   ctx->left->accept(this);
   ctx->right->accept(this);
-  tabDown();
+  tabDown("MoreOrEqual");
   return std::any();
 }
 
-std::string PrintVisitor::getTab(size_t tab_level)
-{
+std::string PrintVisitor::getTab(size_t tab_level) {
   return std::string(tab_level, '\t');
 }
 
-void PrintVisitor::tabUp() {
-  ++tab_level_;
+void PrintVisitor::tabUp() { ++tab_level_; }
+
+void PrintVisitor::tabDown() { --tab_level_; }
+
+void PrintVisitor::tabUp(std::string node_name) {
+  tabUp();
+  ASTNode* node = new ASTNode(node_name);
+  node->parent = current_node_;
+  current_node_->children.push_back(node);
+  current_node_ = node;
 }
 
-void PrintVisitor::tabDown() {
-  --tab_level_;
+void PrintVisitor::tabDown(std::string node_name) {
+  tabDown();
+  current_node_ = current_node_->parent;
 }
+
+ASTNode::ASTNode(std::string label) : label(label) {}

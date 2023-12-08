@@ -1,14 +1,21 @@
 #pragma once
 #include <map>
 #include <string>
+#include <vector>
 
-#include "antlr4-runtime.h"
 #include "ExprBaseVisitor.h"
+#include "antlr4-runtime.h"
 
+struct ASTNode {
+  ASTNode(std::string label = "root");
+  ASTNode *parent;
+  std::string label;
+  std::vector<ASTNode *> children;
+};
 
 class PrintVisitor : ExprBaseVisitor {
  public:
-  public:
+  PrintVisitor();
   std::any visitFile(ExprParser::FileContext *context) override;
 
   std::any visitProg(ExprParser::ProgContext *ctx) override;
@@ -26,14 +33,13 @@ class PrintVisitor : ExprBaseVisitor {
   std::any visitStatements(ExprParser::StatementsContext *context) override;
 
  private:
-
   std::any visitPrintStmt(ExprParser::StmtContext *ctx);
 
   std::any visitAssignStmt(ExprParser::StmtContext *ctx);
 
   std::any visitExecuteStmt(ExprParser::StmtContext *ctx);
 
-  std::any visitIfStmt(ExprParser::StmtContext *ctx); 
+  std::any visitIfStmt(ExprParser::StmtContext *ctx);
 
   std::any visitWhileStmt(ExprParser::StmtContext *ctx);
 
@@ -73,6 +79,15 @@ class PrintVisitor : ExprBaseVisitor {
   /// @brief Increase tab_level_ by 1
   void tabDown();
 
+  /// @brief Increase tab_level_ by 1 and add new node to AST
+  void tabUp(std::string node_name);
+
+  /// @brief Increase tab_level_ by 1
+  void tabDown(std::string node_name);
+
   // tab counter for printing tree
   size_t tab_level_ = 0;
+
+  ASTNode *root_;
+  ASTNode *current_node_;
 };
