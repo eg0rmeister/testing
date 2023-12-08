@@ -1,22 +1,41 @@
-def helloworld() {
-    print((5 + 3) / 8 + 101)
-    return 0
+def hello() {
+    print 88 + 45
 }
-
 
 def main() {
-    a = 6
-    b = 4+a
-    c = b / a
-    print b
-    print a
-    print c
-    print helloworld()
-    print helloworldd()
+    declare a
+    declare b
+    a = 1100
+    b = 50
+    print 110
+    print 5
+    print 110 + 5
+    print 110 - 5
+    print 110 * 5
+    print 110 / 5
+    print a + b
+    print a - b
+    print a * b
+    print a / b
+    declare small
+    declare middle
+    declare middler
+    declare big
+    small = 1
+    middle = 2
+    big = 2
+    print small < big
+    print small <= big
+    print middle == big
+    print middle >= big
+    print small != big
+    print big > small
+    if big > small {
+        print(5)
+    } else {
+        print 6
+    }
+    hello(110, 1)
 }
 
-def helloworldd() {
-    print(a)
-    return 2
-}
 

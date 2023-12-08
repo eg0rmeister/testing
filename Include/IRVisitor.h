@@ -26,7 +26,7 @@
 
 class IRVisitor : ExprBaseVisitor {
  public:
-  IRVisitor();
+  IRVisitor() : Builder(TheContext), TheModule("test", TheContext) {}
 
   std::any visitFile(ExprParser::FileContext *context) override;
 
@@ -42,12 +42,21 @@ class IRVisitor : ExprBaseVisitor {
 
   std::any visitExprs(ExprParser::ExprsContext *context) override;
 
+  void printIR();
+
  private:
+
   std::any visitPrintStmt(ExprParser::StmtContext *ctx);
 
   std::any visitAssignStmt(ExprParser::StmtContext *ctx);
 
   std::any visitExecuteStmt(ExprParser::StmtContext *ctx);
+
+  std::any visitDeclareStmt(ExprParser::StmtContext *ctx);
+
+  std::any visitIfStmt(ExprParser::StmtContext *ctx); 
+
+  std::any visitWhileStmt(ExprParser::StmtContext *ctx);
 
   std::any visitNumberExpr(ExprParser::ExprContext *ctx);
 
@@ -65,10 +74,25 @@ class IRVisitor : ExprBaseVisitor {
 
   std::any visitFunExpr(ExprParser::ExprContext *ctx);
 
-  StackMemory memory;
-  std::map<std::string, ExprParser::FunContext *> _functions;
+  std::any visitMoreExpr(ExprParser::ExprContext *ctx);
 
-  std::unique_ptr<llvm::LLVMContext> TheContext;
-  std::unique_ptr<llvm::Module> TheModule;
-  std::unique_ptr<llvm::IRBuilder<>> Builder;
+  std::any visitLessExpr(ExprParser::ExprContext *ctx);
+
+  std::any visitEqualExpr(ExprParser::ExprContext *ctx);
+
+  std::any visitNotEqualExpr(ExprParser::ExprContext *ctx);
+
+  std::any visitLessOrEqualExpr(ExprParser::ExprContext *ctx);
+
+  std::any visitMoreOrEqualExpr(ExprParser::ExprContext *ctx);
+
+  StackMemory memory;
+
+  llvm::LLVMContext TheContext;
+  llvm::IRBuilder<> Builder;
+  llvm::Module TheModule;
+  std::map<std::string, llvm::Value *> NamedValues;
+  std::map<std::string, llvm::Function *> NamedFunctions;
+  std::map<std::string, llvm::AllocaInst *> NamedVariables;
+  llvm::Function* current_function;
 };

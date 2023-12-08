@@ -24,6 +24,7 @@ class InterpreterVisitor : ExprBaseVisitor {
 
   std::any visitExprs(ExprParser::ExprsContext *context) override;
 
+  std::any visitStatements(ExprParser::StatementsContext *context) override;
 
  private:
 
@@ -32,6 +33,10 @@ class InterpreterVisitor : ExprBaseVisitor {
   std::any visitAssignStmt(ExprParser::StmtContext *ctx);
 
   std::any visitExecuteStmt(ExprParser::StmtContext *ctx);
+
+  std::any visitIfStmt(ExprParser::StmtContext *ctx); 
+
+  std::any visitWhileStmt(ExprParser::StmtContext *ctx);
 
   std::any visitNumberExpr(ExprParser::ExprContext *ctx);
 
@@ -48,6 +53,18 @@ class InterpreterVisitor : ExprBaseVisitor {
   std::any visitSubExpr(ExprParser::ExprContext *ctx);
 
   std::any visitFunExpr(ExprParser::ExprContext *ctx);
+
+  std::any visitMoreExpr(ExprParser::ExprContext *ctx);
+
+  std::any visitLessExpr(ExprParser::ExprContext *ctx);
+
+  std::any visitEqualExpr(ExprParser::ExprContext *ctx);
+
+  std::any visitNotEqualExpr(ExprParser::ExprContext *ctx);
+
+  std::any visitLessOrEqualExpr(ExprParser::ExprContext *ctx);
+
+  std::any visitMoreOrEqualExpr(ExprParser::ExprContext *ctx);
 
   StackMemory memory;
   std::map<std::string, ExprParser::FunContext*> _functions;
