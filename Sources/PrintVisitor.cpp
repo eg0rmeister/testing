@@ -8,6 +8,10 @@ PrintVisitor::PrintVisitor() {
   current_node_ = root_;
 }
 
+PrintVisitor::~PrintVisitor() {
+  deleteASTNode(root_);
+}
+
 std::any PrintVisitor::visitFile(ExprParser::FileContext* context) {
   std::cout << "File" << std::endl;
   for (auto function : context->fun()) {
@@ -323,6 +327,19 @@ void PrintVisitor::tabUp(std::string node_name) {
 void PrintVisitor::tabDown(std::string node_name) {
   tabDown();
   current_node_ = current_node_->parent;
+}
+
+void PrintVisitor::deleteASTNode(ASTNode *node)
+{
+  if (node == nullptr) {
+    return;
+  }
+  ASTNode* parent = node->parent;
+  node->parent = nullptr;
+  for (auto child : node->children) {
+    deleteASTNode(child);
+  }
+  delete node;
 }
 
 ASTNode::ASTNode(std::string label) : label(label) {}

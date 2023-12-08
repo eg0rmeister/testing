@@ -16,6 +16,7 @@ struct ASTNode {
 class PrintVisitor : ExprBaseVisitor {
  public:
   PrintVisitor();
+  ~PrintVisitor();
   std::any visitFile(ExprParser::FileContext *context) override;
 
   std::any visitProg(ExprParser::ProgContext *ctx) override;
@@ -84,6 +85,8 @@ class PrintVisitor : ExprBaseVisitor {
 
   /// @brief Increase tab_level_ by 1
   void tabDown(std::string node_name);
+
+  void deleteASTNode(ASTNode* node);
 
   // tab counter for printing tree
   size_t tab_level_ = 0;
