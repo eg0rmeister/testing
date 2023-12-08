@@ -44,6 +44,8 @@ class IRVisitor : ExprBaseVisitor {
 
   void printIR();
 
+  void printIR(std::string filename);
+
  private:
 
   std::any visitPrintStmt(ExprParser::StmtContext *ctx);

@@ -34,6 +34,7 @@ int main(int argc, const char* argv[]) {
   try {
     ir_visitor.visitFile(tree);
     ir_visitor.printIR();
+    ir_visitor.printIR("driver.ll");
   } catch (const std::exception& ex) {
     std::cout << "Error occured in translation pass!\n" << ex.what() << std::endl;
   }
