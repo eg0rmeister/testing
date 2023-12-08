@@ -4,7 +4,11 @@ project("Antlr-cpp-driver")
 
 set(HEADERS_DIR "${CMAKE_CURRENT_SOURCE_DIR}/Include")
 set(GENERATED_DIR "${CMAKE_CURRENT_SOURCE_DIR}/Generated")
-set(SOURCES_DIR "${CMAKE_CURRENT_SOURCE_DIR}/Sources")
+set(SOURCES_DIR "${CMAKE_CURRENT_SOURCE_DIR}/Sources/")
+set(SOURCES 
+  ${SOURCES_DIR}InterpreterVisitor.cpp
+  ${SOURCES_DIR}Printable.cpp
+  ${SOURCES_DIR}StackMemory.cpp)
 
 list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
 
@@ -14,6 +18,7 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pthread") # pthread is important here
 
 # Add external build for antlrcpp
 include(ExternalAntlr4Cpp)
+
 # Add antrl4cpp artifacts to project environment
 include_directories(${ANTLR4_INCLUDE_DIRS})
 
@@ -22,32 +27,17 @@ include_directories(${ANTLR4_INCLUDE_DIRS})
 set(ANTLR_EXECUTABLE ${CMAKE_CURRENT_SOURCE_DIR}/tools/antlr-4.13.1-complete.jar)
 find_package(ANTLR REQUIRED)
 
-# Building the antlr files before building target
-execute_process(COMMAND bash -c  "jexec ${ANTLR_EXECUTABLE}\
- ${PROJECT_SOURCE_DIR}/Expr.g4\
- -o ${GENERATED_DIR}\
- -visitor\
- -no-listener\
- -Dlanguage=Cpp"
-)
-
 # CMake commands for this specific project start here
 # Call macro to add lexer and grammar to your build dependencies.
-# It kinda does not generate files, no idea why it is here
 antlr_target(ExprGrammarParser Expr.g4 VISITOR OUTPUT_DIRECTORY ${GENERATED_DIR})
 
-# linking antlr files in advance to 
-link_libraries(antlr4_static)
 # Add our project source directories
 include_directories(${HEADERS_DIR} ${GENERATED_DIR})
-# List all the cpp files used
-add_subdirectory(${SOURCES_DIR} AllVisitor)
-link_libraries(AllVisitor)
 
-add_executable(driver driver.cpp ${ANTLR_ExprGrammarParser_CXX_OUTPUTS})
+add_executable(driver driver.cpp ${ANTLR_ExprGrammarParser_CXX_OUTPUTS} ${SOURCES})
 
-# Link required libraries
 target_link_libraries(driver antlr4_static ${SYSTEM_LIBS})
+#target_link_libraries(driver AllVisitor)
 
 # Copy the input file next to the generated executable
 add_custom_command(TARGET driver POST_BUILD
