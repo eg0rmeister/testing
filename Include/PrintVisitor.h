@@ -5,11 +5,10 @@
 #include "antlr4-runtime.h"
 #include "ExprBaseVisitor.h"
 
-#include "StackMemory.h"
-#include "Printable.h"
 
-class InterpreterVisitor : ExprBaseVisitor {
+class PrintVisitor : ExprBaseVisitor {
  public:
+  public:
   std::any visitFile(ExprParser::FileContext *context) override;
 
   std::any visitProg(ExprParser::ProgContext *ctx) override;
@@ -65,7 +64,4 @@ class InterpreterVisitor : ExprBaseVisitor {
   std::any visitLessOrEqualExpr(ExprParser::ExprContext *ctx);
 
   std::any visitMoreOrEqualExpr(ExprParser::ExprContext *ctx);
-
-  StackMemory memory;
-  std::map<std::string, ExprParser::FunContext*> _functions;
 };
