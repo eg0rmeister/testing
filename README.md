@@ -25,13 +25,11 @@ $ cd testing
 $ mkdir build
 $ cd build
 $ cmake ../
-$ make
 ```
 
 3) **Build and test compiler:**
 ```bash
 $ cd build
-$ cmake ..
 $ make
 ```
 *Note:*  Default target is `driver`, it produces `driver` binary file in current (build) directory
