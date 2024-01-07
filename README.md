@@ -1,7 +1,7 @@
 # ⚡️ Custom IR Compiler
 This is a compiler for our made-up programming language inspired by C++ and Python.
-Grammar of this language is defined in file ~Expr.g4~.
-See sample program in ~input.txt~
+Grammar of this language is defined in file ```Expr.g4```.
+See sample program in ```input.txt```
  
 ## Motivation
 Welcome to our custom compiler project, the culmination of our efforts in the [MIPT Compilers Course](https://github.com/akhtyamovpavel/CompilersCourse/tree/master).
